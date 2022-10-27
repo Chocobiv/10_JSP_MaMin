@@ -19,6 +19,7 @@ create table member(
 drop table if exists board;
 create table board(
 	b_no int auto_increment,		-- 게시물 번호
+	b_title varchar(30),    		-- 제목
     b_content longtext,				-- 내용
     b_file text,  					-- 첨부파일
     b_date datetime default now(),	-- 작성날짜
