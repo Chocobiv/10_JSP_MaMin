@@ -15,6 +15,7 @@
 	<link href="../css/header.css" rel="stylesheet">
 </head>
 <body>
+
 	<% String loginID = (String) session.getAttribute("mid"); %>
 
 	<header>
