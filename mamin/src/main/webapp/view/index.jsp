@@ -20,7 +20,7 @@
 		<div class="m_main_img">
 			<div class="m_logobox">
 				<h3 class="m_main_text">마블의 민족</h3>
-				<img class="character" src="../img/지웅/main/지구졸라맨.png">
+				<img class="character" src="/mamin/img/main/지구졸라맨.png">
 				<div class="btn_box">
 					<div class="startbtn">Start Game</div>
 				</div>
