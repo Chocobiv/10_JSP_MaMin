@@ -27,7 +27,7 @@
 .slot_box{width: 90%; height : 80%; display : flex; justify-content: space-around; align-items: center;}
 .player_slot{width : 20%; height : 80%; background-color: #9296a730; }
 .r_p_img{width : 150px; height : 150px; border-radius : 100%; 
-	background-image: url("../img/아가양.jpg");
+	background-image: url("../img/지웅/room/아가양.jpg");
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;

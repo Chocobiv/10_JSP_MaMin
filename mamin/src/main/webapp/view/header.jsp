@@ -21,8 +21,8 @@
 	<header>
 		<div class="hd_box">
 			<div class="h_logo">
-				<img src="/maminTest/img/비행기.png">
-				<h3>마블의 민족</h3>
+				<a href=""><img src="/mamin/img/지웅/header/비행기.png"></a>
+				<h3><a href="">마블의 민족</a></h3>
 			</div>
 			<div class="h_menu">
 			<% if(loginID==null){ %>
