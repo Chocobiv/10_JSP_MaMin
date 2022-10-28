@@ -50,6 +50,10 @@
 					<td class="r_ready_box">Ready</td>
 				</tr>
 			</table>
+			<div class="chatting_box">
+			
+			
+			</div>
 		</div>	
 	</div>	
 	
