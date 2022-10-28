@@ -16,7 +16,7 @@
 </head>
 <body>
 
-	<% String loginID = (String) session.getAttribute("mid"); %>
+	<% String loginID = (String) session.getAttribute("m_id"); %>
 
 	<header>
 		<div class="hd_box">
@@ -34,7 +34,7 @@
 				<ul class="h_menu_top">
 					<li><%= loginID %></li>
 					<li><a href="">로그아웃</a></li>
-					<li><a href="">마이페이지</a></li>
+					<li><a href="/mamin/view/mypage.jsp">마이페이지</a></li>
 				</ul>
 			<% } %>
 				<ul class="h_menu_btm">

@@ -60,4 +60,23 @@ public class MemberDao extends Dao {
 		return false;
 	}
 
+	// 비아 - 4. 로그인
+	public int login(String m_id, String m_password) {
+		String sql = "select * from member where m_id=?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, m_id);
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				sql = "select * from member where m_id=? and m_password=?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, rs.getString(2));	//첫번째 select로 찾은 데이터를 대입
+				ps.setString(2, m_password);
+				rs=ps.executeQuery();
+				if(rs.next()) return 1;		//로그인 성공
+				return 2;					//패스워드가 틀렸다는 뜻
+			}
+		} catch (Exception e) {System.out.println(e); }	//DB 오류
+		return 0;		//아이디가 없다는 뜻
+	}
 }

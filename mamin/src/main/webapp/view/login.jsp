@@ -8,7 +8,7 @@
 	<link href="../css/login.css" rel="stylesheet">
 </head>
 <body>
-
+	<%@ include file="header.jsp" %>
 	<div class="main_signin">
 		
 		<!-- 본문 -->
@@ -34,12 +34,11 @@
 						
 						<!-- remember me, forger pw -->
 						<div class="option_box">
-							<!-- remember me -->
-							<span class="option1">
-								<input type="checkbox">
-								<h3>Remember me</h3>
+							<!-- forget id -->
+							<span>
+								<h3> <a href="#">Forget Id?</a> </h3>
 							</span>
-							<!-- forger pw -->
+							<!-- forget pw -->
 							<span>
 								<h3> <a href="#">Forget Password?</a> </h3>
 							</span>
@@ -47,7 +46,7 @@
 						
 						<!-- login btn -->
 						<div class="btn_box">
-							<button onclick="checkUser()" class="btn">LOGIN</button>
+							<button onclick="login()" class="btn">LOGIN</button>
 						</div>
 					</div>
 				</div>
@@ -55,6 +54,9 @@
 		</section>
 		
 	</div>
+
+
+	<script type="text/javascript" src="../js/login.js"></script>
 
 </body>
 </html>

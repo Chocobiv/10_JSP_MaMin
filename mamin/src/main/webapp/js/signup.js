@@ -94,7 +94,8 @@ for (var i = 0; i < characterbtns.length; i++) {
         if (this !== prev) {
             prev = this;
         }
-        cimg.src = '../img/character/'+this.value+'.png'
+        if(this.value == '아가양') cimg.src = '../img/member/'+this.value+'.jpg'
+        else cimg.src = '../img/member/'+this.value+'.png'
     });
 }
 
