@@ -7,18 +7,19 @@ create table member(
     m_id varchar(20),					-- 아이디
     m_password varchar(15),				-- 비밀번호
     m_email varchar(30),				-- 이메일
-    m_point int,						-- 보유 포인트
+    m_point int default 0,				-- 보유 포인트
     m_nick varchar(10),					-- 닉네임
     m_img text,							-- 캐릭터 이미지
     m_profile text,						-- 자기소개
-    wins int,							-- 1등 횟수
-    total int,							-- 총 게임 횟수'
+    wins int default 0,					-- 1등 횟수
+    total int default 0,				-- 총 게임 횟수'
     constraint m_no_pk primary key(m_no)
 );
 
 drop table if exists board;
 create table board(
 	b_no int auto_increment,		-- 게시물 번호
+	b_title varchar(30),			-- 게시물 제목
     b_content longtext,				-- 내용
     b_file text,  					-- 첨부파일
     b_date datetime default now(),	-- 작성날짜
