@@ -23,7 +23,7 @@
 				</div>
 				<div class="player3_info">
 					
-				</div>
+				</div>  
 				<div class="player4_info">
 					
 				</div>

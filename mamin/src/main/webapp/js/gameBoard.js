@@ -127,12 +127,12 @@ function gameboard(){
 	}
 }//gameboard end
 
-/*======================== 수현 10/28 플레이어 정보 삽입 ================================ */
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지
 function gamePlayer(){
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
-	for(let i=0; i<=4; i++){
+	for(let i=1; i<=4; i++){
+		console.log("player"+i+"_info")
 			document.querySelector(".player"+i+"_info").innerHTML='<div class="g_m_img">'+
 					'<img width="150px" src="'+player[i].m_img+'">'+
 				'</div>'+
