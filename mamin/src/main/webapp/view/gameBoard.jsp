@@ -5,16 +5,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<link rel="stylesheet" href="gameBoard.css">
+	<link rel="stylesheet" href="/mamin/css/gameBoard.css">
 	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
+	<!-- 헤더 연결없어서 폰트어썸 따로 추가해줌 - 수현 -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 </head>
 <body>
 
 	<div class="gameroom"><!-- 게임방 전체 -->
 		<div class="gameboard"><!-- 게임판 -->
+			<div class="g_profile"><!-- 플레이어 정보 -->
+				<div class="player1_info">
+					
+				</div>
+				<div class="player2_info">
+					
+				</div>
+				<div class="player3_info">
+					
+				</div>
+				<div class="player4_info">
+					
+				</div>
+			
+			</div>
 			<div class="boardbox"><!-- 게임판 박스 -->
 			
-				<div class="sb_center"> <!-- 게임판 가운데 부분 -->
+				<div class="b_center"> <!-- 게임판 가운데 부분 -->
 					<!-- 주사위 굴러갈 부분, 게임로고 표시 -->
 					
 				</div>
@@ -67,6 +84,6 @@
 	</div>
 
 
-	<script type="text/javascript" src="gameBoard.js"></script>
+	<script type="text/javascript" src="/mamin/js/gameBoard.js"></script>
 </body>
 </html>
