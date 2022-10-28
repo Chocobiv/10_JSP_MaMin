@@ -26,8 +26,10 @@ public class login extends HttpServlet {
 		
 		// 만약에 로그인 성공하면 세션 할당
 		if(result == 1) {
+			int m_no = MemberDao.getInstance().getNo(m_id);
 			HttpSession session = request.getSession();		//1. 세션 객체 선언
 			session.setAttribute("m_id", m_id);				//2. 세션 생성 [세션 메모리 할당]
+			session.setAttribute("m_no", m_no);				//2. 세션 생성 [세션 메모리 할당]
 		}
 		
 		//3. DB의 결과를 JS로 보냄
