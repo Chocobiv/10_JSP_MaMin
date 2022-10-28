@@ -11,12 +11,10 @@
 		
 </head>
 <body>
-
+	<%@ include file="header.jsp" %>
 	<div class="webbox">
 		<form class="signupform" action="/mamin/member/signup" method="post">
-			<h3 class="pagetitle"> 회원가입 </h3>
-			
-			<h3 class="parttitle">기본정보</h3>
+
 			<table class="signuptable">
 				<tr>
 					<td class="col1">아이디 * </td>	<!-- name:form에서 사용, id:js에서 사용 -->
@@ -50,13 +48,14 @@
 				<tr>
 					<td class="col1">캐릭터 선택 </td>
 					<td class="col2">
-						<img src="../img/character/1.png" class="cimg"><br>
+						<img src="../img/member/1.png" class="cimg"><br>
 						<input class="characterbtn" type="radio" name="character" value="1" checked="checked">곰
 						<input class="characterbtn" type="radio" name="character" value="2">돼지
 						<input class="characterbtn" type="radio" name="character" value="3">쥐
 						<input class="characterbtn" type="radio" name="character" value="4">햄스터
 						<input class="characterbtn" type="radio" name="character" value="5">토끼
 						<input class="characterbtn" type="radio" name="character" value="6">다람쥐
+						<input class="characterbtn" type="radio" name="character" value="아가양">아가양
 					</td>
 				</tr>
 			</table>
@@ -216,7 +215,6 @@
 
 (시행일) 이 약관은 2022년 10월부터 시행합니다.</textarea>
 				<input type="checkbox" id="confirm1"> <span>[필수] 이용약관 동의</span>
-				
 				<textarea readonly="readonly"> 마블의 민족 ('http://localhost:8080/mamin/index.jsp'이하 '마블의 민족')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 
 ○ 이 개인정보처리방침은 2022년 10월 27부터 적용됩니다.

@@ -1,13 +1,12 @@
 @charset "UTF-8";
 
+.webbox{
+	padding-top: 20px;
+}
+
 .signupform{				/* form */
 	width: 800px;			/* 가로사이즈 */
 	margin: 0 auto;			/* 박스권 가운데 정렬 */
-}
-
-.pagetitle{					/* 페이지 대 제목 */
-	text-align: center;		/* 텍스트 가운데 정렬 */
-	margin-top: 100px;
 }
 
 .signuptable{				/* table */
@@ -22,14 +21,11 @@
 
 .signuptable td{			/* table td */
 	border-bottom: #d8d8d8 1px solid;
-	padding: 15px;
+	padding: 10px;
+    text-align: center;
+    vertical-align: middle;
 }
 
-.parttitle{					/* 페이지 소 제목 */
-	margin-top: 50px;
-	padding-bottom: 10px;
-	border-bottom: black 2px solid;
-}
 
 /* table 열 사이즈 */
 .col1{ width: 20%; background-color: #f7f7f7; }
@@ -66,7 +62,7 @@
 .confirmbox textarea{
 	width: 100%; height: 120px;
 	resize: none;			/* 사이즈 변경 안되도록 */
-	
+	border: 1px solid black;
 }
 
 .confirmbox input{
@@ -76,7 +72,9 @@
 
 .confirmbox span{
 	font-size: 15px;
+	vertical-align: top;
 }
+
 
 /* 유효성 검사 아이콘 */
 .fa-check-circle{ color: green; font-size: 20px; }
