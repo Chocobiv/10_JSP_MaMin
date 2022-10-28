@@ -1,16 +1,22 @@
 package controller.board;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import model.dao.BoardDao;
+import model.dto.BoardDto;
 
 
 /**
@@ -27,13 +33,28 @@ public class boardCRUD extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
+    
+    
+    //글 출력  GET 김장군
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.setCharacterEncoding("UTF-8");
+		String type= request.getParameter("type");
+		if(type.equals("1")) {//전체 글출력
+			ArrayList<BoardDto> list =  BoardDao.getInstance().getBoardList();
+			JSONArray array = new JSONArray();
+			for(int i=0;i<list.size();i++) {
+				JSONObject object = new JSONObject();
+				object.put("bno", list.get(i).getB_no() );
+				object.put("btitle", list.get(i).getB_title() );
+				object.put("bdate", list.get(i).getB_date() );
+				object.put("mid", list.get(i).getM_id() );
+				array.add(object);
+				
+			}
+			
+			response.getWriter().print(array);
+		}
 	}
 
 	//글 등록 POST 김장군
