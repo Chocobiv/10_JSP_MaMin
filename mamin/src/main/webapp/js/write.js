@@ -28,7 +28,7 @@ function bwrite(){///글등록 함수 김장군
 	let formdata = new FormData(form)
 		
 	$.ajax({
-		url:"http://localhost:8080/mamin/board/boardCRUD",
+		url:"/mamin/board/boardCRUD",
 		data : formdata , 							
 		type : 'POST' , 
 		contentType : false , 									

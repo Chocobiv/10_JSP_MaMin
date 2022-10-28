@@ -4,9 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 </head>
 <body>
-
+	<%@ include file="header.jsp" %>
 	<form id="write">
 		제목: <input type="text" name="b_title"><br>
 		<textarea id="summernote" name="b_content"></textarea><br>
@@ -17,7 +18,7 @@
 	
 	
 	
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	<script src="../js/write.js" type="text/javascript"></script>
 </body>
 </html>

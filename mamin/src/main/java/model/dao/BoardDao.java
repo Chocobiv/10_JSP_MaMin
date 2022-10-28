@@ -22,7 +22,8 @@ public class BoardDao extends Dao {
 			System.out.println(e);
 		}return false;		
 	}
-	public ArrayList<BoardDto> getBoardList(){//글 목록호출 메소드 김장군
+	//2.글 목록호출 메소드 김장군
+	public ArrayList<BoardDto> getBoardList(){
 		ArrayList<BoardDto> list = new ArrayList<>();
 		
 		String sql ="SELECT b_no,b_title,b_date,m_id from board b ,member m where b.mno = m.mno;";
@@ -38,8 +39,31 @@ public class BoardDao extends Dao {
 			System.out.println(e);
 		}
 		return list;
+		//검색,페이징처리 
 	}
-	
-	
+	// 3.개별 글 출력 김장군
+	public BoardDto getBoard(int b_no) {
+		String sql = "select b_no, b_title, b_content, m_id, b_file from board b member m where   b.bno=m.mno and b.bno="+b_no;
+		try {
+			ps=con.prepareStatement(sql);
+			rs=ps.executeQuery();
+			
+			if(rs.next()) {
+				BoardDto dto = new BoardDto();
+				dto.setB_no(b_no);
+				dto.setB_title(rs.getString(2));
+				dto.setB_content(rs.getString(3));
+				dto.setM_id(rs.getString(4));
+				dto.setB_file(rs.getString(5));
+				return dto;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		return null;
+		
+	}
 	
 }

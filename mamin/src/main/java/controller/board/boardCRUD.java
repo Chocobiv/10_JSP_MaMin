@@ -40,7 +40,8 @@ public class boardCRUD extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		String type= request.getParameter("type");
-		if(type.equals("1")) {//전체 글출력
+			////////////전체 글출력//////////////////////////////////
+		if( type.equals("1") ) {
 			ArrayList<BoardDto> list =  BoardDao.getInstance().getBoardList();
 			JSONArray array = new JSONArray();
 			for(int i=0;i<list.size();i++) {
@@ -54,13 +55,24 @@ public class boardCRUD extends HttpServlet {
 			}
 			
 			response.getWriter().print(array);
+				//////////////////////////////개별 글 출력///////////////////////
+		}else if( type.equals("2") ){
+			int b_no = (Integer)request.getSession().getAttribute("b_no");///세션에서 글번호 호출
+			BoardDto dto = BoardDao.getInstance().getBoard(b_no);
+			JSONObject object = new JSONObject();
+			object.put("b_no", dto.getB_no());
+			object.put("b_title", dto.getB_title());
+			object.put("b_content", dto.getB_content());
+			object.put("m_id", dto.getM_id());
+			object.put("b_file", dto.getB_file());
+			response.getWriter().print(object);
 		}
 	}
 
 	//글 등록 POST 김장군
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uploadpath = request.getSession().getServletContext().getRealPath("/upload");
-		System.out.println(uploadpath);
+		String uploadpath = request.getSession().getServletContext().getRealPath("/upload"); ////업로드 파일 저장 경로
+	
 		MultipartRequest multi = new MultipartRequest(
 				request ,  						
 				uploadpath , 					
@@ -76,6 +88,7 @@ public class boardCRUD extends HttpServlet {
 	    String b_file = multi.getFilesystemName("b_file"); 
 			System.out.println( b_file );
 		int m_no  = Integer.parseInt((String)request.getSession().getAttribute("m_no"));
+			
 		boolean result = BoardDao.getInstance().write(b_title, b_content, b_file ,m_no);
 		response.getWriter().print(result);
 
