@@ -15,8 +15,7 @@
 	
 	
 	
-	<div class="container">
-	
+	<div class="wrapper">	
 		<div class="m_main_img">
 			<div class="m_logobox">
 				<h3 class="m_main_text">마블의 민족</h3>
@@ -26,7 +25,6 @@
 				</div>
 			</div>
 		</div>
-	
 	</div>
 	<!-- 캐러셀
 	
@@ -50,9 +48,7 @@
 	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 	    <span class="visually-hidden">Next</span>
 	  </button>
-	</div>
-	
-	
+	</div>	
 	-->
 	
 	<script src="../js/index.js"></script>
