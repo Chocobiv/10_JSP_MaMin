@@ -79,4 +79,17 @@ public class MemberDao extends Dao {
 		} catch (Exception e) {System.out.println(e); }	//DB 오류
 		return 0;		//아이디가 없다는 뜻
 	}
+	
+
+	// 비아 - 회원아이디 -> 회원번호
+	public int getNo(String m_id) {
+		String sql = "select no from member where m_id = ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, m_id);
+			rs = ps.executeQuery();
+			if(rs.next()) { return rs.getInt(1); }
+		}catch (Exception e) { System.out.println("DB오류) "+e); }
+		return 0;
+	}
 }
