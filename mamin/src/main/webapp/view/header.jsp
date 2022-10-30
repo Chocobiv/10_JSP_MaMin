@@ -17,6 +17,7 @@
 <body>
 
 	<% String loginID = (String) session.getAttribute("m_id"); %>
+	<div class="H_idbox" style="display : none;"><%=loginID %></div>
 
 	<header>
 		<div class="hd_box">
