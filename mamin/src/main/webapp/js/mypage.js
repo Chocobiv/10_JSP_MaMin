@@ -1,6 +1,47 @@
 
-//비아 - 1. col3 div 모두 가져오기
-let col3 = document.querySelector(".col3")	//class가 col3이면 모두 호출 [배열 저장]
+//전역변수
+let col3 = document.querySelector(".col3")
+
+
+getmember()
+
+//비아 - 회원정보 불러오기
+function getmember(){
+	$.ajax({
+		url : "/mamin/member/mypage",
+		success : function(re) {
+			let member = JSON.parse(re)
+			document.querySelector(".m_nick").value = member.m_nick
+			document.querySelector(".m_profile").value = member.m_profile
+			
+			document.querySelector('.cimg').src = '../img/member/'+member.m_img
+			switch(member.m_img){
+				case '1.png':
+					document.querySelector('.characterbtn[value="1"]').checked = true
+					break
+				case '2.png':
+					document.querySelector('.characterbtn[value="2"]').checked = true
+					break
+				case '3.png':
+					document.querySelector('.characterbtn[value="3"]').checked = true
+					break
+				case '4.png':
+					document.querySelector('.characterbtn[value="4"]').checked = true
+					break
+				case '5.png':
+					document.querySelector('.characterbtn[value="5"]').checked = true
+					break
+				case '6.png':
+					document.querySelector('.characterbtn[value="6"]').checked = true
+					break
+				case '아가양.jpg':
+					document.querySelector('.characterbtn[value="아가양"]').checked = true
+					break	
+			}
+
+		}
+	})
+}
 
 //비아 -  -------------- 비밀번호 --------------
 function mevent1(){
@@ -32,17 +73,30 @@ function mevent2(){
 	}	
 }
 
+//비아 -  ----------- 캐릭터 선택 버튼 -----------
+let characterbtns = document.querySelectorAll('.characterbtn')
+let cimg = document.querySelector('.cimg')
+var prev = null;
+for (var i = 0; i < characterbtns.length; i++) {
+    characterbtns[i].addEventListener('change', function() {
+        (prev) ? console.log(prev.value): null;
+        if (this !== prev) {
+            prev = this;
+        }
+        if(this.value == '아가양') cimg.src = '../img/member/'+this.value+'.jpg'
+        else cimg.src = '../img/member/'+this.value+'.png'
+    });
+}
+
 //비아 -  -------------- form 전송 --------------
 function formsubmit(){
-	//1. 아이디 ~ 주소 모두 유효성 검사 검토
 	if(col3.innerHTML !== '비밀번호가 서로 같습니다.'){
 		alert('비밀번호가 서로 다릅니다.')
 		return false
-	}else if(document.querySelector('.m_nick').innerHTML === '' || document.querySelector('.m_profile').innerHTML === ''){
+	}else if(document.querySelector('.m_nick').value === '' || document.querySelector('.m_profile').value === ''){
 		alert('입력이 안된 정보가 있습니다.')
 		return false
 	}
 	
-	//signupform이라는 class를 가지고 있는 tag 호출
-	document.querySelector('.mypageform').submit()	//해당 form 전송 //폼객체.submit()
+	document.querySelector('.mypageform').submit()	//해당 form 전송
 }

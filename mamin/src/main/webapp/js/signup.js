@@ -101,7 +101,6 @@ for (var i = 0; i < characterbtns.length; i++) {
 
 //비아 -  -------------- form 전송 --------------
 function formsubmit(){
-	//1. 아이디 ~ 주소 모두 유효성 검사 검토
 	for(let i=0; i<col3.length; i++){
 		if(col3[i].innerHTML !== sicon){
 			alert('입력이 안된 정보가 있습니다.')

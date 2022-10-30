@@ -10,11 +10,11 @@
 	<body>
 		<%@ include file="header.jsp" %>
 		<div class="webbox">
-			<form class="mypageform">
+			<form class="mypageform" action="/mamin/member/mypage" method="post">
 				<table class="mypagetable">
 					<tr>
 						<td class="col1"> 비밀번호 </td>
-						<td class="col2"> <input type="password" id="m_password" onkeyup="mevent1()"> </td>
+						<td class="col2"> <input type="password" name="m_password" id="m_password" onkeyup="mevent1()"> </td>
 						<td rowspan="2" class="col3">  </td>
 					</tr>
 					<tr>
@@ -23,7 +23,7 @@
 					</tr>
 					<tr>
 						<td class="col1"> 닉네임 </td>
-						<td class="col2"> <input type="text" class="m_nick"> </td>
+						<td class="col2"> <input type="text" name="m_nick" class="m_nick"> </td>
 					</tr>
 					<tr>
 						<td class="col1"> 캐릭터 </td>
@@ -40,7 +40,7 @@
 					</tr>
 					<tr>
 						<td class="col1"> 자기소개 </td>
-						<td class="col2"> <input type="text" class="m_profile"> </td>
+						<td class="col2"> <input type="text" name="m_profile" class="m_profile"> </td>
 					</tr>
 				</table>
 				<div class="mypagebtnbox">

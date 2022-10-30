@@ -81,9 +81,9 @@ public class MemberDao extends Dao {
 	}
 	
 
-	// 비아 - 회원아이디 -> 회원번호
+	// 비아 - 5. 회원아이디 -> 회원번호
 	public int getNo(String m_id) {
-		String sql = "select no from member where m_id = ?";
+		String sql = "select m_no from member where m_id = ?";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, m_id);
@@ -91,5 +91,43 @@ public class MemberDao extends Dao {
 			if(rs.next()) { return rs.getInt(1); }
 		}catch (Exception e) { System.out.println("DB오류) "+e); }
 		return 0;
+	}
+	
+	
+	// 비아 - 6. 회원정보 불러오기
+	public MemberDto getMember(String m_id) {
+		//?대신에 변수를 넣을거면 문자표시('') 해줘야 함
+		String sql = "select * from member where m_id=?";
+		MemberDto dto = null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, m_id);
+			rs = ps.executeQuery();
+			if(rs.next()) { 		//동일한 정보가 있으면 
+				dto = new MemberDto();
+				dto.setM_nick(rs.getString(6));
+				dto.setM_img(rs.getString(7));
+				dto.setM_profile(rs.getString(8));
+			}
+			return dto;
+		}catch(Exception e) { System.out.println("DB오류) "+e);}
+		return dto;
+	}
+	
+	// 비아 - 7. 회원정보 수정
+	//11. 회원정보 수정
+	public boolean update(String m_id, String m_password, String m_nick, String m_profile, String m_img) {
+		String sql = "update member set m_password=?,m_nick=?,m_profile=?,m_img=? where m_id=?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, m_password);
+			ps.setString(2, m_nick);
+			ps.setString(3, m_profile);
+			ps.setString(4, m_img);
+			ps.setString(5, m_id);
+			ps.executeUpdate();
+			return true;
+		}catch (Exception e) { System.out.println("DB오류) "+e); }
+		return false;
 	}
 }
