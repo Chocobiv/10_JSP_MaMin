@@ -19,6 +19,10 @@
 	</table>
 
 	<span class="btnbox"></span>
+	<div class="commentbox">
+			<textarea rows="" cols="" class="c_content"></textarea><br>
+			<button type="button" onclick="cwrite()">댓글작성</button>
+		</div>
 
 	<script src="../js/view.js "type="text/javascript"></script>
 </body>

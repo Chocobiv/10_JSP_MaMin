@@ -8,9 +8,10 @@
 </head>
 <body>
 	<%@ include file="header.jsp" %>
-	<form id="write">
+	<form id="update">
 		제목: <input type="text" name="b_title" class="b_title"><br>
 		<textarea id="summernote" name="b_content" class="b_content"></textarea><br>
+		<span class="oldbfilebox"></span>
 		첨부파일 : <input type="file" name ="b_file" class="b_file"> <br>
 		<button type="button" onclick="update()">수정</button>
 	</form>
