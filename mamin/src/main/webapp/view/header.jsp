@@ -33,7 +33,7 @@
 			<% }else{ %>
 				<ul class="h_menu_top">
 					<li><%= loginID %></li>
-					<li><a href="">로그아웃</a></li>
+					<li><a href="/mamin/view/logout.jsp">로그아웃</a></li>
 					<li><a href="/mamin/view/mypage.jsp">마이페이지</a></li>
 				</ul>
 			<% } %>
