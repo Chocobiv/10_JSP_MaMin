@@ -4,10 +4,10 @@
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
 let player=[
-	{p_no : 1 , p_nick: "또치" , p_position:2 , m_no : 1 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
-	{p_no : 2 , p_nick: "도우너" ,p_position:3 , m_no : 2 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
-	{p_no : 3 , p_nick: "둘리" ,p_position:4 , m_no : 3 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
-	{p_no : 4 , p_nick: "희동이" ,p_position:5 , m_no : 4 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},
+	{p_no : 1 , p_nick: "또치" , p_position:8 , m_no : 1 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
+	{p_no : 2 , p_nick: "도우너" ,p_position:8 , m_no : 2 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
+	{p_no : 3 , p_nick: "둘리" ,p_position:8 , m_no : 3 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
+	{p_no : 4 , p_nick: "희동이" ,p_position:8 , m_no : 4 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},
 	
 ]
 /*========================수현 보드판 생성 관련 변수 ================================ */
@@ -60,77 +60,96 @@ let hotel='<i class="fas fa-hotel"></i>' // 3번째 건설 단계
 
 /*======================== 수현 10/27 보드판 생성 ================================ */
 
-gameboard()
-gamePlayer()
-playerLocation()
+gameboard() // 보드판 출력
+gamePlayer() // 플레이어 정보 출력
+playerLocation() // 플레이어 위치 출력
+
 // 수현 게임 보드판 출력 함수
 function gameboard(){
+	
+	
+	
 	//시작점
+	//p_location0 == 시작
 	document.querySelector(".b_start").innerHTML='<div class="g_space">'+
 														'<div class="n_name">'+nation[0].n_name+'</div>'+
 														'<div class="n_player">'+nation[0].n_price+'</div>'+
-														'<span class="p_location1 location"></span>'+ // 플레이어 말 출력 위치
+														'<span class="p_location0 location"></span>'+ // 플레이어 말 출력 위치
 													'</div>'
 						
 	//무인도
 	document.querySelector(".b_island").innerHTML='<div class="g_space">'+
 														'<div class="n_name">'+nation[8].n_name+'</div>'+
 														'<div class="n_player">'+nation[8].n_price+'</div>'+
+														'<span class="p_location8 location"></span>'+
 													'</div>'
 	//올림픽
 	document.querySelector(".b_olympic").innerHTML='<div class="g_space">'+
 														'<div class="n_name">'+nation[16].n_name+'</div>'+
 														'<div class="n_player">'+nation[16].n_price+'</div>'+
+														'<span class="p_location16 location"></span>'+
 													'</div>'
 	//세계여행
 	document.querySelector(".b_travle").innerHTML='<div class="g_space">'+
 														'<div class="n_name">'+nation[24].n_name+'</div>'+
 														'<div class="n_player">'+nation[24].n_price+'</div>'+
+														'<span class="p_location24 location"></span>'+
 													'</div>'
 	//오른쪽 줄 
 	// 홈페이지에 출력이 위에서 부터 내려오는데 객체는 1번부터 출발점설정이라 i--로 설정해줘야 순서맞아서 일단 그렇게 함
 	for(let i=7; i>=1; i--){
+		//통행료 천원단위로 나오게 잘라줌
+		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
+		let n_payment=(nation[i].n_payment /1000)+" 만 원";
+		
 		document.querySelector(".right_row").innerHTML
 						+='<div class="g_space">'+
-								'<div class="color-bar light-blue">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
+								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
 								'<div class="b_house"></div>'+ // 건물 출력 위치
-								'<span class="p_location1 location"></span>'+ // 플레이어 말 출력 위치
-								'<div class="name">'+nation[i].n_payment+'</div>' // 통행료 출력 위치
+								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
+								//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
 		
 	}
 	//윗 줄
 	for(let i=15; i>=9; i--){
+		//통행료 천원단위로 나오게 잘라줌
+		let n_payment=(nation[i].n_payment /1000)+" 만 원";
 		document.querySelector(".top_row").innerHTML
 						+='<div class="g_space">'+
-								'<div class="color-bar light-blue">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
+								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
 								'<div class="b_house"></div>'+ // 건물 출력 위치
-								'<span class="p_location1 location"></span>'+ // 플레이어 말 출력 위치
-								'<div class="name">'+nation[i].n_payment+'</div>' // 통행료 출력 위치
+								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
+								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
 		
 	}
 	//왼쪽 줄
 	//왼쪽줄은 페이지 출력순서랑 똑같아서 i++
 	for(let i=17; i<=23; i++){
+		//통행료 천원단위로 나오게 잘라줌
+		let n_payment=(nation[i].n_payment /1000)+" 만 원";
 		document.querySelector(".left_row").innerHTML
 						+='<div class="g_space">'+
-								'<div class="color-bar light-blue">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
+								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
 								'<div class="b_house"></div>'+ // 건물 출력 위치
-								'<span class="p_location1 location"></span>'+ // 플레이어 말 출력 위치
-								'<div class="name">'+nation[i].n_payment+'</div>' // 통행료 출력 위치
+								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
+								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
 		
 	}
 	//아랫줄
 	// 아랫줄은 페이지출력순서랑 똑같아서 i++
 	for(let i=25; i<=31; i++){
+			//통행료 천원단위로 나오게 잘라줌
+		let n_payment=(nation[i].n_payment /1000)+" 만 원";
 		document.querySelector(".bottom_row").innerHTML
 						+='<div class="g_space">'+
-								'<div class="color-bar light-blue">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
+								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
 								'<div class="b_house"></div>'+ // 건물 출력 위치
-								'<span class="p_location1 location"></span>'+ // 플레이어 말 출력 위치
-								'<div class="name">'+nation[i].n_payment+'</div>' // 통행료 출력 위치
+								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
+								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
 	
 	}
@@ -155,26 +174,47 @@ function gamePlayer(){
 /*---------수현 플레이어 위치 출력---------- */
 function playerLocation(){
 	// 플레이어위치랑 나라번호가 똑같으면 플레이어 출력되게
-	for(let i=0; i<=3;i++){ // 한플레이어당 모든 나라 한번씩 다 확인해서 플레이어위치번호랑 나라번호가 똑같으면 위치 출력시키기
+	for(let i=0; i<=3;i++){ // 한 플레이어당 모든 나라 한번씩 다 확인해서 플레이어위치번호랑 나라번호가 똑같으면 위치 출력시키기
+		console.log(player[i].p_position)
 		for(let j=0; j<=31; j++){
 			if(player[i].p_position==nation[j].n_no){
-				console.log(player[i].p_position)
-				console.log(player[i].p_position)
-				// 뭔가 이상해 잘못한듯...
 				
 				// 플레이어 아이콘 변수에 넣어서 출력시키기
 				let icon='<i class="fas fa-ghost player'+(i+1)+'_icon"></i>'
-				document.querySelector(".p_location1").innerHTML+=icon
+				document.querySelector(".p_location"+j+"").innerHTML+=icon
 			}
 		}
 	}
+	
+	
 }
 
+/* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 오픈이라도 되게 */
 
+function diceStart(){
+	let count=0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
+	let diceLotation=setInterval(function(){
+	
+	// 1~6 랜덤 발생시켜서 숫자에 맞는 주사위 이미지 출력되게
+		let dice1= Math.floor((Math.random()*6)+1);
+		let dice2= Math.floor((Math.random()*6)+1);
+		
+		count++		
+		document.querySelector(".b_dice1").src="/mamin/img/game/주사위"+dice1+".png"
+		document.querySelector(".b_dice2").src="/mamin/img/game/주사위"+dice2+".png"
+		
+		
+		if(count==10){
+			clearInterval(diceLotation)
+			//console.log(dice1)
+			//console.log(dice2)
+			// 여기서 주사위 멈추면 주사위 값 다른데서 가져가면 될것같음!
+			
+		}
+	
+	},100)
+}
 
-
-
-
-
-
+/*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
+// 플레이어별로 색깔은 어떻게 주지...
 

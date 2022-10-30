@@ -33,7 +33,16 @@
 			
 				<div class="b_center"> <!-- 게임판 가운데 부분 -->
 					<!-- 주사위 굴러갈 부분, 게임로고 표시 -->
+					<div class="b_diceContent"><!-- 주사위 -->
+						<img class="b_dice1" alt="" src="/mamin/img/game/주사위1.png">
+						<img class="b_dice2" alt="" src="/mamin/img/game/주사위1.png">
+					</div>
+					<div onclick="diceStart()" class="diceBtn"> <!-- 주사위 굴릴 버튼 -->
+						<span>주사위 굴리기</span>
+					</div>
+					<div class="b_logo"><!-- 로고 넣을 부분 -->
 					
+					</div>
 				</div>
 				<div class="b_start"> <!-- 출발점 -->
 					<!-- 게임칸 박스 생성해야함 -->
