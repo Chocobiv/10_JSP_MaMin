@@ -18,7 +18,7 @@
 		<tr> <td> 첨부파일 <td> <td class="b_file"> 	</td> </tr>
 	</table>
 
-
+	<span class="btnbox"></span>
 
 	<script src="../js/view.js "type="text/javascript"></script>
 </body>

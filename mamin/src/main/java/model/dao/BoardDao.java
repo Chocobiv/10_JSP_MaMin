@@ -9,8 +9,9 @@ public class BoardDao extends Dao {
 	public static BoardDao getInstance() { return bdao; } 
 	//1. 글등록 메소드 김장군
 	public boolean write(String b_title,String b_content,String b_file ,int m_no) {
-		String sql ="insert into board values(0,?,?,?,null,?)";
+		String sql ="insert into board(b_title,b_content,b_file,m_no) values(?,?,?,?)";
 		try {
+		
 			ps=con.prepareStatement(sql);
 			ps.setString(1, b_title);
 			ps.setString(2, b_content);
@@ -26,7 +27,7 @@ public class BoardDao extends Dao {
 	public ArrayList<BoardDto> getBoardList(){
 		ArrayList<BoardDto> list = new ArrayList<>();
 		
-		String sql ="SELECT b_no,b_title,b_date,m_id from board b ,member m where b.mno = m.mno;";
+		String sql ="SELECT b_no, b_title, b_date, m_id from board b ,member m where b.m_no = m.m_no;";
 		try {
 			ps=con.prepareStatement(sql);
 			rs=ps.executeQuery();
@@ -39,11 +40,11 @@ public class BoardDao extends Dao {
 			System.out.println(e);
 		}
 		return list;
-		//검색,페이징처리 
+		
 	}
 	// 3.개별 글 출력 김장군
 	public BoardDto getBoard(int b_no) {
-		String sql = "select b_no, b_title, b_content, m_id, b_file from board b member m where   b.bno=m.mno and b.bno="+b_no;
+		String sql = "select b_no, b_title, b_content, m_id, b_file from board b , member m where   b.m_no=m.m_no and b.b_no="+b_no;
 		try {
 			ps=con.prepareStatement(sql);
 			rs=ps.executeQuery();
@@ -65,5 +66,23 @@ public class BoardDao extends Dao {
 		return null;
 		
 	}
+	
+	//4.글 삭제 김장군
+	public boolean boardDelete(int b_no) {
+		String sql = "delete from board where b_no="+b_no;
+		try {
+			ps=con.prepareStatement(sql);
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return false;
+		
+	}
+	
+	
+	
 	
 }
