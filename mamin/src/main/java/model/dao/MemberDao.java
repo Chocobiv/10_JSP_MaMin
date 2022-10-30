@@ -83,7 +83,7 @@ public class MemberDao extends Dao {
 
 	// 비아 - 회원아이디 -> 회원번호
 	public int getNo(String m_id) {
-		String sql = "select no from member where m_id = ?";
+		String sql = "select m_no from member where m_id = ?";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, m_id);

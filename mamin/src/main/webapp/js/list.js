@@ -9,16 +9,20 @@ function getBoardList(){  //전체 게시물 출력 함수
 		type:"get",
 		success:function(re){
 			let json = JSON.parse(re)
+			console.log(json)
 			let html=""
 			for(let i = 0; i<json.length;i++){
 				let b = json[i]
 				html+=`<tr>
 							<td>${b.b_no}</td>
 							<td onclick="viewload(${b.b_no})">${b.b_title}</td>
-							<td>${b.b_date}</td>
 							<td>${b.m_id}</td>
-					  </tr>`		
+							<td>${b.b_date}</td>
+							
+					  </tr>`
+					  	
 			}
+			
 			document.querySelector(".btable").innerHTML+=html
 		}
 		
