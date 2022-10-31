@@ -18,7 +18,7 @@
 
 .gameboard{	/*보드판 전체*/
 	position: relative;
-	width: 1800px;
+	width: 1900px;
 	margin: 0 auto;
 	font-family: "GangwonEdu_OTFBoldA";
 }
