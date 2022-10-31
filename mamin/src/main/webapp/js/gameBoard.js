@@ -4,10 +4,10 @@
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
 let player=[
-	{p_no : 1 , p_nick: "또치" , p_position:8 , m_no : 1 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
-	{p_no : 2 , p_nick: "도우너" ,p_position:8 , m_no : 2 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
-	{p_no : 3 , p_nick: "둘리" ,p_position:8 , m_no : 3 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
-	{p_no : 4 , p_nick: "희동이" ,p_position:8 , m_no : 4 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},
+	{p_no : 1 , p_nick: "또치" , p_position:1 , m_no : 1 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
+	{p_no : 2 , p_nick: "도우너" ,p_position:1 , m_no : 2 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
+	{p_no : 3 , p_nick: "둘리" ,p_position:1 , m_no : 3 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
+	{p_no : 4 , p_nick: "희동이" ,p_position:1 , m_no : 4 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},
 	
 ]
 /*========================수현 보드판 생성 관련 변수 ================================ */
