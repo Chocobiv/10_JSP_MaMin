@@ -22,6 +22,7 @@ $.ajax({    //페이지 접속시 개별글 내용 출력 김장군
 		////삭제,수정 버튼 활성화
 			document.querySelector(".btnbox").innerHTML=`<button onclick="boardDelete(${json.b_no})">삭제</button><button><a href="../view/boardupdate.jsp">수정</a></button>`
 		}
+		clist()
 	}
 	
 	
@@ -53,6 +54,7 @@ function cwrite(){//댓글 작성 김장군
 	$.ajax({
 		
 		url:"/mamin/board/commentwrite",
+		type:"post",
 		data: {
 			"c_content":c_content,
 			"type":1
@@ -62,13 +64,104 @@ function cwrite(){//댓글 작성 김장군
 				alert("로그인 후 이용해주세요");
 				location.href="../view/login.jsp"
 			}
-			$(".commentbox").load( location.href+' .commentbox');
+			clist()
 			
 		}
 		
 	})
 	
 }
+
+
+function clist(){
+	$.ajax({ // 댓글 호출 ajax
+		url : "/mamin/board/commentwrite" ,
+		data : { "type" : "comment" } , 	// type : reply    댓글용	
+		success : function(re){ // 댓글 호출이 성공했을떄
+			let commentlist = JSON.parse(re)
+			let html = ''
+			for( let i = 0 ; i<commentlist.length ; i++){ // 댓글마다 반복문 
+				let comment = commentlist[i]
+				console.log(comment.c_no)
+				$.ajax({ // 댓글마다 대댓글 호출 ajax 호출  = rno ----> rindex 
+					url : "/mamin/board/commentwrite" ,
+					data : { "type" : "recomment" , "c_no" : comment.c_no } , // type : rereply    대댓글용// type : recomment    대댓글용
+					async : false ,	/* 동기식 */ 
+					success : function(re){ 
+						let recommentlist = JSON.parse( re )
+						/////// 상위 댓글 html 구성 
+						html += '<div>'+
+									'<span>'+comment.c_content+'</sapn>'+
+									'<span>'+comment.c_date+'</sapn>'+
+									'<span>'+comment.m_id+'</sapn>'+
+									'<button type="button" onclick="recommentview('+comment.c_no+')">답글</button>'+
+									'<div class="comment'+comment.c_no+'"></div>';	
+						////// 대댓글 html 구성 
+						for( let j = 0 ; j<recommentlist.length ; j++ ){
+							let recomment = recommentlist[j]
+							html += '<div style="margin : 20px;">'+
+										'<span>'+recomment.c_content+'</sapn>'+
+										'<span>'+recomment.c_date+'</sapn>'+
+										'<span>'+recomment.m_id+'</sapn>'+
+									'</div>';
+						} // 대댓글 반복문
+						// 마지막 닫기 html 구성
+						html += '</div>';
+					 }
+				})
+			} // 댓글 반복문 end 
+			document.querySelector('.commentlist').innerHTML = html;
+			
+		}
+	})
+}
+
+
+
+
+// 5. 대댓글[답글] 작성 구역 표시 함수
+function recommentview( c_no ){
+	let commentdiv = document.querySelector('.comment'+c_no)
+	commentdiv.innerHTML = 
+			'<input type="text" class="rcommentcontent'+c_no+'">'+
+			'<button onclick="recommentwrite('+c_no+')">답글작성</button>';
+}
+
+// 6. 대댓글[답글] 작성 함수 
+function recommentwrite( c_no ){
+	let c_content = document.querySelector('.recommentcontent'+c_no).value
+	$.ajax({
+		url : "/mamin/board/commentwrite" ,
+		data : {"c_content" :  c_content , "c_no" : c_no , "type" : "recomment" } , 
+		type : "POST" , 
+		success : function( re ){ 
+			if(re=="false"){
+				alert("로그인 후 이용해주세요");
+				location.href="../view/login.jsp"
+			}
+			clist()
+		 }
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

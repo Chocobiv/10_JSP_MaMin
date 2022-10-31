@@ -20,9 +20,12 @@
 
 	<span class="btnbox"></span>
 	<div class="commentbox">
-			<input type="text" class="c_content"><br>
-			<button type="button" onclick="cwrite()">댓글작성</button>
-		</div>
+		<input type="text" class="c_content"><br>
+		<button type="button" onclick="cwrite()">댓글작성</button>
+	</div>
+	<div class="commentlist">
+			
+	</div>
 
 	<script src="../js/view.js "type="text/javascript"></script>
 </body>

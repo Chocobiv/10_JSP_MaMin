@@ -2,6 +2,9 @@ package model.dao;
 
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import model.dto.BoardDto;
 
 public class BoardDao extends Dao {
@@ -155,5 +158,72 @@ public class BoardDao extends Dao {
 		
 		return false;
 	}
+	
+	
+	//9.대댓글 작성 김장군	
+	public boolean rcwrite(String c_content , int m_no , int b_no , int c_index) {
+		String sql = "insert into comment( c_content , m_no , b_no , c_index ) values( ? , ? , ? , ? )";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString( 1 , c_content ); 	ps.setInt( 2 , m_no ); 
+			ps.setInt( 3 , b_no );			ps.setInt( 4 , c_index );
+			ps.executeUpdate(); return true;
+		}catch (Exception e) {System.out.println(e);} return false;
+		
+		
+		
+	}
+	
+	
+	
+	
+	//10 댓글 호출 김장군
+	
+	public JSONArray getclist( int b_no ) {
+		JSONArray array = new JSONArray();
+		String sql = "select c.c_content , c.c_date , m.m_id , c.c_no"
+				+ " from comment c, member m "
+				+ " where c.m_no = m.m_no and c.b_no = "+b_no+" and c.c_index = 0 "
+				+ " order by c.c_date desc";
+		try {
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while( rs.next() ) {
+				JSONObject object = new JSONObject();
+				object.put( "rcontent", rs.getString(1) );
+				object.put( "rdate", rs.getString(2) );
+				object.put( "mid", rs.getString(3) );
+				object.put( "rno", rs.getInt(4) );
+				array.add(object);
+			}
+		}catch (Exception e) {} return array;
+	}
+	
+	// 10-2. 대댓글 호출
+		public JSONArray getrclist( int b_no , int c_index ) {
+			JSONArray array = new JSONArray();
+			String sql = "select c.c_content , c.c_date , m.m_id , c.c_no"
+					+ " from comment c , member m "
+					+ " where c.m_no = m.m_no and c.b_no = "+b_no+" and c.c_index = "+c_index
+					+ " order by c.c_date desc";
+			try {
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
+				while( rs.next() ) {
+					JSONObject object = new JSONObject();
+					object.put( "c_content", rs.getString(1) );
+					object.put( "c_date", rs.getString(2) );
+					object.put( "m_id", rs.getString(3) );
+					object.put( "c_no", rs.getInt(4) );
+					array.add(object);
+				}
+			}catch (Exception e) {} return array;
+		}
+	
+	
+	
+	
+	
+	
 	
 }
