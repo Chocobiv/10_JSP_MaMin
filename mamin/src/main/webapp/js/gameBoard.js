@@ -189,8 +189,7 @@ function playerLocation(){
 	
 }
 
-/* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 오픈이라도 되게 */
-
+/* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 function diceStart(){
 	let count=0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
 	let diceLotation=setInterval(function(){
@@ -217,4 +216,11 @@ function diceStart(){
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
 // 플레이어별로 색깔은 어떻게 주지...
-
+function setHouse(){
+	// 소유주가 있는지부터 검사
+	for(let i=0; i<=31; i++){
+		if(nation[i].owner!=0){ // 누구든지 소유주가 있으면!
+			
+		}
+	}
+}
