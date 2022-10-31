@@ -42,4 +42,8 @@ create table comment(
     
 );
 
-select * from comment;
+
+
+
+
+
