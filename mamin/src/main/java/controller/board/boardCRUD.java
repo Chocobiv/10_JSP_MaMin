@@ -108,6 +108,9 @@ public class boardCRUD extends HttpServlet {
 			}
 			
 			response.getWriter().print(object);
+		}else if(  type.equals("3")) {
+			
+			response.getWriter().print(request.getSession().getAttribute("m_no")); 
 		}
 	}
 

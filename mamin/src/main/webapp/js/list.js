@@ -8,6 +8,29 @@ let pageinfo = {  // js 객체 선언
 }
 getBoardList(1)//페이지 접속시 1번 실행
 
+function islogin(){//로그인 확인 함수
+	$.ajax({
+		url:"/mamin/board/boardCRUD",
+		type:"get",
+		data:{"type":3},
+		success:function(re){
+			console.log(re)
+			if(re=="null"){
+				alert("로그인 후 이용해주세요")
+				location.href="../view/login.jsp"
+				
+			}else{
+				location.href="../view/write.jsp"
+			}
+			
+		}
+	})
+	
+	
+}
+
+
+
 function getBoardList(page){  //전체 게시물 출력 함수
 	pageinfo.page = page;
 	$.ajax({

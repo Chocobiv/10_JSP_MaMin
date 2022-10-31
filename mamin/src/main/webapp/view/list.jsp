@@ -8,7 +8,7 @@
 </head>
 <body>
 	<%@ include file="header.jsp" %>
-	<a href="write.jsp"> 글쓰기 </a>
+	<button type="button" onclick="islogin()">글쓰기</button>
 	
 		<!--  게시물수 -->
 		<div>게시물수 : <span class="totalsize"></span></div>
