@@ -18,31 +18,31 @@
 			<table class="signuptable">
 				<tr>
 					<td class="col1">아이디 * </td>	<!-- name:form에서 사용, id:js에서 사용 -->
-					<td class="col2"> <input type="text" name="id" id="id" onkeyup="mevent1()"> </td>
+					<td class="col2"> <input type="text" name="id" id="id" onkeyup="mevent1()" class="form-control"> </td>
 					<td class="col3">  </td>
 				</tr>
 				<tr>
 					<td class="col1">비밀번호 * </td>
-					<td class="col2"> <input name="pw" type="password" id="pw" onkeyup="mevent2()"> </td>
+					<td class="col2"> <input name="pw" type="password" id="pw" onkeyup="mevent2()" class="form-control"> </td>
 					<td rowspan="2" class="col3">  </td>
 				</tr>
 				<tr>
 					<td class="col1">비밀번호 확인 * </td>
-					<td class="col2"> <input name="pwconfirm" type="password" id="pwconfirm" onkeyup="mevent3()"> </td>
+					<td class="col2"> <input name="pwconfirm" type="password" id="pwconfirm" onkeyup="mevent3()" class="form-control"> </td>
 				</tr>
 				<tr>
 					<td class="col1">닉네임 * </td>
-					<td class="col2"> <input name="m_nick" type="text" id="m_nick" onkeyup="mevent4()"> </td>
+					<td class="col2"> <input name="m_nick" type="text" id="m_nick" onkeyup="mevent4()" class="form-control"> </td>
 					<td class="col3">  </td>
 				</tr>
 				<tr>
 					<td class="col1">이메일 * </td>
-					<td class="col2"> <input name="email" type="text" id="email" onkeyup="mevent5()"> </td>
+					<td class="col2"> <input name="email" type="text" id="email" onkeyup="mevent5()" class="form-control"> </td>
 					<td class="col3">  </td>
 				</tr>
 				<tr>
 					<td class="col1">자기소개 </td>
-					<td class="col2"> <input name="profile" type="text" id="profile" onkeyup="mevent6()"> </td>
+					<td class="col2"> <input name="profile" type="text" id="profile" onkeyup="mevent6()" class="form-control"> </td>
 					<td class="col3">  </td>
 				</tr>
 				<tr>

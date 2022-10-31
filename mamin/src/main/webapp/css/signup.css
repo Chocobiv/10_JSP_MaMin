@@ -11,7 +11,7 @@
 
 .signuptable{				/* table */
 	width: 100%;
-	border-top: black 2px solid; border-collapse: collapse;
+	border-top: #C7F2A4 2px solid; border-collapse: collapse; border-bottom: #C7F2A4 2px solid;
 }
 
 .signuptable input:not(.characterbtn){			/* table 안에 있는 input */
@@ -26,9 +26,13 @@
     vertical-align: middle;
 }
 
+.parttitle{
+	margin-top: 20px;
+	font-weight: bold;
+}
 
 /* table 열 사이즈 */
-.col1{ width: 20%; background-color: #f7f7f7; }
+.col1{ width: 20%; background-color: #E1FFB1; }
 .col2{ width: 50%; }
 .col3{ width: 30%; font-size: 12px; }
 
@@ -46,23 +50,29 @@
 
 /* 회원가입 버튼 */
 .signupbtnbox button{
-	width: 150px; margin: 100px 10px;
-	padding: 10px; color: white;
+	width: 150px; margin: 50px 10px;
+	padding: 10px; color: black;
 	border: none;
 }
 
 .signupbtnbox button:nth-child(1){		/* 첫번째 버튼 */
-	background-color: gray;
+	background-color: #E1FFB1;
+}
+.signupbtnbox button:nth-child(1):hover{		/* 첫번째 버튼 */
+	background-color: #C7F2A4;
 }
 .signupbtnbox button:nth-child(2){		/* 두번째 버튼 */
-	background-color: black;
+	background-color: #C7F2A4;
+}
+.signupbtnbox button:nth-child(2):hover{		/* 두번째 버튼 */
+	background-color: #E1FFB1;
 }
 
 /* 이용약관 textarea */
 .confirmbox textarea{
 	width: 100%; height: 120px;
 	resize: none;			/* 사이즈 변경 안되도록 */
-	border: 1px solid black;
+	border: 1px solid #C7F2A4;
 }
 
 .confirmbox input{
