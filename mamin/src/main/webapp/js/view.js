@@ -36,7 +36,7 @@ function boardDelete(b_no){
 		data:{"b_no":b_no},
 		success: function(re){
 			
-			if(re==="true"){
+			if(re==="true"){   
 				alert("삭제되었습니다")
 				location.href="list.jsp"
 			}else{alert("삭제실패")}
@@ -48,7 +48,27 @@ function boardDelete(b_no){
 }
 
 
-
+function cwrite(){//댓글 작성 김장군
+	c_content=document.querySelector(".c_content").value
+	$.ajax({
+		
+		url:"/mamin/board/commentwrite",
+		data: {
+			"c_content":c_content,
+			"type":1
+		},
+		success:function(re){
+			if(re=="false"){
+				alert("로그인 후 이용해주세요");
+				location.href="../view/login.jsp"
+			}
+			$(".commentbox").load( location.href+' .commentbox');
+			
+		}
+		
+	})
+	
+}
 
 
 

@@ -137,6 +137,23 @@ public class BoardDao extends Dao {
 		}catch (Exception e) {System.out.println(e);} return 0;
 	}
 	
-	
+	//8.댓글 작성 김장군
+	public boolean cwrite( int  m_no,int b_no,String c_content) {
+		String sql ="insert into comment (m_no,b_no,c_content,c_index) values(?,?,?,0)";
+		try {
+			ps=con.prepareStatement(sql);
+			ps.setInt(1, m_no);
+			ps.setInt(2, b_no);
+			ps.setString(3, c_content);
+			ps.executeUpdate();
+			return true;
+			
+		} catch (Exception e) {System.out.println(e);}
+		
+		
+		
+		
+		return false;
+	}
 	
 }

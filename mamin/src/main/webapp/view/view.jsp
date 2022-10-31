@@ -20,7 +20,7 @@
 
 	<span class="btnbox"></span>
 	<div class="commentbox">
-			<textarea rows="" cols="" class="c_content"></textarea><br>
+			<input type="text" class="c_content"><br>
 			<button type="button" onclick="cwrite()">댓글작성</button>
 		</div>
 
