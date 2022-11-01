@@ -23,9 +23,7 @@
     font-style: normal;
 }
 
-*{
-	border: 1px solid black;
-}
+
 
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
 
@@ -159,27 +157,30 @@
 }
 .b_start .g_space{
 	justify-content: flex-start;
-	width: 150px;
-	height: 150px;
+	width: 150px;	height: 155px;
 }
-.b_start .n_name{
-	width: 150px;
-}
+.b_start .n_name{width: 150px;}
 /*--------------- 무인도 --------------------*/
 .b_island{
 	grid-column: 9;
 	grid-row: 1;
-	display: grid;
-	justify-content: center;
-	align-items: center;
 }
-
+.b_island .g_space{
+	width: 150px;	height: 150px;
+}
+.b_island .n_name{width: 150px;}
 /*------------------ 올림픽 -----------------------*/
 .b_olympic{grid-column: 1;grid-row: 1 / 1;}
-
+.b_olympic .g_space{
+	width: 150px;	height: 150px;
+}
+.b_olympic .n_name{width: 150px;}
 /*------------------ 세계여행 -----------------------*/
 .b_travle{grid-column: 1;grid-row:9;}
-
+.b_travle .g_space{
+	width: 150px;	height: 155px;
+}
+.b_travle .n_name{width: 150px;}
 
 /*-------------------- 게임칸 정보 관련 -------------------------*/
 .b_house{/*게임판 건물 아이콘*/
@@ -218,8 +219,18 @@
 .bottom_row .g_space{border: 3px solid #5056b2;}
 .bottom_row .n_name{background-color: #5056b2;}
 
-.b_start .g_space{border: 3px solid #283C63;}
-.b_start .n_name{background-color: #283C63;}
+.b_start .g_space ,
+.b_travle .g_space ,
+.b_olympic .g_space ,
+.b_island .g_space{
+	border: 3px solid #283C63;
+}
+.b_start .n_name ,
+.b_travle .n_name , 
+.b_olympic .n_name ,  
+.b_island  .n_name{
+	background-color: #283C63;
+}
 
 /* 통행료 출력 위치 */
 .n_payment{
