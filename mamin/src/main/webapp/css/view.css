@@ -1,0 +1,30 @@
+@charset "UTF-8";
+.container{
+	font-family: 'KOTRAHOPE';
+	
+}
+.webbox{
+	position:relative;
+	padding-top: 20px;
+	line-height: 1.5;
+}
+
+.r1,.r2,.r3{display: flex;}
+.b_title{
+	font-size: 3rem;
+}
+.head{border-bottom: 1px solid #1c3761;}
+.c_content,.rc{
+	margin-top:10px;
+	width:250px;
+	height:40px;
+	
+	border: solid 1px #1c3761;
+	border-radius: 3px;
+}
+
+.b_content{
+	min-height: 500px;
+	border-bottom:  1px solid #1c3761;
+}
+.btnbox{margin-left: 15px;width: 60px;display: flex;justify-content: space-between;}

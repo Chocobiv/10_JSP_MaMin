@@ -39,8 +39,8 @@ public class commentwrite extends HttpServlet {
 		// 2. dao처리 
 		if( type.equals("comment") ) {	// 댓글 
 			array = BoardDao.getInstance().getclist( b_no ); 		
-		}else if( type.equals("recomment") ) { // 대댓글
-			int c_index = Integer.parseInt( request.getParameter("c_no") );// 상위댓글의 번호 호출
+		}else if(type.equals("recomment")) { // 대댓글
+			int c_index = Integer.parseInt(request.getParameter("c_no"));// 상위댓글의 번호 호출
 			
 			array = BoardDao.getInstance().getrclist( b_no , c_index ); 		
 		}
@@ -60,7 +60,7 @@ public class commentwrite extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		if(request.getSession().getAttribute("m_id")==null) { 
-			response.getWriter().print(false);
+			response.getWriter().print(false);return;
 		}
 		if(request.getParameter("type").equals("1")) {
 			int m_no= (Integer) request.getSession().getAttribute("m_no");
@@ -74,7 +74,7 @@ public class commentwrite extends HttpServlet {
 			int m_no= (Integer) request.getSession().getAttribute("m_no");
 			String c_content = request.getParameter("c_content");
 			int b_no= (Integer) request.getSession().getAttribute("b_no");
-			int c_index = Integer.parseInt( request.getParameter("rno") );	
+			int c_index = Integer.parseInt( request.getParameter("c_no") );	
 			boolean result = BoardDao.getInstance().rcwrite( c_content , m_no , b_no , c_index );
 			 response.getWriter().print(result);
 			

@@ -190,10 +190,10 @@ public class BoardDao extends Dao {
 			rs = ps.executeQuery();
 			while( rs.next() ) {
 				JSONObject object = new JSONObject();
-				object.put( "rcontent", rs.getString(1) );
-				object.put( "rdate", rs.getString(2) );
-				object.put( "mid", rs.getString(3) );
-				object.put( "rno", rs.getInt(4) );
+				object.put( "c_content", rs.getString(1) );
+				object.put( "c_date", rs.getString(2) );
+				object.put( "m_id", rs.getString(3) );
+				object.put( "c_no", rs.getInt(4) );
 				array.add(object);
 			}
 		}catch (Exception e) {} return array;

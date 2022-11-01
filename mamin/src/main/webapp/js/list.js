@@ -41,7 +41,10 @@ function getBoardList(page){  //전체 게시물 출력 함수
 			let json = JSON.parse(re)
 			
 			let jsonlist = json.data
-			let html=""
+			let html=`<tr>
+						<th> 번호 </th> <th> 제목 </th> <!--  2. 제목클릭시 상세페이지 -->
+						<th>작성자</th><th> 작성일 </th> 
+					  </tr>`
 			for(let i = 0; i<jsonlist.length;i++){
 				let b = jsonlist[i]
 				html+=`<tr>
