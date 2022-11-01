@@ -172,41 +172,34 @@ function gamePlayer(){
 }
 
 /*---------수현 플레이어 위치 출력---------- */
-function playerLocation(p_no){
+function playerLocation(){
 	
-	let p=[]
+	// 플레이어 전에 위치 초기화
+	// 더 좋은 방법 있으면 추천 받아여...
+	for(let j=0; j<=31; j++){
+		document.querySelector(".p_location"+j+"").innerHTML=null;
+	}
 	
 	
-	// 플레이어위치랑 나라번호가 똑같으면 플레이어 출력되게
-	for(let i=0; i<=3;i++){ // 한 플레이어당 모든 나라 한번씩 다 확인해서 플레이어위치번호랑 나라번호가 똑같으면 위치 출력시키기
-		if(p_no==i){
-			for(let j=0; j<=31; j++){
+	for(let i=0; i<=3; i++){
+		for(let j=0; j<=31; j++){
 			if(player[i].p_position==nation[j].n_no){
-				// 플레이어 아이콘 변수에 넣어서 출력시키기
 				switch(i){
 					case 0:
-						p.push(player1_icon);
-						document.querySelector(".p_location"+j+"").innerHTML+=p
+						document.querySelector(".p_location"+j+"").innerHTML+=player1_icon;
 						break
 					case 1:
-						p.push(player2_icon);
-						document.querySelector(".p_location"+j+"").innerHTML+=p
+						document.querySelector(".p_location"+j+"").innerHTML+=player2_icon;
 						break
-					case 2:
-						p.push(player3_icon);
-						document.querySelector(".p_location"+j+"").innerHTML+=p
+					case 2 :
+						document.querySelector(".p_location"+j+"").innerHTML+=player3_icon;
 						break
-					case 3:
-						p.push(player4_icon);
-						document.querySelector(".p_location"+j+"").innerHTML+=p
-						break;
+					case 3 :
+						document.querySelector(".p_location"+j+"").innerHTML+=player4_icon;
+						break
 				}
-				
-				
-			}
 			}
 		}
-		
 	}
 	
 	
@@ -227,16 +220,28 @@ function rollDice(){
 		document.querySelector(".b_dice1").src="/mamin/img/game/주사위"+dice1+".png"
 		document.querySelector(".b_dice2").src="/mamin/img/game/주사위"+dice2+".png"
 		
-		
 		if(count==10){
 			clearInterval(diceLotation)
-			if(playerTurn%4==1){player[0].p_position+=(dice1+dice2);playerLocation(player[0].p_no); console.log("1번"+player[0].p_position)}
-			else if(playerTurn%4==2){player[1].p_position+=(dice1+dice2); playerLocation(player[1].p_no);console.log("2번"+player[1].p_position)}
-			else if(playerTurn%4==3){player[2].p_position+=(dice1+dice2); playerLocation(player[2].p_no); console.log("3번"+player[2].p_position)}
-			else if(playerTurn%4==0){player[3].p_position+=(dice1+dice2); playerLocation(player[3].p_no); console.log("4번"+player[3].p_position)}
-			console.log(playerTurn+"턴")
-			playerTurn++
 			
+			if(playerTurn%4==1){
+				player[0].p_position+=(dice1+dice2);	// 위치에 주사위 수 더하기
+				if(player[0].p_position>32){player[0].p_position-=32} // 한바퀴 돌면 -32
+			}
+			else if(playerTurn%4==2){
+				player[1].p_position+=(dice1+dice2);
+				if(player[1].p_position>32){player[1].p_position-=32}
+			}
+			else if(playerTurn%4==3){
+				player[2].p_position+=(dice1+dice2);
+				if(player[2].p_position>32){player[2].p_position-=32}
+			}
+			else if(playerTurn%4==0){
+				player[3].p_position+=(dice1+dice2); 
+				if(player[3].p_position>32){player[3].p_position-=32}
+			}
+			
+			playerTurn++
+			playerLocation();
 		}
 	
 	},100)
@@ -249,7 +254,10 @@ function setHouse(){
 	// 소유주가 있는지부터 검사
 	for(let i=0; i<=31; i++){
 		if(nation[i].owner!=0){ // 누구든지 소유주가 있으면!
-			
+			switch(nation[i].owner){
+				case 1:
+					document.querySelector(".")
+			}
 		}
 	}
 }

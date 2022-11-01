@@ -152,9 +152,7 @@
 	width: 110px;
 	
 }
-.g_space span{
-	display: inline-block;
-}
+
 /*------------ 게임 시작칸 ------------------------*/
 .b_start {
 	grid-column: 9/10;
