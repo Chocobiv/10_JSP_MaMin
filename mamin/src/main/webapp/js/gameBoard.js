@@ -53,16 +53,17 @@ let nation=[
 let house='<i class="fas fa-home"></i>' // 1번째 건설 단계
 let building='<i class="fas fa-building"></i>' // 2번째 건설 단계
 let hotel='<i class="fas fa-hotel"></i>' // 3번째 건설 단계
-// let player1_icon='<i class="fas fa-ghost player1_icon"></i>'
-// let player2_icon='<i class="fas fa-ghost player2_icon"></i>'
-// let player3_icon='<i class="fas fa-ghost player3_icon"></i>'
-// let player4_icon='<i class="fas fa-ghost player4_icon"></i>'
+let player1_icon='<i class="fas fa-ghost player1_icon"></i>'
+let player2_icon='<i class="fas fa-ghost player2_icon"></i>'
+let player3_icon='<i class="fas fa-ghost player3_icon"></i>'
+let player4_icon='<i class="fas fa-ghost player4_icon"></i>'
+
 
 /*======================== 수현 10/27 보드판 생성 ================================ */
 
 gameboard() // 보드판 출력
 gamePlayer() // 플레이어 정보 출력
-playerLocation() // 플레이어 위치 출력
+ // 플레이어 위치 출력
 
 // 수현 게임 보드판 출력 함수
 function gameboard(){
@@ -170,27 +171,44 @@ function gamePlayer(){
 	}
 }
 
-
 /*---------수현 플레이어 위치 출력---------- */
 function playerLocation(){
-	// 플레이어위치랑 나라번호가 똑같으면 플레이어 출력되게
-	for(let i=0; i<=3;i++){ // 한 플레이어당 모든 나라 한번씩 다 확인해서 플레이어위치번호랑 나라번호가 똑같으면 위치 출력시키기
-		console.log(player[i].p_position)
+	
+	// 플레이어 전에 위치 초기화
+	// 더 좋은 방법 있으면 추천 받아여...
+	for(let j=0; j<=31; j++){
+		document.querySelector(".p_location"+j+"").innerHTML=null;
+	}
+	
+	
+	for(let i=0; i<=3; i++){
 		for(let j=0; j<=31; j++){
 			if(player[i].p_position==nation[j].n_no){
-				
-				// 플레이어 아이콘 변수에 넣어서 출력시키기
-				let icon='<i class="fas fa-ghost player'+(i+1)+'_icon"></i>'
-				document.querySelector(".p_location"+j+"").innerHTML+=icon
+				switch(i){
+					case 0:
+						document.querySelector(".p_location"+j+"").innerHTML+=player1_icon;
+						break
+					case 1:
+						document.querySelector(".p_location"+j+"").innerHTML+=player2_icon;
+						break
+					case 2 :
+						document.querySelector(".p_location"+j+"").innerHTML+=player3_icon;
+						break
+					case 3 :
+						document.querySelector(".p_location"+j+"").innerHTML+=player4_icon;
+						break
+				}
 			}
 		}
 	}
 	
 	
+	
 }
 
+let playerTurn=1; // 플레이어 턴 구분하기 위한 전역변수
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
-function diceStart(){
+function rollDice(){
 	let count=0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
 	let diceLotation=setInterval(function(){
 	
@@ -202,16 +220,32 @@ function diceStart(){
 		document.querySelector(".b_dice1").src="/mamin/img/game/주사위"+dice1+".png"
 		document.querySelector(".b_dice2").src="/mamin/img/game/주사위"+dice2+".png"
 		
-		
 		if(count==10){
 			clearInterval(diceLotation)
-			//console.log(dice1)
-			//console.log(dice2)
-			// 여기서 주사위 멈추면 주사위 값 다른데서 가져가면 될것같음!
 			
+			if(playerTurn%4==1){
+				player[0].p_position+=(dice1+dice2);	// 위치에 주사위 수 더하기
+				if(player[0].p_position>32){player[0].p_position-=32} // 한바퀴 돌면 -32
+			}
+			else if(playerTurn%4==2){
+				player[1].p_position+=(dice1+dice2);
+				if(player[1].p_position>32){player[1].p_position-=32}
+			}
+			else if(playerTurn%4==3){
+				player[2].p_position+=(dice1+dice2);
+				if(player[2].p_position>32){player[2].p_position-=32}
+			}
+			else if(playerTurn%4==0){
+				player[3].p_position+=(dice1+dice2); 
+				if(player[3].p_position>32){player[3].p_position-=32}
+			}
+			
+			playerTurn++
+			playerLocation();
 		}
 	
 	},100)
+	
 }
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
@@ -220,7 +254,10 @@ function setHouse(){
 	// 소유주가 있는지부터 검사
 	for(let i=0; i<=31; i++){
 		if(nation[i].owner!=0){ // 누구든지 소유주가 있으면!
-			
+			switch(nation[i].owner){
+				case 1:
+					document.querySelector(".")
+			}
 		}
 	}
 }

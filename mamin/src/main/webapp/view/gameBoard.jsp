@@ -37,7 +37,7 @@
 						<img class="b_dice1" alt="" src="/mamin/img/game/주사위1.png">
 						<img class="b_dice2" alt="" src="/mamin/img/game/주사위1.png">
 					</div>
-					<div onclick="diceStart()" class="diceBtn"> <!-- 주사위 굴릴 버튼 -->
+					<div onclick="rollDice()" class="diceBtn"> <!-- 주사위 굴릴 버튼 -->
 						<span>주사위 굴리기</span>
 					</div>
 					<div class="b_logo"><!-- 로고 넣을 부분 -->

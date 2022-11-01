@@ -8,6 +8,10 @@
 
 */
 
+*{
+	border: 1px solid black;
+}
+
 /*글씨체 임의 지정*/
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 @font-face {
