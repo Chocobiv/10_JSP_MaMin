@@ -64,6 +64,7 @@ function cwrite(){//댓글 작성 김장군
 				alert("로그인 후 이용해주세요");
 				location.href="../view/login.jsp"
 			}
+			 $('.commentbox').load(location.href+' .commentbox');
 			clist()
 			
 		}
@@ -79,10 +80,11 @@ function clist(){
 		data : { "type" : "comment" } , 	// type : reply    댓글용	
 		success : function(re){ // 댓글 호출이 성공했을떄
 			let commentlist = JSON.parse(re)
+			
 			let html = ''
 			for( let i = 0 ; i<commentlist.length ; i++){ // 댓글마다 반복문 
 				let comment = commentlist[i]
-				console.log(comment.c_no)
+				
 				$.ajax({ // 댓글마다 대댓글 호출 ajax 호출  = rno ----> rindex 
 					url : "/mamin/board/commentwrite" ,
 					data : { "type" : "recomment" , "c_no" : comment.c_no } , // type : rereply    대댓글용// type : recomment    대댓글용
@@ -123,22 +125,24 @@ function clist(){
 function recommentview( c_no ){
 	let commentdiv = document.querySelector('.comment'+c_no)
 	commentdiv.innerHTML = 
-			'<input type="text" class="rcommentcontent'+c_no+'">'+
+			'<input type="text" class="rc rcommentcontent'+c_no+'">'+
 			'<button onclick="recommentwrite('+c_no+')">답글작성</button>';
 }
 
 // 6. 대댓글[답글] 작성 함수 
 function recommentwrite( c_no ){
-	let c_content = document.querySelector('.recommentcontent'+c_no).value
+	
+	let c_content = document.querySelector('.rcommentcontent'+c_no).value
 	$.ajax({
 		url : "/mamin/board/commentwrite" ,
-		data : {"c_content" :  c_content , "c_no" : c_no , "type" : "recomment" } , 
+		data : {"c_content" :  c_content , "c_no" : c_no , "type" : "2" } , 
 		type : "POST" , 
 		success : function( re ){ 
 			if(re=="false"){
 				alert("로그인 후 이용해주세요");
 				location.href="../view/login.jsp"
 			}
+			 $('.commentbox').load(location.href+' .commentbox');
 			clist()
 		 }
 	});

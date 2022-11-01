@@ -37,13 +37,7 @@ create table comment(
     b_no int,						-- 게시물 번호
     m_no int,						-- 작성 회원 번호
 	constraint c_no_pk primary key(c_no),
-    constraint cbno_fk foreign key(b_no) references board(b_no),
+    constraint cbno_fk foreign key(b_no) references board(b_no) ON DELETE CASCADE,
 	constraint cmno_fk foreign key(m_no) references member(m_no)
     
 );
-
-
-
-
-
-

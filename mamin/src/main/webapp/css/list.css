@@ -1,0 +1,75 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'KOTRAHOPE';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/KOTRAHOPE.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+.container{
+	font-family: 'KOTRAHOPE';
+	
+}
+.webbox{
+	position: relative;
+	padding-top: 20px;
+}
+.writebtn{
+	position: absolute;
+	right: 80px;
+	top:10px;
+	border:solid 2px #39553e;
+	border-radius: 20px;
+	padding: 5px  10px;
+	transition:all 0.9s, color 0.3
+
+	
+}
+.writebtn:hover{
+		color:#39553e;
+	  box-shadow: 200px 0 0 0 rgba(0,0,0,0.25) inset, 
+                  -200px 0 0 0 rgba(0,0,0,0.25) inset;
+	
+	
+}
+.writebtn i{
+	padding-right: 5px;
+}
+.pagebox{
+	display: flex;
+	justify-content: center;
+}
+
+.pagebox *{
+	margin:  10px;
+}
+button i{
+	padding-right: 5px;
+}
+.keyword{
+	
+	border:solid 2px #39553e;
+	border-radius: 5px;
+}
+
+.key,.listsize {
+  padding: 0.1em;
+  width: 5%;
+  border-radius: .2em;
+  border: 1px solid #39553e;
+  color: #181820;
+  
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  
+  background: url('https://cdn1.iconfinder.com/data/icons/arrows-vol-1-4/24/dropdown_arrow-512.png');
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: right;
+  background-origin: content-box;
+}
+
+.key:hover {
+	cursor: pointer;
+}
