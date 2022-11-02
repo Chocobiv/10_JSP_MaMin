@@ -114,7 +114,9 @@
 							
 							<span class="col-md-6"> <!-- 캐릭터 이미지 --> 
 								<img src="../img/member/1.png" class="cimg"><br>
-								<input class="characterbtn"  type="hidden" name="character" value="1">
+								<input class="characterbtn"  type="hidden" id="character" name="character" value="1">
+								
+								
 							</span>
 							
 						</div>
