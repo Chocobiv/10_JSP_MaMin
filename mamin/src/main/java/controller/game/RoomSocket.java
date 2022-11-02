@@ -73,6 +73,7 @@ public class RoomSocket {
 	 	
 	 	
 	*/
+
 	
 	// 지웅 20221031 23:50 추가
 		// 유저 수 4명 이상일 시 room->index.jsp로 내보내기
@@ -144,7 +145,8 @@ public class RoomSocket {
 	public void OnOpen( Session session, @PathParam("m_id") String m_id ) throws IOException  {
 		if(clients.size()>=4) {
 			UserOverflow(session);
-		}		
+		}
+		
 		clients.put(session, m_id);
 		getPlayerInfo(m_id);
 	}

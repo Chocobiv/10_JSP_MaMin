@@ -1,6 +1,13 @@
 let count_ready;
 let r_sno = document.querySelector('.r_sno');
 
+
+
+
+
+
+
+
 function readyCounter(){
 	let count_r = 0; // ready 수 체크
 	for(let i = 1 ; i<=4 ; i++){
@@ -27,16 +34,18 @@ if (m_id !== 'null') {
 }
 
 //20221029[지웅] websocket 기본 function에 대입할 기능 구현
-function onopen(e) { }
+function onopen(e) {}
 function onerror(e) { alert(e); }
 function onclose(e) { 
 	readyCounter();
 	alert('저 갑니다!'); }
 function onmessage(obj) {
+	
 	let parsing = JSON.parse(obj.data);
 	console.log(parsing);
 	console.log(parsing.data);
 	if(parsing.function_name=='addplayer'){	// 20221031 낮 언젠가... 지웅 추가
+		
 		addPlayer(parsing.data);
 	}else if(parsing.function_name=='exit'){ // 20221031 23:49 지웅 추가
 		alert('남은 자리가 없어요ㅠㅠ')
