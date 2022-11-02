@@ -1,5 +1,7 @@
 
-
+/*---------- 전역변수 ---------------- */
+let playerTurn=0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
+let start=false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 /*============================== 수현 게임방 플레이어 관련 =========================================== */
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
@@ -16,7 +18,7 @@ let player=[
 let nation=[
 	{n_no: 1, n_name: "출발점", owner : 0, n_type: 1, n_price: 0 , n_payment : "", n_level :0},
 	{n_no: 2, n_name: "타이베이", owner : 1, n_type: 0, n_price: 50000 , n_payment : 20000, n_level :1},
-	{n_no: 3, n_name: "마닐라", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
+	{n_no: 3, n_name: "마닐라", owner : 1, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :1},
 	{n_no: 4, n_name: "베이징", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
 	{n_no: 5, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
 	{n_no: 6, n_name: "카이로", owner : 0, n_type: 0, n_price: 80000 , n_payment : 50000, n_level :0},
@@ -101,12 +103,12 @@ function gameboard(){
 	for(let i=7; i>=1; i--){
 		//통행료 천원단위로 나오게 잘라줌
 		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
-		let n_payment=(nation[i].n_payment /1000)+" 만 원";
+		let n_payment=(nation[i].n_payment /10000)+" 만 원";
 		
 		document.querySelector(".right_row").innerHTML
 						+='<div class="g_space">'+
 								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
-								'<div class="b_house"></div>'+ // 건물 출력 위치
+								'<div class="b_house b_house'+i+'"></div>'+ // 건물 출력 위치
 								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
 								//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
 								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
@@ -116,11 +118,11 @@ function gameboard(){
 	//윗 줄
 	for(let i=15; i>=9; i--){
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment=(nation[i].n_payment /1000)+" 만 원";
+		let n_payment=(nation[i].n_payment /10000)+" 만 원";
 		document.querySelector(".top_row").innerHTML
 						+='<div class="g_space">'+
 								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
-								'<div class="b_house"></div>'+ // 건물 출력 위치
+								'<div class="b_house b_house'+i+'"></div>'+ // 건물 출력 위치
 								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
 								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
@@ -130,11 +132,11 @@ function gameboard(){
 	//왼쪽줄은 페이지 출력순서랑 똑같아서 i++
 	for(let i=17; i<=23; i++){
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment=(nation[i].n_payment /1000)+" 만 원";
+		let n_payment=(nation[i].n_payment /10000)+" 만 원";
 		document.querySelector(".left_row").innerHTML
 						+='<div class="g_space">'+
 								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
-								'<div class="b_house"></div>'+ // 건물 출력 위치
+								'<div class="b_house b_house'+i+'"></div>'+ // 건물 출력 위치
 								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
 								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
@@ -144,19 +146,18 @@ function gameboard(){
 	// 아랫줄은 페이지출력순서랑 똑같아서 i++
 	for(let i=25; i<=31; i++){
 			//통행료 천원단위로 나오게 잘라줌
-		let n_payment=(nation[i].n_payment /1000)+" 만 원";
+		let n_payment=(nation[i].n_payment /10000)+" 만 원";
 		document.querySelector(".bottom_row").innerHTML
 						+='<div class="g_space">'+
 								'<div class="n_name">'+nation[i].n_name+'</div>'+ // 나라명 출력 위치
-								'<div class="b_house"></div>'+ // 건물 출력 위치
+								'<div class="b_house b_house'+i+'"></div>'+ // 건물 출력 위치
 								'<span class="p_location'+i+'  location"></span>'+ // 플레이어 말 출력 위치
 								'<div class="n_payment">'+n_payment+'</div>' // 통행료 출력 위치
 						'</div>'
 	
 	}
+	landEventCheck() // 최초 플레이어 위치 출력
 	
-	setHouse() // 건물 출력
-	playerLocation()
 }//gameboard end
 
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
@@ -175,7 +176,9 @@ function gamePlayer(){
 }
 
 /*---------수현 플레이어 위치 출력---------- */
-function playerLocation(){
+function playerLocation(playerTurn){
+	
+	
 	
 	// 플레이어 전에 위치 초기화
 	// 더 좋은 방법 있으면 추천 받아여...
@@ -183,13 +186,13 @@ function playerLocation(){
 		document.querySelector(".p_location"+j+"").innerHTML=null;
 	}
 	
-	
 	for(let i=0; i<=3; i++){
 		for(let j=0; j<=31; j++){
 			if(player[i].p_position==nation[j].n_no){
 				switch(i){
-					case 0:
+					case 0:  // 플레이어 객체 인덱스 번호
 						document.querySelector(".p_location"+j+"").innerHTML+=player1_icon;
+						
 						break
 					case 1:
 						document.querySelector(".p_location"+j+"").innerHTML+=player2_icon;
@@ -203,16 +206,22 @@ function playerLocation(){
 				}
 			}
 		}
+	} // 플레이어 위치 출력 완료
+	
+	// 수현 - 위치 출력완료되면 이 플레이어가 도착한 땅의 이벤트 상태 확인해주기!
+	if(start==true){// 게임이 시작되고 나서일때!
+		landEventCheck(playerTurn)
 	}
-	
-	
 	
 }
 
-let playerTurn=1; // 플레이어 턴 구분하기 위한 전역변수
+
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 function rollDice(){
+	start=true; // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 	let count=0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
+	
+	//주사위 이미지 바뀌게
 	let diceLotation=setInterval(function(){
 	
 	// 1~6 랜덤 발생시켜서 숫자에 맞는 주사위 이미지 출력되게
@@ -226,25 +235,12 @@ function rollDice(){
 		if(count==10){
 			clearInterval(diceLotation)
 			
-			if(playerTurn%4==1){
-				player[0].p_position+=(dice1+dice2);	// 위치에 주사위 수 더하기
-				if(player[0].p_position>32){player[0].p_position-=32} // 한바퀴 돌면 -32
-			}
-			else if(playerTurn%4==2){
-				player[1].p_position+=(dice1+dice2);
-				if(player[1].p_position>32){player[1].p_position-=32}
-			}
-			else if(playerTurn%4==3){
-				player[2].p_position+=(dice1+dice2);
-				if(player[2].p_position>32){player[2].p_position-=32}
-			}
-			else if(playerTurn%4==0){
-				player[3].p_position+=(dice1+dice2); 
-				if(player[3].p_position>32){player[3].p_position-=32}
-			}
+			player[playerTurn].p_position+=(dice1+dice2);	// 위치에 주사위 수 더하기
+			if(player[playerTurn].p_position>32){player[playerTurn].p_position-=32} // 한바퀴 돌면 -32
+		
+			if(++playerTurn==4){playerTurn=0}
+			playerLocation(playerTurn); 
 			
-			playerTurn++
-			playerLocation();
 		}
 	
 	},100)
@@ -252,20 +248,35 @@ function rollDice(){
 }
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
-// 플레이어별로 색깔은 어떻게 주지...
 function setHouse(){
+	
 	// 소유주가 있는지부터 검사
 	for(let i=0; i<=31; i++){
 		if(nation[i].owner!=0){ // 누구든지 소유주가 있으면!
 			if(nation[i].n_level=1){ // 건물단계 확인
-				switch(nation[i].owner){ // 나라의 소유주가
-					case 1:
-						document.querySelector(".b_house").innerHTML=house
-						break
+				
+				
 					
-				}
+				
 			}
 			
 		}
 	}
 }
+
+
+/*------------------ 수현 11/2 이벤트토지확인 ------------------------------------- */
+function landEventCheck(playerTurn){
+	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
+	alert("dfd")
+	console.log(player[playerTurn].p_position)
+}
+
+
+
+
+
+
+
+
+

@@ -108,8 +108,23 @@
 	justify-items: center;
 	align-items: center;
 }
+/*게임판 로그  display : none 으로 해놓고 상황따라 보여지게 하고 그러면 될것같음!*/
+.b_log{
+	grid-column: 2/7;
+	grid-row: 6;
+	font-size: 30px;
+}
+.btnbox{text-align: center; margin-top: 15px;}
+.yes_btn , .no_btn{
+	padding: 10px;
+	border-radius: 10px; color: white;
+}
+.game_info{display:none;}
+.yes_btn {margin-right: 15px; background-color: #928A97; display: none;}
+.no_btn {background-color: #928A97; display: none;}
+
 /*---------------- 4방향 줄 -----------------------*/
-.row {display: grid; grid-gap: 2px;}
+.rowline {display: grid; grid-gap: 2px;}
 
 .h_row { /*가로 게임칸*/
 	grid-template-columns: repeat(7, 110px);
@@ -117,7 +132,7 @@
 }
 
 .v_row {  /*세로 게임칸*/
-	grid-template-columns: 150px;
+	grid-template-columns: 155px;
 	grid-template-rows: repeat(7, 110px);
 }
 
@@ -254,7 +269,7 @@
 /*주사위 굴리기 버튼*/
 .diceBtn {
   grid-column: 4;
-  grid-row: 5;
+  grid-row: 4;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -265,6 +280,7 @@
   width: 200px;
   cursor: pointer;
   color: #FFF;
+  margin-top:70px;
   transition: all 0.3s;
   position: relative;
   background-color: #283C63; 

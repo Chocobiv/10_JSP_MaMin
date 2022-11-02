@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 	<link rel="stylesheet" href="/mamin/css/gameBoard.css">
 	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
-	<!-- 헤더 연결없어서 폰트어썸 따로 추가해줌 - 수현 -->
+	<!-- 헤더 연결없어서 폰트어썸 , 부트스트랩 따로 추가해줌 - 수현 -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 </head>
 <body>
@@ -40,6 +40,12 @@
 					<div onclick="rollDice()" class="diceBtn"> <!-- 주사위 굴릴 버튼 -->
 						<span>주사위 굴리기</span>
 					</div>
+					<div class="b_log"> <!-- 게임상황 로그 -->
+						<h3 class="game_info">아무개님이 서울을 구매하셨습니다.</h3>
+						<div class="btnbox">
+							<button class="yes_btn">YES</button><button class="no_btn">NO</button>
+						</div>
+					</div>
 					<div class="b_logo"><!-- 로고 넣을 부분 -->
 					
 					</div>
@@ -49,7 +55,7 @@
 					<!--  플레이어 말, 색상, 나라명 , 통행료 표시해야함 -->
 				</div>
 				
-				<div class="row b_row h_row bottom_row"> <!-- 아래 줄 -->
+				<div class="rowline b_row h_row bottom_row"> <!-- 아래 줄 -->
 				
 				
 				</div>
@@ -59,7 +65,7 @@
 				
 				</div>
 				
-				<div class="row b_row v_row left_row"> <!-- 세로줄-->
+				<div class="rowline b_row v_row left_row"> <!-- 세로줄-->
 				
 				
 				</div>
@@ -68,7 +74,7 @@
 				
 				</div>
 				
-				<div class="row b_row h_row top_row"> <!--윗줄 -->
+				<div class="rowline b_row h_row top_row"> <!--윗줄 -->
 				
 				
 				</div>
@@ -76,7 +82,7 @@
 				<div class="b_travle"> <!-- 세계여행 -->
 				
 				</div>
-				<div class="row b_row v_row right_row"> <!--  오른쪽 줄 -->
+				<div class="rowline b_row v_row right_row"> <!--  오른쪽 줄 -->
 				
 				
 				</div>
@@ -91,7 +97,6 @@
 	
 	
 	</div>
-
 
 	<script type="text/javascript" src="/mamin/js/gameBoard.js"></script>
 </body>
