@@ -29,7 +29,7 @@ public class GameSocket {
 	@OnOpen
 	public void OnOpen( Session session) throws IOException  {
 		clients.add(session);
-		System.out.println(players.indexOf(session)+1 +"번 플레이어가 입장 했습니다.");
+		System.out.println(clients.indexOf(session)+1 +"번 플레이어가 입장 했습니다.");
 	}
 	@OnClose
 	public void OnClose( Session session ) throws IOException {
