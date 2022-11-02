@@ -122,24 +122,6 @@ function exit() {
 	location.href = 'index.jsp';
 }
 
- // 20221029[지웅] chatdisplay test용 function 
-function enterKey(){
-	if(window.event.keyCode == 13){
-		sendMessage();
-	}
-}
- function sendMessage(){
-	document.querySelector('.chatDisplay').innerHTML += `<div>${document.querySelector('.c_inputbox').value}</div>`;
-	document.querySelector('.c_inputbox').value = '';
-	document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;	
-}
-
-
-// 20221031
-function exit(){
-	location.href = 'index.jsp';
-}
-
 
 function readybtn( s_no ){
 	if(s_no == r_sno.innerHTML){
