@@ -3,34 +3,6 @@ let playerTurn=0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인�
 let start=false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 
 
-/*==========================================지웅 시작 =================================================*/
-let websocket = new WebSocket('ws://localhost:8080/mamin/game/GameSocket');
-
-websocket.onopen = (e) => { onopen(e) };
-websocket.onclose = (e) => { onclose(e) };
-websocket.onmessage = (e) => { onmessage(e) };
-websocket.onerror = (e) => { onerror(e) };
-
-function onopen(e) {}
-function onerror(e) { alert(e); }
-function onclose(e) { alert('연결 해제')}
-function onmessage(obj) {
-	let parsing = JSON.parse(obj.data);
-	console.log(parsing);
-	
-}
-function send(object) {
-	websocket.send(JSON.stringify(object));
-}
-
-
-
-
-/*==========================================지웅 끝 ==================================================*/
-
-
-
-
 /*============================== 수현 게임방 플레이어 관련 =========================================== */
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
@@ -206,22 +178,17 @@ function gamePlayer(){
 
 /*---------수현 플레이어 위치 출력---------- */
 function playerLocation(playerTurn){
-	
-	
-	
 	// 플레이어 전에 위치 초기화
 	// 더 좋은 방법 있으면 추천 받아여...
 	for(let j=0; j<=31; j++){
 		document.querySelector(".p_location"+j+"").innerHTML=null;
 	}
-	
 	for(let i=0; i<=3; i++){
 		for(let j=0; j<=31; j++){
 			if(player[i].p_position==nation[j].n_no){
 				switch(i){
 					case 0:  // 플레이어 객체 인덱스 번호
 						document.querySelector(".p_location"+j+"").innerHTML+=player1_icon;
-						
 						break
 					case 1:
 						document.querySelector(".p_location"+j+"").innerHTML+=player2_icon;
@@ -238,43 +205,68 @@ function playerLocation(playerTurn){
 	} // 플레이어 위치 출력 완료
 	
 	// 수현 - 위치 출력완료되면 이 플레이어가 도착한 땅의 이벤트 상태 확인해주기!
-	if(start==true){// 게임이 시작되고 나서일때!
-		landEventCheck(playerTurn)
-	}
 	
+	if(start==true){// 게임이 시작되고 나서일때!
+		landEventCheck(playerTurn);
+	}
+
 }
 
 
+/*
+ 지웅 - 11/02 추가
+ rollDice -> diceBtn 함수 통해서 작동하도록 변경
+
+ function diceBtn(){
+ 	console.log('test');
+	let object = {
+		function_name : 'rollDice'
+	}
+	send(object);
+ } 
+ 각 플레이어의 난수가 모두 다르므로 메서드는 동시에 동작하나 이동값이 달라짐
+ rollDice -> 난수 생성 + 이동 함수로 분할 필요
+*/
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 function rollDice(){
 	start=true; // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
+	
+	let array1 = [];
+	let array2 = [];
+	for(let i = 0 ; i<10;i++){
+		array1.push(dice1= Math.floor((Math.random()*6)+1));
+		array2.push(dice1= Math.floor((Math.random()*6)+1));
+	}	
+	let object = {
+		function_name : `display_dice`,
+		data1 : array1,
+		data2 : array2
+	}	
+	send(object);
+	
+	// let dice1= Math.floor((Math.random()*6)+1);
+	// let dice2= Math.floor((Math.random()*6)+1);
+	// 	->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
+}
+
+function display_dice(dice1, dice2){
 	let count=0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
-	
-	//주사위 이미지 바뀌게
-	let diceLotation=setInterval(function(){
-	
-	// 1~6 랜덤 발생시켜서 숫자에 맞는 주사위 이미지 출력되게
-		let dice1= Math.floor((Math.random()*6)+1);
-		let dice2= Math.floor((Math.random()*6)+1);
-		
-		count++		
-		document.querySelector(".b_dice1").src="/mamin/img/game/주사위"+dice1+".png"
-		document.querySelector(".b_dice2").src="/mamin/img/game/주사위"+dice2+".png"
-		
+	let diceLotation=setInterval(function(){		
+		document.querySelector(".b_dice1").src="/mamin/img/game/주사위"+dice1[count]+".png";
+		document.querySelector(".b_dice2").src="/mamin/img/game/주사위"+dice2[count]+".png";
+		count++;
 		if(count==10){
-			clearInterval(diceLotation)
-			
-			player[playerTurn].p_position+=(dice1+dice2);	// 위치에 주사위 수 더하기
+			clearInterval(diceLotation);
+			player[playerTurn].p_position+=(dice1[9]+dice2[9]);	// 위치에 주사위 수 더하기
 			if(player[playerTurn].p_position>32){player[playerTurn].p_position-=32} // 한바퀴 돌면 -32
 		
 			if(++playerTurn==4){playerTurn=0}
-			playerLocation(playerTurn); 
-			
 		}
-	
 	},100)
-	
+	playerLocation(playerTurn);
 }
+
+
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
 function setHouse(){
@@ -297,7 +289,6 @@ function setHouse(){
 /*------------------ 수현 11/2 이벤트토지확인 ------------------------------------- */
 function landEventCheck(playerTurn){
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
-	alert("dfd")
 	console.log(player[playerTurn].p_position)
 }
 

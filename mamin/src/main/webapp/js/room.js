@@ -2,12 +2,6 @@ let count_ready;
 let r_sno = document.querySelector('.r_sno');
 
 
-
-
-
-
-
-
 function readyCounter(){
 	let count_r = 0; // ready 수 체크
 	for(let i = 1 ; i<=4 ; i++){
@@ -40,10 +34,8 @@ function onclose(e) {
 	readyCounter();
 	alert('저 갑니다!'); }
 function onmessage(obj) {
-	
 	let parsing = JSON.parse(obj.data);
 	console.log(parsing);
-	console.log(parsing.data);
 	if(parsing.function_name=='addplayer'){	// 20221031 낮 언젠가... 지웅 추가
 		
 		addPlayer(parsing.data);
@@ -54,6 +46,8 @@ function onmessage(obj) {
 		ready(parsing.data);
 	}else if(parsing.function_name=='start_game'){
 		start_game();
+	}else if(parsing.function_name=='display_dice'){
+		display_dice(parsing.data1, parsing.data2);
 	}
 }
 
@@ -149,7 +143,7 @@ function open_game(){
 		let object = {
 			function_name : 'start_game'
 		}
-		if(count_ready==1){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
+		if(count_ready==3){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
 			send(object);
 		}else{
 			alert('준비되지 않은 플레이어가 있어요.')
@@ -160,8 +154,6 @@ function open_game(){
 }
 
 function start_game(){
-	send('closeRoom');
-	alert('3초후 시작');
-	setTimeout(()=>{location.href = `gameBoard.jsp?m_id=${m_id}`} ,1000 * 3);
+	$('#pagebox').load('gameBoard.jsp');
 }
 
