@@ -158,7 +158,7 @@ function open_game(){
 		let object = {
 			function_name : 'start_game'
 		}
-		if(count_ready==3){
+		if(count_ready==1){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
 			send(object);
 		}else{
 			alert('준비되지 않은 플레이어가 있어요.')
@@ -169,6 +169,8 @@ function open_game(){
 }
 
 function start_game(){
-	location.href = 'gameBoard.jsp';
+	send('closeRoom');
+	alert('3초후 시작');
+	setTimeout(()=>{location.href = `gameBoard.jsp?m_id=${m_id}`} ,1000 * 3);
 }
 
