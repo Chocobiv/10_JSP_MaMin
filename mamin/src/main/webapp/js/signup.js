@@ -89,6 +89,7 @@ function hexbtn(image){
 	let cimg = document.querySelector('.cimg')
 	cimg.src = '../img/member/'+image+'.png'
 	document.querySelector('#character').value = image
+	console.log('image) '+image)
 }
 
 
