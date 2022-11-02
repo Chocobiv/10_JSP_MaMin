@@ -1,70 +1,130 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
-	<link rel="stylesheet" href="../css/signup.css">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
-		
+<link rel="stylesheet"
+	href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
+<link rel="stylesheet" href="../css/signup.css">
+<!-- fontawesome -->
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+
 </head>
 <body>
-	<%@ include file="header.jsp" %>
+	<%@ include file="header.jsp"%>
 	<div class="webbox">
 		<form class="signupform" action="/mamin/member/signup" method="post">
-
+			
 			<table class="signuptable">
 				<tr>
-					<td class="col1">아이디 * </td>	<!-- name:form에서 사용, id:js에서 사용 -->
-					<td class="col2"> <input type="text" name="id" id="id" onkeyup="mevent1()" class="form-control"> </td>
-					<td class="col3">  </td>
+					<td class="col1">아이디 *</td>
+					<!-- name:form에서 사용, id:js에서 사용 -->
+					<td class="col2"><input type="text" name="id" id="id" onkeyup="mevent1()" class="form-control"></td>
+					<td class="col3"></td>
 				</tr>
 				<tr>
-					<td class="col1">비밀번호 * </td>
-					<td class="col2"> <input name="pw" type="password" id="pw" onkeyup="mevent2()" class="form-control"> </td>
-					<td rowspan="2" class="col3">  </td>
+					<td class="col1">비밀번호 *</td>
+					<td class="col2"><input name="pw" type="password" id="pw" onkeyup="mevent2()" class="form-control"></td>
+					<td rowspan="2" class="col3"></td>
 				</tr>
 				<tr>
-					<td class="col1">비밀번호 확인 * </td>
-					<td class="col2"> <input name="pwconfirm" type="password" id="pwconfirm" onkeyup="mevent3()" class="form-control"> </td>
+					<td class="col1">비밀번호 확인 *</td>
+					<td class="col2"><input name="pwconfirm" type="password" id="pwconfirm" onkeyup="mevent3()" class="form-control"></td>
 				</tr>
 				<tr>
-					<td class="col1">닉네임 * </td>
-					<td class="col2"> <input name="m_nick" type="text" id="m_nick" onkeyup="mevent4()" class="form-control"> </td>
-					<td class="col3">  </td>
+					<td class="col1">닉네임 *</td>
+					<td class="col2"><input name="m_nick" type="text" id="m_nick" onkeyup="mevent4()" class="form-control"></td>
+					<td class="col3"></td>
 				</tr>
 				<tr>
-					<td class="col1">이메일 * </td>
-					<td class="col2"> <input name="email" type="text" id="email" onkeyup="mevent5()" class="form-control"> </td>
-					<td class="col3">  </td>
+					<td class="col1">이메일 *</td>
+					<td class="col2"><input name="email" type="text" id="email" onkeyup="mevent5()" class="form-control"></td>
+					<td class="col3"></td>
 				</tr>
 				<tr>
-					<td class="col1">자기소개 </td>
-					<td class="col2"> <input name="profile" type="text" id="profile" onkeyup="mevent6()" class="form-control"> </td>
-					<td class="col3">  </td>
+					<td class="col1">자기소개</td>
+					<td class="col2"><input name="profile" type="text" id="profile" onkeyup="mevent6()" class="form-control"></td>
+					<td class="col3"></td>
 				</tr>
 				<tr>
-					<td class="col1">캐릭터 선택 </td>
+					<td class="col1">캐릭터 선택</td>
 					<td class="col2">
-						<img src="../img/member/1.png" class="cimg"><br>
-						<input class="characterbtn" type="radio" name="character" value="1" checked="checked">곰
-						<input class="characterbtn" type="radio" name="character" value="2">돼지
-						<input class="characterbtn" type="radio" name="character" value="3">쥐
-						<input class="characterbtn" type="radio" name="character" value="4">햄스터
-						<input class="characterbtn" type="radio" name="character" value="5">토끼
-						<input class="characterbtn" type="radio" name="character" value="6">다람쥐
-						<input class="characterbtn" type="radio" name="character" value="아가양">아가양
+						<div class="row">
+						
+							<span class="col-md-3"> <!-- 캐릭터 선택창 -->
+								<div class="wrapper">
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(1)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/1.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(2)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/2.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(3)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/3.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(4)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/4.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(5)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/5.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(6)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/6.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</span>
+							
+							<span class="col-md-6"> <!-- 캐릭터 이미지 --> 
+								<img src="../img/member/1.png" class="cimg"><br>
+								<input class="characterbtn"  type="hidden" name="character" value="1">
+							</span>
+							
+						</div>
 					</td>
 				</tr>
 			</table>
-			
-			
+
 			<h3 class="parttitle">이용약관</h3>
-			
-			<span class="confirmbox">
-				<textarea readonly="readonly">제 1 장 총 칙
+
+			<span class="confirmbox"> <textarea readonly="readonly">제 1 장 총 칙
 
  
 
@@ -213,9 +273,8 @@
 
  
 
-(시행일) 이 약관은 2022년 10월부터 시행합니다.</textarea>
-				<input type="checkbox" id="confirm1"> <span>[필수] 이용약관 동의</span>
-				<textarea readonly="readonly"> 마블의 민족 ('http://localhost:8080/mamin/index.jsp'이하 '마블의 민족')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
+(시행일) 이 약관은 2022년 10월부터 시행합니다.</textarea> <input type="checkbox" id="confirm1">
+				<span>[필수] 이용약관 동의</span> <textarea readonly="readonly"> 마블의 민족 ('http://localhost:8080/mamin/index.jsp'이하 '마블의 민족')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 
 ○ 이 개인정보처리방침은 2022년 10월 27부터 적용됩니다.
 
@@ -470,24 +529,24 @@
 
 예시 ) - 20XX. X. X ~ 20XX. X. X 적용 (클릭)
 
-예시 ) - 20XX. X. X ~ 20XX. X. X 적용 (클릭)</textarea>
-				<input type="checkbox" id="confirm2"> <span>[필수] 개인정보 수집 및 이용동의</span>
+예시 ) - 20XX. X. X ~ 20XX. X. X 적용 (클릭)</textarea> <input type="checkbox"
+				id="confirm2"> <span>[필수] 개인정보 수집 및 이용동의</span>
 			</span>
-			
-			
+
+
 			<div class="signupbtnbox">
 				<button type="reset">취소하기</button>
 				<button type="button" onclick="formsubmit()">회원가입</button>
 			</div>
-			
+
 		</form>
 	</div>
-	
-	
-	
+
+
+
 	<!-- JQuery -->
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 	<script type="text/javascript" src="../js/signup.js"></script>
 </body>
 </html>

@@ -85,19 +85,12 @@ function mevent6(){
 }
 
 //비아 -  ----------- 캐릭터 선택 버튼 -----------
-let characterbtns = document.querySelectorAll('.characterbtn')
-let cimg = document.querySelector('.cimg')
-var prev = null;
-for (var i = 0; i < characterbtns.length; i++) {
-    characterbtns[i].addEventListener('change', function() {
-        (prev) ? console.log(prev.value): null;
-        if (this !== prev) {
-            prev = this;
-        }
-        if(this.value == '아가양') cimg.src = '../img/member/'+this.value+'.jpg'
-        else cimg.src = '../img/member/'+this.value+'.png'
-    });
+function hexbtn(image){
+	let cimg = document.querySelector('.cimg')
+	cimg.src = '../img/member/'+image+'.png'
+	document.querySelector('#character').value = image
 }
+
 
 //비아 -  -------------- form 전송 --------------
 function formsubmit(){
