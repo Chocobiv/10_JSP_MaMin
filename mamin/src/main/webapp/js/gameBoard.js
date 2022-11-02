@@ -15,7 +15,7 @@ let player=[
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation=[
 	{n_no: 1, n_name: "출발점", owner : 0, n_type: 1, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 2, n_name: "타이베이", owner : 0, n_type: 0, n_price: 50000 , n_payment : 20000, n_level :0},
+	{n_no: 2, n_name: "타이베이", owner : 1, n_type: 0, n_price: 50000 , n_payment : 20000, n_level :1},
 	{n_no: 3, n_name: "마닐라", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
 	{n_no: 4, n_name: "베이징", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
 	{n_no: 5, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
@@ -154,6 +154,9 @@ function gameboard(){
 						'</div>'
 	
 	}
+	
+	setHouse() // 건물 출력
+	playerLocation()
 }//gameboard end
 
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
@@ -254,10 +257,15 @@ function setHouse(){
 	// 소유주가 있는지부터 검사
 	for(let i=0; i<=31; i++){
 		if(nation[i].owner!=0){ // 누구든지 소유주가 있으면!
-			switch(nation[i].owner){
-				case 1:
-					document.querySelector(".")
+			if(nation[i].n_level=1){ // 건물단계 확인
+				switch(nation[i].owner){ // 나라의 소유주가
+					case 1:
+						document.querySelector(".b_house").innerHTML=house
+						break
+					
+				}
 			}
+			
 		}
 	}
 }
