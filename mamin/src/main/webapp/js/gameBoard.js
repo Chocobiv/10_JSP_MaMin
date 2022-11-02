@@ -1,5 +1,31 @@
 
 
+
+/*==========================================지웅 시작 =================================================*/
+let websocket = new WebSocket('ws://localhost:8080/mamin/game/GameSocket');
+
+websocket.onopen = (e) => { onopen(e) };
+websocket.onclose = (e) => { onclose(e) };
+websocket.onmessage = (e) => { onmessage(e) };
+websocket.onerror = (e) => { onerror(e) };
+
+function onopen(e) {}
+function onerror(e) { alert(e); }
+function onclose(e) { alert('연결 해제')}
+function onmessage(obj) {
+	let parsing = JSON.parse(obj.data);
+	console.log(parsing);
+	
+}
+function send(object) {
+	websocket.send(JSON.stringify(object));
+}
+
+
+
+
+/*==========================================지웅 끝 ==================================================*/
+
 /*============================== 수현 게임방 플레이어 관련 =========================================== */
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
