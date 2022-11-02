@@ -36,7 +36,12 @@ public class RoomSocket {
 		obj.put("function_name", "exit");
 		session.getBasicRemote().sendText(obj.toString());
 	}
-
+	
+	public void UserOverflow(Session session, String m_id) throws IOException {
+		JSONObject obj = new JSONObject();
+		obj.put("function_name", "duplicated");
+		session.getBasicRemote().sendText(obj.toString());
+	}
 	
 	// 지웅 20221030 OnOpen 실행 시 입장한 회원의 정보 불러와서 js로 전송
 		// 지웅 20221031 유저 1명 정보 -> 전체로 변경
@@ -93,6 +98,9 @@ public class RoomSocket {
 	// 지웅 20221030 유저 입장
 	@OnOpen
 	public void OnOpen( Session session, @PathParam("m_id") String m_id ) throws IOException  {
+		if(clients.containsValue(m_id)) {
+			UserOverflow(session, m_id);
+		}		
 		if(clients.size()>=4) {
 			UserOverflow(session);
 		}		
@@ -115,6 +123,10 @@ public class RoomSocket {
 	// 지웅 20221030 js에서 send()함수로 서버 접근 시 서버 접속 중인 인원들에게 줄 정보를 js의 OnMessage로 전송
 	@OnMessage
 	public void OnMessage( Session session, String object ) throws IOException{
+		if(object.equals("\"getPlayersInfo\"")) {
+			getPlayerInfo();
+			return;
+		}
 		for(Session s : clients.keySet()) {
 			s.getBasicRemote().sendText(object);
 		}

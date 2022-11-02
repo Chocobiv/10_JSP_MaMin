@@ -1,13 +1,13 @@
 let count_ready;
 let r_sno = document.querySelector('.r_sno');
-
+let player_list = []; // gameBoard에서 사용할 전역번수 추가
 
 function readyCounter(){
 	let count_r = 0; // ready 수 체크
 	for(let i = 1 ; i<=4 ; i++){
 		if(document.querySelector(`.r_ready_box${i}`).innerHTML === 'Ready'){
 			count_r++;
-		}	
+		}
 	}
 	count_ready = count_r;
 }
@@ -37,17 +37,18 @@ function onmessage(obj) {
 	let parsing = JSON.parse(obj.data);
 	console.log(parsing);
 	if(parsing.function_name=='addplayer'){	// 20221031 낮 언젠가... 지웅 추가
-		
 		addPlayer(parsing.data);
 	}else if(parsing.function_name=='exit'){ // 20221031 23:49 지웅 추가
 		alert('남은 자리가 없어요ㅠㅠ')
 		exit();
-	}else if(parsing.function_name=='ready'){
+	}else if(parsing.function_name=='ready'){	// 1101 지웅 추가
 		ready(parsing.data);
-	}else if(parsing.function_name=='start_game'){
+	}else if(parsing.function_name=='start_game'){ // 1101 지웅 추가
 		start_game();
-	}else if(parsing.function_name=='display_dice'){
+	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
 		display_dice(parsing.data1, parsing.data2);
+	}else if(parsing.function_name=='duplicated'){		// 1102 지웅 추가
+		duplicated();
 	}
 }
 
@@ -59,13 +60,13 @@ function send(object) {
 function addPlayer(array){
 	readyCounter(); // 서버에서 OnClose 발생 시 유저 퇴장 -> js onclose작동 안하는듯... 유저 변화시마다 ready체크
 	
-	let blankslot =[false,false,false,false];	
+	let blankslot =[false,false,false,false];
 	// OnOpen 에서 입장한 유저 정보와 해당 유저의 slotNo response 받은 후 맞는 위치에 데이터 입력 
-	
-	console.log(array);
 	
 	for(let i = 0 ; i<array.length ; i++){
 		let object = array[i];
+		
+		player_list[i] = object;
 		
 		if(object.m_id === m_id){
 			r_sno.innerHTML = object.s_no;
@@ -157,3 +158,10 @@ function start_game(){
 	$('#pagebox').load('gameBoard.jsp');
 }
 
+
+//1102 23:19 지웅 추가
+
+function duplicated(){
+	alert('이미 참여중인 아이디입니다.');
+	location.href = 'index.jsp';
+}

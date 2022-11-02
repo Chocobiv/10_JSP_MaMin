@@ -2,17 +2,44 @@
 let playerTurn=0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
 let start=false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 
-
 /*============================== 수현 게임방 플레이어 관련 =========================================== */
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
 let player=[
-	{p_no : 1 , p_nick: "또치" , p_position:1 , m_no : 1 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
-	{p_no : 2 , p_nick: "도우너" ,p_position:1 , m_no : 2 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
-	{p_no : 3 , p_nick: "둘리" ,p_position:1 , m_no : 3 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
-	{p_no : 4 , p_nick: "희동이" ,p_position:1 , m_no : 4 , p_wating: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},
-	
+	{p_no : 1 , p_nick: "또치" , p_position:1 , m_no : 1 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
+	{p_no : 2 , p_nick: "도우너" ,p_position:1 , m_no : 2 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
+	{p_no : 3 , p_nick: "둘리" ,p_position:1 , m_no : 3 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
+	{p_no : 4 , p_nick: "희동이" ,p_position:1 , m_no : 4 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},	
 ]
+
+/*======================================== 1103 지웅 player 세터 ==========================================*/
+
+// 현재 플레이어 수 까지만 입력
+	// 조금만 변형하면 .. 걍 지금 할래
+setPlayersInfo();
+function setPlayersInfo(){	
+	for(let i = 0 ; i<player_list.length ; i++){
+		/*
+		이부분 열면 참여 인원만큼만 player 객체 입력 가능
+		-4명 외 게임도 진행 시킬건지 논의 필요
+		
+		let object ={
+			p_no : player_list[i].s_no,
+			p_nick : player_list[i].m_nick,
+			p_position : 1,
+			m_no : player_list[i].m_no,
+			p_waiting : 0,
+			p_money : 50000,
+			m_img : `/mamin/img/member/${player_list[i].m_img}`
+		}
+		player.push(object);
+		*/
+		player[i].p_nick = player_list[i].m_nick;
+		player[i].m_no = player_list[i].m_no;
+		player[i].m_img = `/mamin/img/member/${player_list[i].m_img}`;
+	}
+	console.log(player);
+}
 /*========================수현 보드판 생성 관련 변수 ================================ */
 // owner : 0 n_type: 0 n_level :0 기본
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
@@ -227,7 +254,9 @@ function playerLocation(playerTurn){
  각 플레이어의 난수가 모두 다르므로 메서드는 동시에 동작하나 이동값이 달라짐
  rollDice -> 난수 생성 + 이동 함수로 분할 필요
 */
+
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
+	// 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice(){
 	start=true; // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 	
@@ -258,7 +287,12 @@ function display_dice(dice1, dice2){
 		if(count==10){
 			clearInterval(diceLotation);
 			player[playerTurn].p_position+=(dice1[9]+dice2[9]);	// 위치에 주사위 수 더하기
-			if(player[playerTurn].p_position>32){player[playerTurn].p_position-=32} // 한바퀴 돌면 -32
+			// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
+			if(player[playerTurn].p_position>32){
+				player[playerTurn].p_position-=32 // 한바퀴 돌면 -32
+				// 지웅 추가 
+				get_wage(playerTurn);
+			} 
 		
 			if(++playerTurn==4){playerTurn=0}
 		}
@@ -293,7 +327,14 @@ function landEventCheck(playerTurn){
 }
 
 
-
+// 지웅 11/2 월급 지급 매서드
+	// 지급 및 지출 매서드 생성 시 변경될 수 있음
+function get_wage(playerTurn){
+	console.log(player[playerTurn].p_money)
+	player[playerTurn].p_money += 200000;
+	console.log(playerTurn + "턴 플레이어의 월급 지급")
+	console.log(player[playerTurn].p_money)
+}
 
 
 
