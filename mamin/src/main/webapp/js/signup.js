@@ -88,12 +88,8 @@ function mevent6(){
 function hexbtn(image){
 	let cimg = document.querySelector('.cimg')
 	cimg.src = '../img/member/'+image+'.png'
-	if(image!=null){
+	if(image!=null)
 		document.querySelector('input[id=character]').value = image
-		alert(image)
-	}else{
-		alert('image null!!!')
-	}
 }
 
 
