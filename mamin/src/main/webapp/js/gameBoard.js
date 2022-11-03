@@ -400,7 +400,7 @@ function checkLandLord(nationNo,playerNo) {	//playerNo : 인덱스
 	console.log("현재 토지번호) " + player[playerNo].p_position)
 	console.log("nation[nationNo] 소유주 번호 p_no ) "+nation[nationNo].owner )
 	let p_nick = ''
-	if()
+	//if()
 	console.log("현재 토지의 소유주 닉네임) " + player[playerNo].p_position)
 	
 	
