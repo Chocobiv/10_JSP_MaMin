@@ -10,6 +10,7 @@
 
 </head>
 <body oncontextmenu="return false">
+<div id="pagebox">
 	<%@ include file="header.jsp" %> <!-- file="jsp파일 주소" -->	
 	<div class="r_sno" style="display : none;"></div>
 	
@@ -56,7 +57,8 @@
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
+</div>
 	<script src="../js/room.js"></script>
 </body>
 </html>

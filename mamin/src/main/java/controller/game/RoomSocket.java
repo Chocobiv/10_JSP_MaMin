@@ -22,29 +22,13 @@ import model.dto.MemberDto;
 @ServerEndpoint("/room/RoomSocket/{m_id}")
 public class RoomSocket {
 	
-	boolean inGame = false;
-	
 	// 지웅 20221030 방[서버]에 접속한 회원들의 정보 저장용 Hashtable
 	public static Map<Session, String> clients = new Hashtable<>();
 	
 	// DB에 있는 room table을 여기서 vector로 바로 끝낼 수 있지 않을까?
 		// 대기방->게임화면으로 넘어가면 기존 session값이 유지되지 않을 가능성이 높으니 vector로 분리해준다.
-	private static Vector<MemberDto> players = new Vector<>();
+	static Vector<MemberDto> players =  new Vector<>();
 
-	public RoomSocket() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	private static RoomSocket room = new RoomSocket();
-	
-	public static RoomSocket getInstance() {
-		return room;
-	}
-	
-	static Vector<MemberDto> getPlayers(){
-		return players;
-	}
-	
 	// 지웅 20221031 23:50 추가
 		// 유저 수 4명 이상일 시 room->index.jsp로 내보내기
 	public void UserOverflow(Session session) throws IOException {
@@ -52,13 +36,18 @@ public class RoomSocket {
 		obj.put("function_name", "exit");
 		session.getBasicRemote().sendText(obj.toString());
 	}
-
+	
+	public void UserOverflow(Session session, String m_id) throws IOException {
+		JSONObject obj = new JSONObject();
+		obj.put("function_name", "duplicated");
+		session.getBasicRemote().sendText(obj.toString());
+	}
 	
 	// 지웅 20221030 OnOpen 실행 시 입장한 회원의 정보 불러와서 js로 전송
 		// 지웅 20221031 유저 1명 정보 -> 전체로 변경
 			// 지웅 20221031 db 테이블 일부 정보 -> vector로 변경
 	public void getPlayerInfo(String m_id) throws IOException{
-		
+			
 		MemberDto dto = RoomDao.getInstance().getPlayerInfo(m_id);
 		players.add(dto);
 		JSONArray array = new JSONArray();
@@ -109,10 +98,12 @@ public class RoomSocket {
 	// 지웅 20221030 유저 입장
 	@OnOpen
 	public void OnOpen( Session session, @PathParam("m_id") String m_id ) throws IOException  {
+		if(clients.containsValue(m_id)) {
+			UserOverflow(session, m_id);
+		}		
 		if(clients.size()>=4) {
 			UserOverflow(session);
-		}
-		
+		}		
 		clients.put(session, m_id);
 		getPlayerInfo(m_id);
 	}
@@ -132,15 +123,9 @@ public class RoomSocket {
 	// 지웅 20221030 js에서 send()함수로 서버 접근 시 서버 접속 중인 인원들에게 줄 정보를 js의 OnMessage로 전송
 	@OnMessage
 	public void OnMessage( Session session, String object ) throws IOException{
-		if(object.equals("\"closeRoom\"")) {
-			Vector<MemberDto> clone = (Vector<MemberDto>) players.clone();
-			
-			for(MemberDto tmp : clone) {
-				System.out.println(tmp);
-			}
-			GameSocket socket = new GameSocket();
-			socket.setPlayers(clone);
-			inGame = true;			
+		if(object.equals("\"getPlayersInfo\"")) {
+			getPlayerInfo();
+			return;
 		}
 		for(Session s : clients.keySet()) {
 			s.getBasicRemote().sendText(object);
