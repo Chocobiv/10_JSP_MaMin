@@ -184,7 +184,7 @@ function gameboard(){
 						'</div>'
 	
 	}
-	landEventCheck() // 최초 플레이어 위치 출력
+	playerLocation() // 최초 플레이어 위치 출력
 	
 }//gameboard end
 
@@ -204,7 +204,8 @@ function gamePlayer(){
 }
 
 /*---------수현 플레이어 위치 출력---------- */
-function playerLocation(playerTurn){
+
+function playerLocation(){
 	// 플레이어 전에 위치 초기화
 	// 더 좋은 방법 있으면 추천 받아여...
 	for(let j=0; j<=31; j++){
@@ -323,7 +324,9 @@ function setHouse(){
 /*------------------ 수현 11/2 이벤트토지확인 ------------------------------------- */
 function landEventCheck(playerTurn){
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
+	console.log(playerTurn +"누구 턴")
 	console.log(player[playerTurn].p_position)
+	
 }
 
 
