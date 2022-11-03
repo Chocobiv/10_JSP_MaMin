@@ -305,13 +305,12 @@ function run_dice(dice1, dice2) {
 function setPlayerPosition(dice1, dice2) {
 	player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 	// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
-	if (player[playerTurn].p_position > 32) {
-		player[playerTurn].p_position -= 32 // 한바퀴 돌면 -32
+	if (player[playerTurn].p_position > 31) {
+		player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
 		// 지웅 추가 
 		get_wage(playerTurn);
 	}
-
-	if (++playerTurn == 4) { playerTurn = 0 }
+	if (++playerTurn == player.length) { playerTurn = 0 }
 	playerLocation(playerTurn);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,15 +338,25 @@ function setHouse() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn) {
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
-	console.log(playerTurn + "누구 턴")
-	console.log()
-	let nationNo = player[playerTurn - 1].p_position // 포지션은 나라번호라서 인덱스로 들어가야되니까
+	let nationNo = 0;
+    let playerNo = 0;
+    if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
+       nationNo = player[player.length - 1].p_position
+       playerNo = player.length - 1
+    }else {    //마지막 플레이어가 아닐 경우
+       nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
+       playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
+    }
+    // 도착한 땅 안내!
+ 	document.querySelector(".game_info").innerHTML
+		=''+nation[nationNo].n_name+'에 도착했습니다.'
+	document.querySelector(".game_info").style.display="block"	
+	
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 			console.log(nation[nationNo].n_name);
-			
 			// 비아 - 플레이어 말 위치 이동 후 소유주 확인
-			checkLandLord()
+			checkLandLord(playerNo)
 			
 			break;
 
@@ -371,8 +380,6 @@ function landEventCheck(playerTurn) {
 			console.log("세계여행");
 			break;
 	}
-	console.log(playerTurn + "누구 턴")
-	console.log(player[playerTurn].p_position)
 
 
 }
@@ -389,9 +396,9 @@ function get_wage(playerTurn) {
 
 
 ////////////////////// 비아 - 토지 소유주 확인 //////////////////////
-function checkLandLord() {
+function checkLandLord(nationNo) {
 	//if(playerTurn == 0)
-		//alert(player[playerTurn].p_position)
+		//alert("나라번호확인"+nationNo)
 	//else
 		//alert(player[playerTurn-1].p_position)
 }
@@ -402,3 +409,22 @@ function checkLandLord() {
 
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
 
+/*---------------- 수현  11/3 토지구매 ------------------------- */
+function buyNation(nationNo, playerNo){
+	// 소유주가 없는 땅에 도착하면 출력될 메소드
+	// 땅만 살지 건물까지 같이 살지 물어봐야됨
+	//잔액 충분하면 구매완료 되게
+	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
+	// 땅을 구매할지 부터 물어봐야함
+	document.querySelector(".game_info").innerHTML
+		=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
+	document.querySelector(".game_info").style.display="block"
+	document.querySelector(".yes_btn").style.display="inline-block"
+	document.querySelector(".no_btn").style.display="inline-block"
+	
+	document.querySelector(".yes_btn").addEventListener('click',()=>{
+		alert("dd");
+	})
+	
+	
+}
