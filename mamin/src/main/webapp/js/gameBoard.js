@@ -6,10 +6,10 @@ let start=false; // 맨 처음일때와 아닐때 구분해주기 위한 변수�
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
 let player=[
-	{p_no : 1 , p_nick: "또치" , p_position:1 , m_no : 1 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
-	{p_no : 2 , p_nick: "도우너" ,p_position:1 , m_no : 2 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
-	{p_no : 3 , p_nick: "둘리" ,p_position:1 , m_no : 3 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
-	{p_no : 4 , p_nick: "희동이" ,p_position:1 , m_no : 4 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},	
+	{p_no : 1 , p_nick: "또치" , p_position:0 , m_no : 1 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/1.png"},
+	{p_no : 2 , p_nick: "도우너" ,p_position:0 , m_no : 2 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/2.png"},
+	{p_no : 3 , p_nick: "둘리" ,p_position:0 , m_no : 3 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/3.png"},
+	{p_no : 4 , p_nick: "희동이" ,p_position:0 , m_no : 4 , p_waiting: 0 , p_money : 500000 , m_img: "/mamin/img/member/4.png"},	
 ]
 
 /*======================================== 1103 지웅 player 세터 ==========================================*/
@@ -44,38 +44,38 @@ function setPlayersInfo(){
 // owner : 0 n_type: 0 n_level :0 기본
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation=[
-	{n_no: 1, n_name: "출발점", owner : 0, n_type: 1, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 2, n_name: "타이베이", owner : 1, n_type: 0, n_price: 50000 , n_payment : 20000, n_level :1},
-	{n_no: 3, n_name: "마닐라", owner : 1, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :1},
-	{n_no: 4, n_name: "베이징", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
-	{n_no: 5, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 6, n_name: "카이로", owner : 0, n_type: 0, n_price: 80000 , n_payment : 50000, n_level :0},
-	{n_no: 7, n_name: "코펜하겐", owner : 0, n_type: 0, n_price: 80000 , n_payment : 50000, n_level :0},
-	{n_no: 8, n_name: "이스탄불", owner : 0, n_type: 0, n_price: 100000 , n_payment : 50000, n_level :0},
-	{n_no: 9, n_name: "무인도", owner : 0, n_type: 3, n_price: 0 , n_payment :"", n_level :0},
-	{n_no: 10, n_name: "상파울루", owner : 0, n_type: 0, n_price: 100000 , n_payment : 80000, n_level :0},
-	{n_no: 11, n_name: "싱가폴", owner : 0, n_type: 0, n_price: 100000 , n_payment : 80000, n_level :0},
-	{n_no: 12, n_name: "아테네", owner : 0, n_type: 0, n_price: 120000 , n_payment : 80000, n_level :0},
-	{n_no: 13, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 14, n_name: "베른", owner : 0, n_type: 0, n_price: 120000 , n_payment : 80000, n_level :0},
-	{n_no: 15, n_name: "리스본", owner : 0, n_type: 0, n_price: 140000 , n_payment : 80000, n_level :0},
-	{n_no: 16, n_name: "마드리드", owner : 0, n_type: 0, n_price: 140000 , n_payment : 80000, n_level :0},
-	{n_no: 17, n_name: "올림픽", owner : 0, n_type: 4, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 18, n_name: "오타와 ", owner : 0, n_type: 0, n_price: 180000 , n_payment : 80000, n_level :0},
-	{n_no: 19, n_name: "시드니", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
-	{n_no: 20, n_name: "하와이", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
-	{n_no: 21, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 22, n_name: "베를린", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
-	{n_no: 23, n_name: "도쿄", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
-	{n_no: 24, n_name: "파리", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
-	{n_no: 25, n_name: "세계여행", owner : 0, n_type: 5, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 26, n_name: "로마", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
-	{n_no: 27, n_name: "런던", owner : 0, n_type: 0, n_price: 300000 , n_payment : 120000, n_level :0},
-	{n_no: 28, n_name: "뉴욕", owner : 0, n_type: 0, n_price: 300000 , n_payment : 120000, n_level :0},
-	{n_no: 29, n_name: "황금열쇠", owner : 0, n_type: 2	, n_price: 0 , n_payment : "", n_level :0},
-	{n_no: 30, n_name: "부산", owner : 0, n_type: 0, n_price: 350000 , n_payment : 150000, n_level :0},
-	{n_no: 31, n_name: "제주도", owner : 0, n_type: 0, n_price: 400000 , n_payment : 150000, n_level :0},
-	{n_no: 32, n_name: "서울", owner : 0, n_type: 0, n_price: 1000000 , n_payment : 300000, n_level :0},
+	{n_no: 0, n_name: "출발점", owner : 0, n_type: 1, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 1, n_name: "타이베이", owner : 0, n_type: 0, n_price: 50000 , n_payment : 20000, n_level :0},
+	{n_no: 2, n_name: "마닐라", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
+	{n_no: 3, n_name: "베이징", owner : 0, n_type: 0, n_price: 80000 , n_payment : 40000, n_level :0},
+	{n_no: 4, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 5, n_name: "카이로", owner : 0, n_type: 0, n_price: 80000 , n_payment : 50000, n_level :0},
+	{n_no: 6, n_name: "코펜하겐", owner : 0, n_type: 0, n_price: 80000 , n_payment : 50000, n_level :0},
+	{n_no: 7, n_name: "이스탄불", owner : 0, n_type: 0, n_price: 100000 , n_payment : 50000, n_level :0},
+	{n_no: 8, n_name: "무인도", owner : 0, n_type: 3, n_price: 0 , n_payment :"", n_level :0},
+	{n_no: 9, n_name: "상파울루", owner : 0, n_type: 0, n_price: 100000 , n_payment : 80000, n_level :0},
+	{n_no: 10, n_name: "싱가폴", owner : 0, n_type: 0, n_price: 100000 , n_payment : 80000, n_level :0},
+	{n_no: 11, n_name: "아테네", owner : 0, n_type: 0, n_price: 120000 , n_payment : 80000, n_level :0},
+	{n_no: 12, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 13, n_name: "베른", owner : 0, n_type: 0, n_price: 120000 , n_payment : 80000, n_level :0},
+	{n_no: 14, n_name: "리스본", owner : 0, n_type: 0, n_price: 140000 , n_payment : 80000, n_level :0},
+	{n_no: 15, n_name: "마드리드", owner : 0, n_type: 0, n_price: 140000 , n_payment : 80000, n_level :0},
+	{n_no: 16, n_name: "올림픽", owner : 0, n_type: 4, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 17, n_name: "오타와 ", owner : 0, n_type: 0, n_price: 180000 , n_payment : 80000, n_level :0},
+	{n_no: 18, n_name: "시드니", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
+	{n_no: 19, n_name: "하와이", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
+	{n_no: 20, n_name: "황금열쇠", owner : 0, n_type: 2, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 21, n_name: "베를린", owner : 0, n_type: 0, n_price: 180000 , n_payment : 100000, n_level :0},
+	{n_no: 22, n_name: "도쿄", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
+	{n_no: 23, n_name: "파리", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
+	{n_no: 24, n_name: "세계여행", owner : 0, n_type: 5, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 25, n_name: "로마", owner : 0, n_type: 0, n_price: 250000 , n_payment : 100000, n_level :0},
+	{n_no: 26, n_name: "런던", owner : 0, n_type: 0, n_price: 300000 , n_payment : 120000, n_level :0},
+	{n_no: 27, n_name: "뉴욕", owner : 0, n_type: 0, n_price: 300000 , n_payment : 120000, n_level :0},
+	{n_no: 28, n_name: "황금열쇠", owner : 0, n_type: 2	, n_price: 0 , n_payment : "", n_level :0},
+	{n_no: 29, n_name: "부산", owner : 0, n_type: 0, n_price: 350000 , n_payment : 150000, n_level :0},
+	{n_no: 30, n_name: "제주도", owner : 0, n_type: 0, n_price: 400000 , n_payment : 150000, n_level :0},
+	{n_no: 31, n_name: "서울", owner : 0, n_type: 0, n_price: 1000000 , n_payment : 300000, n_level :0},
 	
 	
 ]
@@ -294,11 +294,12 @@ function display_dice(dice1, dice2){
 				// 지웅 추가 
 				get_wage(playerTurn);
 			} 
-		
 			if(++playerTurn==4){playerTurn=0}
 		}
 	},100)
+	
 	playerLocation(playerTurn);
+	
 }
 
 
@@ -321,12 +322,39 @@ function setHouse(){
 }
 
 
-/*------------------ 수현 11/2 이벤트토지확인 ------------------------------------- */
+/*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
+//n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn){
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
 	console.log(playerTurn +"누구 턴")
-	console.log(player[playerTurn].p_position)
-	
+	console.log()
+	let nationNo=player[playerTurn-1].p_position // 포지션은 나라번호라서 인덱스로 들어가야되니까
+	switch(nation[nationNo].n_type){
+		case 0 : // 일반땅일떄
+			 console.log(nation[nationNo].n_name);
+			 
+			 break;
+			 
+		case 1 :  // 월급메소드
+			console.log("출발지");
+			break;
+			
+		case 2 : // 황금열쇠메소드
+			console.log("황금열쇠");
+			break;
+			
+		case 3 : // 무인도메소드
+			console.log("무인도");
+			break;
+			
+		case 4 : // 올림픽메소드
+			console.log("올림픽");
+			break;
+			
+		case 5 : //세계여행 메소드
+			console.log("세계여행");
+			break;		
+	}
 }
 
 
