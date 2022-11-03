@@ -6,12 +6,18 @@ let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변�
 // 임의 지정하고 있음!! 변경해야됨!!!
 // 닉네임원래 객체에 넣자고 안했는데 css설정보려고 일단 넣어놨습니다.
 
+
+let player = [];
+
+
+/*
 let player = [
 	{ p_no: 1, p_nick: "또치", p_position: 0, m_no: 1, p_waiting: 0, p_money: 500000, m_img: "/mamin/img/member/1.png" },
 	{ p_no: 2, p_nick: "도우너", p_position: 0, m_no: 2, p_waiting: 0, p_money: 500000, m_img: "/mamin/img/member/2.png" },
 	{ p_no: 3, p_nick: "둘리", p_position: 0, m_no: 3, p_waiting: 0, p_money: 500000, m_img: "/mamin/img/member/3.png" },
 	{ p_no: 4, p_nick: "희동이", p_position: 0, m_no: 4, p_waiting: 0, p_money: 500000, m_img: "/mamin/img/member/4.png" },
 ]
+*/
 
 /*======================================== 1103 지웅 player 세터 ==========================================*/
 
@@ -23,23 +29,21 @@ function setPlayersInfo() {
 		/*
 		이부분 열면 참여 인원만큼만 player 객체 입력 가능
 		-4명 외 게임도 진행 시킬건지 논의 필요
-		
+		*/
 		let object ={
 			p_no : player_list[i].s_no,
 			p_nick : player_list[i].m_nick,
-			p_position : 1,
+			p_position : 0,
 			m_no : player_list[i].m_no,
 			p_waiting : 0,
 			p_money : 50000,
 			m_img : `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
-		*/
 		player[i].p_nick = player_list[i].m_nick;
 		player[i].m_no = player_list[i].m_no;
 		player[i].m_img = `/mamin/img/member/${player_list[i].m_img}`;
 	}
-	console.log(player);
 }
 /*========================수현 보드판 생성 관련 변수 ================================ */
 // owner : 0 n_type: 0 n_level :0 기본
@@ -191,7 +195,7 @@ function gameboard() {
 //닉네임이랑 프로필이미지 출력할 함수
 function gamePlayer() {
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
-	for (let i = 1; i <= 4; i++) {
+	for (let i = 1; i <= player.length; i++) {
 		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
 			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
 			'</div>' +
@@ -210,7 +214,7 @@ function playerLocation() {
 	for (let j = 0; j <= 31; j++) {
 		document.querySelector(".p_location" + j + "").innerHTML = null;
 	}
-	for (let i = 0; i <= 3; i++) {
+	for (let i = 0; i < player.length; i++) {
 		for (let j = 0; j <= 31; j++) {
 			if (player[i].p_position == nation[j].n_no) {
 				switch (i) {
@@ -258,6 +262,13 @@ function playerLocation() {
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
+	console.log(playerTurn);
+	console.log(player);
+	
+	if(document.querySelector('.r_sno').innerHTML != playerTurn+1){
+		alert('다른 사람의 턴이에요.')
+		return;
+	}	
 	start = true // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 
 	let array1 = []
@@ -311,15 +322,15 @@ function setPlayerPosition(dice1, dice2) {
 		get_wage(playerTurn);
 	}
 
-	if (++playerTurn == 4) { playerTurn = 0 }
+	if (++playerTurn == player.length) { playerTurn = 0 }
 	playerLocation(playerTurn);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
+	// 1103 지웅 이관
 function setHouse() {
-
 	// 소유주가 있는지부터 검사
 	for (let i = 0; i <= 31; i++) {
 		if (nation[i].owner != 0) { // 누구든지 소유주가 있으면!
@@ -338,16 +349,15 @@ function setHouse() {
 /*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn) {
-	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
 	let nationNo = 0;
-   let playerNo = 0;
-   if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
-      nationNo = player[player.length - 1].p_position
-      playerNo = player.length - 1
-   }else {    //마지막 플레이어가 아닐 경우
-      nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
-      playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
-   }
+    let playerNo = 0;
+    if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
+       nationNo = player[player.length - 1].p_position
+       playerNo = player.length - 1
+    }else {    //마지막 플레이어가 아닐 경우
+       nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
+       playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
+    }
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 			console.log(nation[nationNo].n_name);
@@ -387,9 +397,7 @@ function landEventCheck(playerTurn) {
 // 지웅 11/2 월급 지급 매서드
 // 지급 및 지출 매서드 생성 시 변경될 수 있음
 function get_wage(playerTurn) {
-	console.log(player[playerTurn].p_money)
 	player[playerTurn].p_money += 200000;
-	console.log(playerTurn + "턴 플레이어의 월급 지급")
 	console.log(player[playerTurn].p_money)
 }
 
@@ -404,7 +412,13 @@ function checkLandLord() {
 
 ////////////////////////////////////////////////////////////////
 
-
+// 지웅 건물 단계 상승 함수
+function levelUp_Land(){
+	let nNo = player[playerTurn+1].p_position;
+	if(nation[nNo].n_level<3){
+		
+	}	
+}
 
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
 ///도착한곳이 남의땅일때
@@ -414,7 +428,7 @@ function tollfee( nationNo , playerNo ){
 	//현재땅의 건물이 없으면
 	 if( nation[nationNo].n_level !== 0){
 		player[playerNo].p_money-=nation[nationNo].n_payment//현재플레이어 돈에서 현재 땅의 통행료만큼 차감
-		player[]
+		//player[]
 		
 	}
 	

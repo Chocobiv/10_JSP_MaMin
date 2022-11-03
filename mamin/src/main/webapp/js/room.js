@@ -221,24 +221,6 @@ function duplicated(){
 	
 }
 	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
