@@ -15,6 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import model.dao.MemberDao;
 import model.dao.RoomDao;
 import model.dto.MemberDto;
 
@@ -112,6 +113,10 @@ public class RoomSocket {
 	// 지웅 20221030 유저 입장
 	@OnOpen
 	public void OnOpen( Session session, @PathParam("m_id") String m_id ) throws IOException  {
+		MemberDto dto = MemberDao.getInstance().getMember(m_id);//11/03 장군 클라이언트 소켓 들어왔을때 채팅창 알림 전송용
+		JSONObject object = new JSONObject();
+		object.put("m_nick", dto.getM_nick());
+		object.put("type","open" );
 		if(clients.containsValue(m_id)) {
 			UserOverflow(session, m_id);
 		}		
@@ -119,11 +124,20 @@ public class RoomSocket {
 			UserOverflow(session);
 		}		
 		clients.put(session, m_id);
+		for(Session s: clients.keySet()) {
+			s.getBasicRemote().sendText(object.toString());
+		}
 		getPlayerInfo(m_id);
 	}
 	// 지웅 20221030 유저 퇴장
 	@OnClose
 	public void OnClose( Session session ) throws IOException {
+		MemberDto dto = MemberDao.getInstance().getMember(clients.get(session));//11/03 장군 클라이언트 소켓 나갔을때 채팅창 알림 전송용
+		JSONObject object = new JSONObject();
+		object.put("m_nick", dto.getM_nick());
+		object.put("type","close" );
+		
+		
 		for(int i = 0; i<players.size(); i++) {
 			if(players.get(i).getM_id().equals(clients.get(session))) {
 				players.remove(i);
@@ -131,20 +145,22 @@ public class RoomSocket {
 			}
 		}
 		clients.remove(session);
+		for(Session s: clients.keySet()) {
+			s.getBasicRemote().sendText(object.toString());
+		}
 		getPlayerInfo();
 	}
 	
 	// 지웅 20221030 js에서 send()함수로 서버 접근 시 서버 접속 중인 인원들에게 줄 정보를 js의 OnMessage로 전송
 	@OnMessage
 	public void OnMessage( Session session, String object ) throws IOException{
+		
 		if(object.equals("\"getPlayersInfo\"")) {
 			getPlayerInfo();
 			return;
 		}else if(object.contains("\"roomdata\":\"ready")) {
 			setready(object);
 		}
-		System.out.println(object.toString());
-		
 		for(Session s : clients.keySet()) {
 			s.getBasicRemote().sendText(object);
 		}

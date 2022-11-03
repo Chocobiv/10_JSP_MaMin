@@ -58,6 +58,7 @@
 
 
 /* 채팅 박스 */
+.c_inputbox{font-family:MaplestoryOTFBold; }
 .chatbox{margin : 10px 0;}
 .chatDisplay{ width : 962px; height : 250px; font-family : 'MaplestoryOTFBold'; margin-bottom : 10px; 
 		overflow-y : scroll; background-color: #eeeeee; word-break : break-all;}
