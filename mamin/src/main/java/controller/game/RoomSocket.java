@@ -60,6 +60,7 @@ public class RoomSocket {
 			object.put("m_img", players.get(i).getM_img());
 			object.put("wins", players.get(i).getWins());
 			object.put("total", players.get(i).getTotal());
+			object.put("ready", players.get(i).isReady());
 			array.add(object);
 		}
 		JSONObject obj = new JSONObject();
@@ -84,6 +85,7 @@ public class RoomSocket {
 			object.put("m_img", players.get(i).getM_img());
 			object.put("wins", players.get(i).getWins());
 			object.put("total", players.get(i).getTotal());
+			object.put("ready", players.get(i).isReady());
 			array.add(object);
 		}
 		JSONObject obj = new JSONObject();
@@ -92,6 +94,18 @@ public class RoomSocket {
 		
 		for(Session s : clients.keySet()) {
 			s.getBasicRemote().sendText(obj.toString());
+		}
+	}
+	
+	// 지웅 20221103 유저 ready vector에 저장
+	public void setready(String object) {
+		char cslotno = object.split("\"roomdata\":\"ready")[1].charAt(0);
+		int slotno = Character.getNumericValue(cslotno);
+		System.out.println(slotno + "번 유저 준비상태 변경");
+		
+		players.get(slotno-1).setReady();
+		for(MemberDto dto : players) {
+			System.out.println(dto.isReady());
 		}
 	}
 	
@@ -126,7 +140,11 @@ public class RoomSocket {
 		if(object.equals("\"getPlayersInfo\"")) {
 			getPlayerInfo();
 			return;
+		}else if(object.contains("\"roomdata\":\"ready")) {
+			setready(object);
 		}
+		System.out.println(object.toString());
+		
 		for(Session s : clients.keySet()) {
 			s.getBasicRemote().sendText(object);
 		}

@@ -12,6 +12,7 @@ public class MemberDto {
 	private String m_profile ;	// 자기소개
 	private int	 wins;			// 1등 횟수
 	private int total ;			//총 게임 횟수
+	private boolean ready = false;
     
     
     //빈생성자
@@ -115,6 +116,15 @@ public class MemberDto {
 	public void setTotal(int total) {
 		this.total = total;
 	}
+	
+	public boolean isReady() {
+		return ready;
+	}
+	
+	public void setReady() {
+		ready = !ready;
+	}
+	
 	//toString
 	@Override
 	public String toString() {

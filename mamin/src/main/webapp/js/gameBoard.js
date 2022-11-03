@@ -293,12 +293,11 @@ function display_dice(dice1, dice2){
 				player[playerTurn].p_position-=32 // 한바퀴 돌면 -32
 				// 지웅 추가 
 				get_wage(playerTurn);
-			} 
-		
+			}		
 			if(++playerTurn==4){playerTurn=0}
+			playerLocation(playerTurn);
 		}
-	},100)
-	playerLocation(playerTurn);
+	},100)	
 }
 
 

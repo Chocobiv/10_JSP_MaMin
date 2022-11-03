@@ -79,13 +79,25 @@ function addPlayer(array){
 		}else{
 			win_rate = '전적 없음';
 		}
-		document.querySelector(`.r_slot${object.s_no}`).innerHTML = 
-				`<td class="r_p_img">
+		
+		// 지웅 수정
+			//ready 상태 표시 위해 변수 생성 후 innerHTML로 대입
+		console.log(object);
+			
+		let slotHTML = `<td class="r_p_img">
 					<img src="/mamin/img/member/${object.m_img}">
 				</td>
 				<td class="r_name_box">${object.m_nick}</td>
-				<td class="r_winrate">${win_rate}</td>
-				<td class="r_ready_box${object.s_no}" onclick="readybtn(${object.s_no})">wait</td>`;
+				<td class="r_winrate">${win_rate}</td>`;
+		// 가져온 ready 변수 상태에 따라 다른 값 대입
+		if(object.ready===true){
+			slotHTML += `<td class="r_ready_box${object.s_no}" onclick="readybtn(${object.s_no})">Ready</td>`
+		}else{
+			slotHTML += `<td class="r_ready_box${object.s_no}" onclick="readybtn(${object.s_no})">wait</td>`
+		}
+		
+		document.querySelector(`.r_slot${object.s_no}`).innerHTML = slotHTML;
+
 	}
 	for(let i = 0 ; i<blankslot.length ; i++){
 		if(!blankslot[i]){
@@ -122,7 +134,8 @@ function readybtn( s_no ){
 	if(s_no == r_sno.innerHTML){
 		let object = {
 			function_name : 'ready',
-			data : s_no
+			data : s_no,
+			roomdata : `ready${s_no}` 
 		}
 		send(object);
 	}else{
