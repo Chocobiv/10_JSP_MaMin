@@ -443,7 +443,7 @@ function tollfee( nationNo , playerNo ){
 	}else if (nation[nationNo].n_level==2){//건물 2단계일때
 		
 		
-	}else if(nation[nationNo].n_level==3){//건물 3단계일때
+	}else if(nation[nationNo].n_level==3){//건물 3단계일때 
 		
 	}
 	
