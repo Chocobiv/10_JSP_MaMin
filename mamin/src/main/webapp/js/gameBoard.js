@@ -36,7 +36,7 @@ function setPlayersInfo() {
 			p_position : 0,
 			m_no : player_list[i].m_no,
 			p_waiting : 0,
-			p_money : 50000,
+			p_money : 500000, // 수현 토지구매확인하려고 50만원으로 늘렸어요!
 			m_img : `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -361,8 +361,7 @@ function landEventCheck(playerTurn) {
     // 도착한 땅 안내!
  	document.querySelector(".game_info").innerHTML
 		=''+nation[nationNo].n_name+'에 도착했습니다.'
-	document.querySelector(".game_info").style.display="block"	
-	
+	displayLog(1)	
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 			console.log(nation[nationNo].n_name);
@@ -413,7 +412,8 @@ function checkLandLord(nationNo,playerNo) {	//playerNo : 인덱스
 	//if()
 	console.log("현재 토지의 소유주 닉네임) " + player[playerNo].p_position)
 	
-	
+	/*===  수현 11/3 토지 구매 메소드 실행되게 넣어놓음!================================= */
+	buyNation(nationNo,playerNo)
 }
 
 ////////////////////////////////////////////////////////////////
@@ -442,24 +442,47 @@ function tollfee( nationNo , playerNo ){
 }
 
 
+/*------------------수현 11/03 글 출력 메소드--------------------------------- */
+// log 출력시키려면 display 변경해줘야되는데 계속 사용할것같아서 함수로 만들었습니다.
+function displayLog(msgtype){ 
+	// 글만 출력시키면 되는 경우에는 변수로 1넣어주면되고
+	// 버튼까지 출력시켜야하면 2 넣어주면 됩니다!
+	if(msgtype==1){ // 글 출력되는 부분만 display 바꿔줌
+		document.querySelector(".game_info").style.display="block"
+	}else if(msgtype==2){ // 버튼 까지 출력되게 display 변경
+		document.querySelector(".game_info").style.display="block"
+		document.querySelector(".yes_btn").style.display="inline-block"
+		document.querySelector(".no_btn").style.display="inline-block"
+	}
+}
 
-
-
-/*---------------- 수현  11/3 토지구매 ------------------------- */
+/*---------------- 수현  11/03 토지구매 ------------------------- */
 function buyNation(nationNo, playerNo){
 	// 소유주가 없는 땅에 도착하면 출력될 메소드
 	// 땅만 살지 건물까지 같이 살지 물어봐야됨
 	//잔액 충분하면 구매완료 되게
 	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
 	// 땅을 구매할지 부터 물어봐야함
-	document.querySelector(".game_info").innerHTML
-		=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
-	document.querySelector(".game_info").style.display="block"
-	document.querySelector(".yes_btn").style.display="inline-block"
-	document.querySelector(".no_btn").style.display="inline-block"
+	let log=document.querySelector(".game_info")
+	let yes_btn=document.querySelector(".yes_btn")
+	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
+	document.querySelector(".diceBtn").style.displqy="none";
 	
-	document.querySelector(".yes_btn").addEventListener('click',()=>{
-		alert("dd");
+	log.innerHTML=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
+	displayLog(2);
+	
+	yes_btn.addEventListener('click',()=>{
+	 // 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
+		 log.innerHTML='토지만은'+nation[nationNo].n_price+'원 이고 <br>주택 가격은 '+(nation[nationNo].n_price/2)+'원 입니다. 같이 구입하시겠습니까?';
+		 displayLog(2);
+		 yes_btn.addEventListener('click' , ()=>{
+			// 주택까지 함께 구매 같이 자산에서 빠지게
+			player[playerNo].p_money-=(nation[nationNo].n_price+(nation[nationNo].n_price/2));
+			console.log(player[playerNo].p_money);
+			log.innerHTML='구매완료했습니다.'
+			
+			
+		})
 	})
 	
 	
