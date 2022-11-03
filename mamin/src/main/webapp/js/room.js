@@ -1,6 +1,26 @@
 let count_ready;
 let r_sno = document.querySelector('.r_sno');
 let player_list = []; // gameBoard에서 사용할 전역번수 추가
+let m_nick = ''// 11/03 장군 현재 플레이어 닉네임 저장 변수
+
+ getM_nick();
+	
+function getM_nick(){ /// 11/03 장군 현재 플레이어 닉네임 호출 함수
+	
+	$.ajax({
+		url:"/mamin/member/mypage",
+		success:function(re){
+			let json = JSON.parse(re);
+			
+			 m_nick = json.m_nick
+			 
+		}
+	})	
+	
+	
+}	
+	
+	
 
 function readyCounter(){
 	let count_r = 0; // ready 수 체크
@@ -38,6 +58,8 @@ function onmessage(obj) {
 	console.log(parsing);
 	if(parsing.function_name=='addplayer'){	// 20221031 낮 언젠가... 지웅 추가
 		addPlayer(parsing.data);
+		
+		
 	}else if(parsing.function_name=='exit'){ // 20221031 23:49 지웅 추가
 		alert('남은 자리가 없어요ㅠㅠ')
 		exit();
@@ -49,7 +71,17 @@ function onmessage(obj) {
 		display_dice(parsing.data1, parsing.data2);
 	}else if(parsing.function_name=='duplicated'){		// 1102 지웅 추가
 		duplicated();
+	}else if(parsing.type =="open"){//플레이어 입장
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 들어왔습니다.</div>`
 	}
+	else if(parsing.type =="close"){//플레이어 퇴장
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
+	}else{// 채팅 메세지 받을때
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`
+		
+	}
+	
+	
 }
 
 function send(object) {
@@ -105,8 +137,16 @@ function enterKey() {
 		sendMessage();
 	}
 }
-function sendMessage() {
-	document.querySelector('.chatDisplay').innerHTML += `<div>${document.querySelector('.c_inputbox').value}</div>`;
+function sendMessage() {// 11/03 장군 채팅 메세지 보내기
+	
+	
+	let msg={
+		m_nick :m_nick,
+		content:document.querySelector('.c_inputbox').value
+	}
+	
+	websocket.send( JSON.stringify(msg) )
+	
 	document.querySelector('.c_inputbox').value = '';
 	document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;
 }
@@ -164,4 +204,28 @@ function start_game(){
 function duplicated(){
 	alert('이미 참여중인 아이디입니다.');
 	location.href = 'index.jsp';
+	
+	
 }
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
