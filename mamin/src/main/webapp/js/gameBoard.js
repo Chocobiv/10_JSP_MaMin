@@ -326,25 +326,6 @@ function setPlayerPosition(dice1, dice2) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
-	// 1103 지웅 이관
-function setHouse() {
-	// 소유주가 있는지부터 검사
-	for (let i = 0; i <= 31; i++) {
-		if (nation[i].owner != 0) { // 누구든지 소유주가 있으면!
-			if (nation[i].n_level = 1) { // 건물단계 확인
-
-
-
-
-			}
-
-		}
-	}
-}
-
-
 /*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn) {
@@ -418,13 +399,59 @@ function checkLandLord(nationNo,playerNo) {	//playerNo : 인덱스
 
 ////////////////////////////////////////////////////////////////
 
-// 지웅 건물 단계 상승 함수
-function levelUp_Land(){
-	let nNo = player[playerTurn+1].p_position;
+// 1103 지웅 건물 단계 상승 함수
+	// 체커
+function levelUp_check(){
+	let nNo = player[playerTurn].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
 	if(nation[nNo].n_level<3){
-		
-	}	
+		let cost = nation[nNo].n_price * 0.5 * (nation[nNo].n_level+1);	// 건물 값
+		cost = Math.floor(cost/1000)*1000;	// 1000단위 절삭		
+		if(player[playerTurn].money >= cost){	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
+			let building_name;
+			if(nation[nNo].n_level == 0){
+				building_name = "주택";
+			}else if(nation[nNo].n_level == 1){
+				building_name = "빌딩";
+			}else if(nation[nNo].n_level == 2){
+				building_name = "호텔";
+			}
+			let confirmBuild = confirm("비용 : " + cost + "\n" + building_name+"을 지으시겠습니까?");
+			if(confirmBuild){
+				let object = {
+					function_name : 'levelUp_land',
+					data : nNo,
+					data2 : cost
+				}
+				send(object);	// 실행할 함수 객체화 해서 서버로 전송
+			}
+		}
+	}
 }
+// 1103 지웅 onMessage 통해서 모든 플레이어 실행
+
+function levelUp_land(nNo, cost){
+	// 객체 조작 -> 출력 분리
+	nation[nNo].n_level++;
+	player[playerTurn].money -= cost;
+	setHouse(nNo, nation[nNo].n_level); // 게임보드 주택 입력 함수	
+}
+
+
+/*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
+	// 1103 지웅 이관
+function setHouse(nNo, land_level) {
+	// 특정 조건에서만 발생하므로 이미지만 삽입
+	if(land_level==0){	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
+		document.querySelector('.b_house'+nNo).innerHTML = '';
+	}else if(land_level==1){
+		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-home"></i>';
+	}else if(land_level==2){
+		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-building"></i>';
+	}else if(land_level==3){
+		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-hotel"></i>';
+	}
+}
+
 
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
 ///도착한곳이 남의땅일때

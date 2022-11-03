@@ -79,10 +79,5 @@ public class BoardDto {
 	public String toString() {
 		return "BoardDto [b_no=" + b_no + ", b_title=" + b_title + ", b_content=" + b_content + ", b_file=" + b_file
 				+ ", b_date=" + b_date + ", m_no=" + m_no + "]";
-	}
-
-	
-	
-	
-	
+	}	
 }
