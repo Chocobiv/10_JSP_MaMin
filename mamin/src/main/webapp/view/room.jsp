@@ -10,10 +10,9 @@
 
 </head>
 <body oncontextmenu="return false">
+<div class="r_sno" style="display : none;"></div>
 <div id="pagebox">
 	<%@ include file="header.jsp" %> <!-- file="jsp파일 주소" -->	
-	<div class="r_sno" style="display : none;"></div>
-	
 	<div class="wrap">
 		<div class="room_wrapper">
 			<div class="room_info">

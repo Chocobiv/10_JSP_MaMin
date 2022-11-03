@@ -102,12 +102,8 @@ public class RoomSocket {
 	public void setready(String object) {
 		char cslotno = object.split("\"roomdata\":\"ready")[1].charAt(0);
 		int slotno = Character.getNumericValue(cslotno);
-		System.out.println(slotno + "번 유저 준비상태 변경");
 		
 		players.get(slotno-1).setReady();
-		for(MemberDto dto : players) {
-			System.out.println(dto.isReady());
-		}
 	}
 	
 	// 지웅 20221030 유저 입장
