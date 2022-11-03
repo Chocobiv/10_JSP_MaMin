@@ -305,8 +305,8 @@ function run_dice(dice1, dice2) {
 function setPlayerPosition(dice1, dice2) {
 	player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 	// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
-	if (player[playerTurn].p_position > 32) {
-		player[playerTurn].p_position -= 32 // 한바퀴 돌면 -32
+	if (player[playerTurn].p_position > 31) {
+		player[playerTurn].p_position -= 31 // 한바퀴 돌면 -32
 		// 지웅 추가 
 		get_wage(playerTurn);
 	}
@@ -339,9 +339,15 @@ function setHouse() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn) {
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
-	console.log(playerTurn + "누구 턴")
-	console.log()
-	let nationNo = player[playerTurn - 1].p_position // 포지션은 나라번호라서 인덱스로 들어가야되니까
+	let nationNo = 0;
+   let playerNo = 0;
+   if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
+      nationNo = player[player.length - 1].p_position
+      playerNo = player.length - 1
+   }else {    //마지막 플레이어가 아닐 경우
+      nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
+      playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
+   }
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 			console.log(nation[nationNo].n_name);
@@ -401,4 +407,20 @@ function checkLandLord() {
 
 
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
+///도착한곳이 남의땅일때
+//현재 이동한 플레이어의 위치(=나라번호=n_no)
+//현재 이동한 플레이어 인덱스 = (p_no-1)
+function tollfee( nationNo , playerNo ){
+	//현재땅의 건물이 없으면
+	 if( nation[nationNo].n_level !== 0){
+		player[playerNo].p_money-=nation[nationNo].n_payment//현재플레이어 돈에서 현재 땅의 통행료만큼 차감
+		player[]
+		
+	}
+	
+	
+}
+
+
+
 
