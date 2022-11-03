@@ -30,14 +30,14 @@ function setPlayersInfo() {
 		이부분 열면 참여 인원만큼만 player 객체 입력 가능
 		-4명 외 게임도 진행 시킬건지 논의 필요
 		*/
-		let object ={
-			p_no : player_list[i].s_no,
-			p_nick : player_list[i].m_nick,
-			p_position : 0,
-			m_no : player_list[i].m_no,
-			p_waiting : 0,
-			p_money : 50000,
-			m_img : `/mamin/img/member/${player_list[i].m_img}`
+		let object = {
+			p_no: player_list[i].s_no,
+			p_nick: player_list[i].m_nick,
+			p_position: 0,
+			m_no: player_list[i].m_no,
+			p_waiting: 0,
+			p_money: 50000,
+			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
 		player[i].p_nick = player_list[i].m_nick;
@@ -264,11 +264,11 @@ function playerLocation() {
 function rollDice() {
 	console.log(playerTurn);
 	console.log(player);
-	
-	if(document.querySelector('.r_sno').innerHTML != playerTurn+1){
+
+	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		alert('다른 사람의 턴이에요.')
 		return;
-	}	
+	}
 	start = true // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 
 	let array1 = []
@@ -328,7 +328,7 @@ function setPlayerPosition(dice1, dice2) {
 
 
 /*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
-	// 1103 지웅 이관
+// 1103 지웅 이관
 function setHouse() {
 	// 소유주가 있는지부터 검사
 	for (let i = 0; i <= 31; i++) {
@@ -350,25 +350,25 @@ function setHouse() {
 function landEventCheck(playerTurn) {
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
 	let nationNo = 0;
-    let playerNo = 0;
-    if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
-       nationNo = player[player.length - 1].p_position
-       playerNo = player.length - 1
-    }else {    //마지막 플레이어가 아닐 경우
-       nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
-       playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
-    }
-    // 도착한 땅 안내!
- 	document.querySelector(".game_info").innerHTML
-		=''+nation[nationNo].n_name+'에 도착했습니다.'
-	document.querySelector(".game_info").style.display="block"	
-	
+	let playerNo = 0;
+	if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
+		nationNo = player[player.length - 1].p_position
+		playerNo = player.length - 1
+	} else {    //마지막 플레이어가 아닐 경우
+		nationNo = player[playerTurn - 1].p_position    //현재 이동한 플레이어의 위치(=나라번호=n_no)
+		playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
+	}
+	// 도착한 땅 안내!
+	document.querySelector(".game_info").innerHTML
+		= '' + nation[nationNo].n_name + '에 도착했습니다.'
+	document.querySelector(".game_info").style.display = "block"
+
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 			console.log(nation[nationNo].n_name);
-			
+
 			// 비아 - 플레이어 말 위치 이동 후 소유주 확인
-			checkLandLord(nationNo,playerNo)
+			checkLandLord(nationNo, playerNo)
 
 			break;
 
@@ -406,39 +406,52 @@ function get_wage(playerTurn) {
 
 
 ////////////////////// 비아 - 토지 소유주 확인 //////////////////////
-function checkLandLord(nationNo,playerNo) {	//playerNo : 인덱스
+function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 	console.log("현재 토지번호) " + player[playerNo].p_position)
-	console.log("nation[nationNo] 소유주 번호 p_no ) "+nation[nationNo].owner )
-	let p_nick = ''
-	//if()
-	console.log("현재 토지의 소유주 닉네임) " + player[playerNo].p_position)
-	
-	
+	console.log("nation[nationNo] 소유주 번호 p_no ) " + nation[nationNo].owner)
+	let p_index = 0
+	if (nation[nationNo].owner == 0) {	//소유주가 없는 땅일때
+		p_index = nation[nationNo].owner
+		console.log("주인 없는 땅!!")
+		return
+	} else {		//소유주가 있는 땅일때
+		p_index = nation[nationNo].owner - 1
+		console.log("현재 토지의 소유주 인덱스 p_index) " + p_index)
+		//let p_nick = player[p_index].p_nick
+		//console.log("현재 토지의 소유주 닉네임) " + p_nick)	//error
+		if ((nation[nationNo].owner - 1) == playerNo) {	//소유주가 나일때
+			console.log("내땅!!")
+		} else if ((nation[nationNo].owner) != 0 && (nation[nationNo].owner - 1) != playerNo) {	//다른 사람 땅일때
+			console.log("다른 사람 땅!!")
+		}
+	}
+
+
 }
 
 ////////////////////////////////////////////////////////////////
 
 // 지웅 건물 단계 상승 함수
-function levelUp_Land(){
-	let nNo = player[playerTurn+1].p_position;
-	if(nation[nNo].n_level<3){
-		
-	}	
+function levelUp_Land() {
+	let nNo = player[playerTurn + 1].p_position;
+	if (nation[nNo].n_level < 3) {
+
+	}
 }
 
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
 ///도착한곳이 남의땅일때
 //현재 이동한 플레이어의 위치(=나라번호=n_no)
 //현재 이동한 플레이어 인덱스 = (p_no-1)
-function tollfee( nationNo , playerNo ){
+function tollfee(nationNo, playerNo) {
 	//현재땅의 건물이 없으면
-	 if( nation[nationNo].n_level !== 0){
-		player[playerNo].p_money-=nation[nationNo].n_payment//현재플레이어 돈에서 현재 땅의 통행료만큼 차감
+	if (nation[nationNo].n_level !== 0) {
+		player[playerNo].p_money -= nation[nationNo].n_payment//현재플레이어 돈에서 현재 땅의 통행료만큼 차감
 		//player[]
-		
+
 	}
-	
-	
+
+
 }
 
 
@@ -446,21 +459,21 @@ function tollfee( nationNo , playerNo ){
 
 
 /*---------------- 수현  11/3 토지구매 ------------------------- */
-function buyNation(nationNo, playerNo){
+function buyNation(nationNo, playerNo) {
 	// 소유주가 없는 땅에 도착하면 출력될 메소드
 	// 땅만 살지 건물까지 같이 살지 물어봐야됨
 	//잔액 충분하면 구매완료 되게
 	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
 	// 땅을 구매할지 부터 물어봐야함
 	document.querySelector(".game_info").innerHTML
-		=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
-	document.querySelector(".game_info").style.display="block"
-	document.querySelector(".yes_btn").style.display="inline-block"
-	document.querySelector(".no_btn").style.display="inline-block"
-	
-	document.querySelector(".yes_btn").addEventListener('click',()=>{
+		= '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
+	document.querySelector(".game_info").style.display = "block"
+	document.querySelector(".yes_btn").style.display = "inline-block"
+	document.querySelector(".no_btn").style.display = "inline-block"
+
+	document.querySelector(".yes_btn").addEventListener('click', () => {
 		alert("dd");
 	})
-	
-	
+
+
 }
