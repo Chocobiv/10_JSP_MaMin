@@ -390,8 +390,10 @@ function get_wage(playerTurn) {
 
 ////////////////////// 비아 - 토지 소유주 확인 //////////////////////
 function checkLandLord() {
-	alert(player[playerTurn-1].p_position)
-
+	//if(playerTurn == 0)
+		//alert(player[playerTurn].p_position)
+	//else
+		//alert(player[playerTurn-1].p_position)
 }
 
 ////////////////////////////////////////////////////////////////
