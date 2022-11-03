@@ -431,19 +431,37 @@ function levelUp_Land(){
 //현재 이동한 플레이어의 위치(=나라번호=n_no)
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 function tollfee( nationNo , playerNo ){
-	//현재땅의 건물이 없으면
-	 if( nation[nationNo].n_level !== 0){
-		player[playerNo].p_money-=nation[nationNo].n_payment//현재플레이어 돈에서 현재 땅의 통행료만큼 차감
-		//player[]
+	
+	 if( nation[nationNo].n_level == 0){//건물 없을때
+		 let fee =nation[nationNo].n_payment// 현재 땅의 통행료
+		 outcome(playerNo,fee)//통행료만큼 플레이어 돈 차감
+		 let ownerindex = nation[nationNo].owner-1;//땅 주인 플레이어 인덱스번호
+		 income(ownerindex,fee)//통행료만큼 땅주인 지급
+	}else if( nation[nationNo].n_level==1){//건물 1단계 일때
+		
+		
+	}else if (nation[nationNo].n_level==2){//건물 2단계일때
+		
+		
+	}else if(nation[nationNo].n_level==3){//건물 3단계일때
 		
 	}
 	
 	
 }
 
+//지급 함수
+function income(playerNo,fee){/// playerNo 플레이어인덱스,fee 지급할 액수
+	player[playerNo].p_money+=fee
+	
+}
 
-
-
+//지출 함수
+function outcome(playerNo,fee){///플레이어인덱스,fee 지출 액수
+	player[playerNo].p_money-=fee
+	
+	
+}
 
 /*---------------- 수현  11/3 토지구매 ------------------------- */
 function buyNation(nationNo, playerNo){
