@@ -67,17 +67,17 @@ function setPlayersInfo() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
 	{ n_no: 0, n_name: "출발점", owner: 0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
 	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 5, n_name: "카이로", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 6, n_name: "코펜하겐", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 7, n_name: "이스탄불", owner: 1, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
+	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
 	{ n_no: 8, n_name: "무인도", owner: 0, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 9, n_name: "상파울루", owner: 2, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 10, n_name: "싱가폴", owner: 2, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 11, n_name: "아테네", owner: 2, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 9, n_name: "상파울루", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 10, n_name: "싱가폴", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 11, n_name: "아테네", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
 	{ n_no: 12, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
 	{ n_no: 13, n_name: "베른", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
 	{ n_no: 14, n_name: "리스본", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
@@ -95,8 +95,8 @@ let nation = [
 	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 29, n_name: "부산", owner: 2, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
-	{ n_no: 30, n_name: "제주도", owner: 2, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
+	{ n_no: 29, n_name: "부산", owner: 0, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
+	{ n_no: 30, n_name: "제주도", owner: 0, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
 	{ n_no: 31, n_name: "서울", owner: 0, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
 ]
 
@@ -211,25 +211,25 @@ function gameboard() {
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지 출력할 함수
 function gamePlayer() {
-	
+
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
 		// 비아 - 현금 출력하도록 수정
 		let nation_sum = player[i - 1].p_money			//현금 저장 변수
-		for(let j = 0; j<nation.length; j++){
-			if(nation[j].owner == player[i - 1].p_no){
+		for (let j = 0; j < nation.length; j++) {
+			if (nation[j].owner == player[i - 1].p_no) {
 				nation_sum += nation[j].n_price
 			}
 		}
-			
-		
+
+
 		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
 			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
 			'</div>' +
 			'<div class="g_intro">' +
 			'<div class="g_m_nick">' + player[i - 1].p_nick + '</div>' + //플레이어 닉네임 출력 위치
-			'<div class="g_money">순자산 : ' + player[i - 1].p_money + '</div>' + // 플레이어 순자산 출력 위치
-			'<div class="g_cash">현금 : ' + nation_sum + '</div>' + // 플레이어 현금 출력 위치
+			'<div class="g_money">순자산 : ' + nation_sum + '</div>' + // 플레이어 순자산 출력 위치
+			'<div class="g_cash">현금 : ' + player[i - 1].p_money + '</div>' + // 플레이어 현금 출력 위치
 			'</div>'
 	}
 }
@@ -496,7 +496,7 @@ function levelUp_check(playerNo) {
 				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 				send(object);	// 실행할 함수 객체화 해서 서버로 전송
 			}
-		}else{ alert('돈 부족') }
+		} else { alert('돈 부족') }
 	}
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
@@ -530,59 +530,32 @@ function setHouse(nNo, land_level) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
+	let fee = 0
 	if (nation[nationNo].n_level == 0) {//건물 없을때
-		let fee = nation[nationNo].n_payment// 현재 땅의 통행료
-		if (checkMoney(playerNo, fee)) {
-			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-			income(ownerindex, fee)//통행료만큼 땅주인 지급
-			
-			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
-		}else{
-			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
-			alert('돈 부족')
-		}
+		fee = nation[nationNo].n_payment// 현재 땅의 통행료
 	} else if (nation[nationNo].n_level == 1) {//건물 1단계 일때
-		let fee = Math.floor(nation[nationNo].n_payment * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
-		if (checkMoney(playerNo, fee)) {
-			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-			income(ownerindex, fee)//통행료만큼 땅주인 지급
-		}else{
-			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
-			alert('돈 부족')
-		}
+		fee = Math.floor(nation[nationNo].n_payment * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
 	} else if (nation[nationNo].n_level == 2) {//건물 2단계일때
-		let fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
-		if(checkMoney(playerNo, fee)){
-			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-			income(ownerindex, fee)//통행료만큼 땅주인 지급
-		}else{
-			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
-			alert('돈 부족')
-		}
+		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
-		let fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
-		if(checkMoney(playerNo, fee)){
-			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-			income(ownerindex, fee)//통행료만큼 땅주인 지급
-		}else{
-			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
-			alert('돈 부족')
-		}
+		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
 	}
-
+	inoutcome(playerNo, nationNo, fee)
 }
 
-function inoutcome (playerNo,nationNo,fee){ // 11/04 장군 
-	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-	income(ownerindex, fee)//통행료만큼 땅주인 지급
-	setPlayersInfo
-}	
-			
+function inoutcome(playerNo, nationNo, fee) { // 11/04 장군 
+	if (checkMoney(playerNo, fee)) {
+		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+		income(ownerindex, fee)//통행료만큼 땅주인 지급
+		gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+	} else {
+		//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
+		alert('돈 부족')
+	}
+	
+}
+
 
 //지급 함수
 function income(playerNo, fee) {/// playerNo 플레이어인덱스,fee 지급할 액수
@@ -638,19 +611,27 @@ function buyNation(nationNo, playerNo) {
 			// 주택까지 함께 구매 같이 자산에서 빠지게
 			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 			let result = checkMoney(playerNo, fee);
-			if (result) { outcome(playerNo, fee) }//지출 메소드 요청
+			if (result) { 
+				outcome(playerNo, fee) //지출 메소드 요청
+				//토지 소유주 변경
+				nation[nationNo].owner = player[playerNo].p_no
+			}
 			else { log.innerHTML = '자산이 부족합니다.'; return; }
 
 			log.innerHTML = '구매완료했습니다.'
 			console.log(player[playerNo].p_money);
 			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
-			
+
 			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
 		no_btn.addEventListener('click', () => { // 토지만 구매
 			fee = nation[nationNo].n_price;
 			let result = checkMoney(playerNo, fee);
-			if (result) { outcome(playerNo, fee) }//지출 메소드 요청
+			if (result) { 
+				outcome(playerNo, fee) //지출 메소드 요청
+				//토지 소유주 변경
+				nation[nationNo].owner = player[playerNo].p_no
+			}
 			else { log.innerHTML = '자산이 부족합니다.'; return; }
 			console.log(player[playerNo].p_money);
 			log.innerHTML = '구매완료했습니다.'
@@ -658,7 +639,7 @@ function buyNation(nationNo, playerNo) {
 			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
 
-		
+
 	})
 
 
