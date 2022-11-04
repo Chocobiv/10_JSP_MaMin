@@ -76,7 +76,7 @@ function onmessage(obj) {
 	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
 		display_dice(parsing.data1, parsing.data2);
 	}
-	else if(parsing.function_name = "levelUp_land"){
+	else if(parsing.function_name = "levelUp_land"){	// 1103 지웅 추가
 		levelUp_land(parsing.data1, parsing.data2);
 	}
 	/*
