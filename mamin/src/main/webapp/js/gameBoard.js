@@ -211,14 +211,25 @@ function gameboard() {
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지 출력할 함수
 function gamePlayer() {
+	
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
+		// 비아 - 현금 출력하도록 수정
+		let nation_sum = player[i - 1].p_money			//현금 저장 변수
+		for(let j = 0; j<nation.length; j++){
+			if(nation[j].owner == player[i - 1].p_no){
+				nation_sum += nation[j].n_price
+			}
+		}
+			
+		
 		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
 			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
 			'</div>' +
 			'<div class="g_intro">' +
 			'<div class="g_m_nick">' + player[i - 1].p_nick + '</div>' + //플레이어 닉네임 출력 위치
-			'<div class="g_money">' + player[i - 1].p_money + '</div>' + // 플레이어 순자산 출력 위치
+			'<div class="g_money">순자산 : ' + player[i - 1].p_money + '</div>' + // 플레이어 순자산 출력 위치
+			'<div class="g_cash">현금 : ' + nation_sum + '</div>' + // 플레이어 현금 출력 위치
 			'</div>'
 	}
 }
