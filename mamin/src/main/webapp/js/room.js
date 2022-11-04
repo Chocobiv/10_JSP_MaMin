@@ -85,7 +85,6 @@ function onmessage(obj) {
    }
    */   
 }
-
 function send(object) {
 	websocket.send(JSON.stringify(object));
 }
