@@ -13,8 +13,8 @@ let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변�
 	아래 함수 게임로그 출력용으로 사용예정
 */
 
-function gameOperate(){
-	
+function gameOperate() {
+
 }
 
 
@@ -257,7 +257,7 @@ function playerLocation() {
 	if (start == true) {// 게임이 시작되고 나서일때!
 		landEventCheck(playerTurn);
 	}
-	
+
 
 }
 
@@ -309,8 +309,8 @@ function rollDice() {
 
 // 주사위 굴러가고 다른 메소드들 실행될 수 있게 
 function sleep(sec) {
-  return new Promise(resolve => setTimeout(resolve, sec * 1000));
-} 
+	return new Promise(resolve => setTimeout(resolve, sec * 1000));
+}
 //////////////////////////////////// 비아 - 주사위 비동기로 수정함!!!! /////////////////////////////////////
 async function display_dice(dice1, dice2) {
 	await run_dice(dice1, dice2)
@@ -331,25 +331,25 @@ function run_dice(dice1, dice2) {
 			if (count == 10)
 				clearInterval(diceLotation)
 		}, 100)
-		
+
 		resolve()	//return
 	})
 }
 
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
-	return new Promise(function(resolve, reject){
-			player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
-	// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
-	if (player[playerTurn].p_position > 31) {
-		player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
-		// 지웅 추가 
-		get_wage(playerTurn);
-	}
-	if (++playerTurn == player.length) { playerTurn = 0 }
+	return new Promise(function(resolve, reject) {
+		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
+		if (player[playerTurn].p_position > 31) {
+			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
+			// 지웅 추가 
+			get_wage(playerTurn);
+		}
+		if (++playerTurn == player.length) { playerTurn = 0 }
 		resolve()
 	})
-	
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -445,10 +445,12 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 	} else {		//소유주가 있는 땅일때
 		p_index = nation[nationNo].owner - 1
 		console.log("현재 토지의 소유주 인덱스 p_index) " + p_index)
-		if (p_index == playerNo) {	//소유주가 나일때
-			console.log("내땅!!")
+		if (p_index == playerNo) {			//소유주가 나일때
+			//건물 업그레이드
+			levelUp_check(playerNo)
 		} else if (p_index != playerNo) {	//다른 사람 땅일때
-			console.log("다른 사람 땅!!")
+			//통행료 지불
+			tollfee(nationNo, playerNo)
 		}
 	}
 
@@ -457,55 +459,55 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 ////////////////////////////////////////////////////////////////
 
 // 1103 지웅 건물 단계 상승 함수
-	// 체커
-function levelUp_check(){
-	let nNo = player[playerTurn].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
-	if(nation[nNo].n_level<3){
-		let cost = nation[nNo].n_price * 0.5 * (nation[nNo].n_level+1);	// 건물 값
-		cost = Math.floor(cost/1000)*1000;	// 1000단위 절삭		
-		if(player[playerTurn].money >= cost){	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
+// 체커
+function levelUp_check(playerNo) {
+	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
+	if (nation[nNo].n_level < 3) {
+		let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
+		fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭		
+		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
 			let building_name;
-			if(nation[nNo].n_level == 0){
+			if (nation[nNo].n_level == 0) {
 				building_name = "주택";
-			}else if(nation[nNo].n_level == 1){
+			} else if (nation[nNo].n_level == 1) {
 				building_name = "빌딩";
-			}else if(nation[nNo].n_level == 2){
+			} else if (nation[nNo].n_level == 2) {
 				building_name = "호텔";
 			}
-			let confirmBuild = confirm("비용 : " + cost + "\n" + building_name+"을 지으시겠습니까?");
-			if(confirmBuild){
+			let confirmBuild = confirm("비용 : " + fee + "\n" + building_name + "을 지으시겠습니까?");
+			if (confirmBuild) {
 				let object = {
-					function_name : 'levelUp_land',
-					data : nNo,
-					data2 : cost
+					function_name: 'levelUp_land',
+					data: nNo,
+					data2: fee,
+					data3: playerNo
 				}
 				send(object);	// 실행할 함수 객체화 해서 서버로 전송
 			}
-		}
+		}else{ alert('돈 부족') }
 	}
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
-function levelUp_land(nNo, cost){
+function levelUp_land(nNo, fee, playerNo) {
 	// 객체 조작 -> 출력 분리
 	nation[nNo].n_level++;
-	player[playerTurn].money -= cost;
+	player[playerNo].money -= fee;
 	setHouse(nNo, nation[nNo].n_level); // 게임보드 주택 입력 함수	
 }
 
 
-/*---------- 수현 10/30 건설 단계에 맞춰 주택 표시 ------ */
-	// 1103 지웅 이관
+// 1103 지웅 이관
 function setHouse(nNo, land_level) {
 	// 특정 조건에서만 발생하므로 이미지만 삽입
-	if(land_level==0){	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
-		document.querySelector('.b_house'+nNo).innerHTML = '';
-	}else if(land_level==1){
-		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-home"></i>';
-	}else if(land_level==2){
-		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-building"></i>';
-	}else if(land_level==3){
-		document.querySelector('.b_house'+nNo).innerHTML = '<i class="fas fa-hotel"></i>';
+	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
+		document.querySelector('.b_house' + nNo).innerHTML = '';
+	} else if (land_level == 1) {
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home"></i>';
+	} else if (land_level == 2) {
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building"></i>';
+	} else if (land_level == 3) {
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel"></i>';
 	}
 }
 
@@ -516,112 +518,126 @@ function setHouse(nNo, land_level) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-
 	if (nation[nationNo].n_level == 0) {//건물 없을때
 		let fee = nation[nationNo].n_payment// 현재 땅의 통행료
-		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-		income(ownerindex, fee)//통행료만큼 땅주인 지급
+		if (checkMoney(playerNo, fee)) {
+			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+			income(ownerindex, fee)//통행료만큼 땅주인 지급
+		}else{
+			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
+			alert('돈 부족')
+		}
 	} else if (nation[nationNo].n_level == 1) {//건물 1단계 일때
-		let fee =Math.floor(nation[nationNo].n_payment*1.5/10000)*10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
-		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-		income(ownerindex, fee)//통행료만큼 땅주인 지급
-
+		let fee = Math.floor(nation[nationNo].n_payment * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
+		if (checkMoney(playerNo, fee)) {
+			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+			income(ownerindex, fee)//통행료만큼 땅주인 지급
+		}else{
+			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
+			alert('돈 부족')
+		}
 	} else if (nation[nationNo].n_level == 2) {//건물 2단계일때
-		let fee =Math.floor(nation[nationNo].n_payment*1.5*1.5/10000)*10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
-		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-		income(ownerindex, fee)//통행료만큼 땅주인 지급
-
+		let fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
+		if(checkMoney(playerNo, fee)){
+			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+			income(ownerindex, fee)//통행료만큼 땅주인 지급
+		}else{
+			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
+			alert('돈 부족')
+		}
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
-		let fee =Math.floor(nation[nationNo].n_payment*1.5*1.5/10000)*10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
-		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-		income(ownerindex, fee)//통행료만큼 땅주인 지급
-
+		let fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
+		if(checkMoney(playerNo, fee)){
+			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+			income(ownerindex, fee)//통행료만큼 땅주인 지급
+		}else{
+			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
+			alert('돈 부족')
+		}
 	}
-
 
 }
 
 //지급 함수
 function income(playerNo, fee) {/// playerNo 플레이어인덱스,fee 지급할 액수
 	player[playerNo].p_money += fee
-
 }
 
 //지출 함수
 function outcome(playerNo, fee) {///플레이어인덱스,fee 지출 액수
 	player[playerNo].p_money -= fee
-
-
 }
 
 
 /*------------------수현 11/03 글 출력 메소드--------------------------------- */
 // log 출력시키려면 display 변경해줘야되는데 계속 사용할것같아서 함수로 만들었습니다.
-function displayLog(msgtype){
+function displayLog(msgtype) {
 	// 글만 출력시키면 되는 경우에는 변수로 1넣어주면되고
 	// 버튼까지 출력시켜야하면 2 넣어주면 됩니다!
-	if(msgtype==1){ // 글 출력되는 부분만 display 바꿔줌
-		document.querySelector(".game_info").style.display="block"
-	}else if(msgtype==2){ // 버튼 까지 출력되게 display 변경 // yes , no 선택할때까지 주사위굴리기 버튼도 안보이게
-		document.querySelector(".diceBtn").style.display="none";
-		document.querySelector(".game_info").style.display="block"
-		document.querySelector(".yes_btn").style.display="inline-block"
-		document.querySelector(".no_btn").style.display="inline-block"
-	}else if(msgtype==3){// 버튼 다시 none으로 , 주사위 버튼은다시 보이게
-		document.querySelector(".diceBtn").style.display="block";
-		document.querySelector(".yes_btn").style.display="none"
-		document.querySelector(".no_btn").style.display="none"
+	if (msgtype == 1) { // 글 출력되는 부분만 display 바꿔줌
+		document.querySelector(".game_info").style.display = "block"
+	} else if (msgtype == 2) { // 버튼 까지 출력되게 display 변경 // yes , no 선택할때까지 주사위굴리기 버튼도 안보이게
+		document.querySelector(".diceBtn").style.display = "none";
+		document.querySelector(".game_info").style.display = "block"
+		document.querySelector(".yes_btn").style.display = "inline-block"
+		document.querySelector(".no_btn").style.display = "inline-block"
+	} else if (msgtype == 3) {// 버튼 다시 none으로 , 주사위 버튼은다시 보이게
+		document.querySelector(".diceBtn").style.display = "block";
+		document.querySelector(".yes_btn").style.display = "none"
+		document.querySelector(".no_btn").style.display = "none"
 	}
 }
 
 /*---------------- 수현  11/03 토지구매 ------------------------- */
-function buyNation(nationNo, playerNo){
+function buyNation(nationNo, playerNo) {
 	// 소유주가 없는 땅에 도착하면 출력될 메소드
 	// 땅만 살지 건물까지 같이 살지 물어봐야됨
 	//잔액 충분하면 구매완료 되게
 	// 잔액부족하면 구매안되게 해야함
 	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
 	// 땅을 구매할지 부터 물어봐야함
-	let log=document.querySelector(".game_info")
-	let yes_btn=document.querySelector(".yes_btn")
-	let no_btn=document.querySelector(".no_btn")
-	let price=0; // 결제할 금액 넣어주려고 사용
-	log.innerHTML=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
+	let log = document.querySelector(".game_info")
+	let yes_btn = document.querySelector(".yes_btn")
+	let no_btn = document.querySelector(".no_btn")
+	let fee = 0; // 결제할 금액 넣어주려고 사용
+	log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
 	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
 	displayLog(2);
 
-	yes_btn.addEventListener('click',()=>{// 구매하기로 했을경우
-	 // 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
-		 log.innerHTML='토지가격 '+nation[nationNo].n_price+'원 , <br>주택 가격 '+(nation[nationNo].n_price/2)+'원 입니다. 같이 구입하시겠습니까?';
-		 displayLog(2);
-		 yes_btn.addEventListener('click' , ()=>{ // 주택 같이 구매
+	yes_btn.addEventListener('click', () => {// 구매하기로 했을경우
+		// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
+		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
+		displayLog(2);
+		yes_btn.addEventListener('click', () => { // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
-			price=(nation[nationNo].n_price+(nation[nationNo].n_price/2));
-			let result=checkMoney(playerNo, price);
-			if(result==1){}//지출 메소드 요청
-			else{log.innerHTML='자산이 부족합니다.'; return;}
-			
-			log.innerHTML='구매완료했습니다.'
+			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
+			let result = checkMoney(playerNo, fee);
+			if (result) { outcome(playerNo, fee) }//지출 메소드 요청
+			else { log.innerHTML = '자산이 부족합니다.'; return; }
+
+			log.innerHTML = '구매완료했습니다.'
 			console.log(player[playerNo].p_money);
+			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
 		})
-		no_btn.addEventListener('click', ()=>{ // 토지만 구매
-			price==nation[nationNo].n_price;
-			let result=checkMoney(playerNo, price);
-			if(result==1){}//지출 메소드 요청
-			else{log.innerHTML='자산이 부족합니다.'; return;}
+		no_btn.addEventListener('click', () => { // 토지만 구매
+			fee = nation[nationNo].n_price;
+			let result = checkMoney(playerNo, fee);
+			if (result) { outcome(playerNo, fee) }//지출 메소드 요청
+			else { log.innerHTML = '자산이 부족합니다.'; return; }
 			console.log(player[playerNo].p_money);
-			log.innerHTML='구매완료했습니다.'
+			log.innerHTML = '구매완료했습니다.'
+			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
 		})
+
 		
-		displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
 	})
 
 
-	no_btn.addEventListener('click', ()=>{ // 구매 안하기로 했을경우
+	no_btn.addEventListener('click', () => { // 구매 안하기로 했을경우
 		alert("구매안함")
 		return;
 	})
@@ -630,8 +646,8 @@ function buyNation(nationNo, playerNo){
 /*----------  수현 11/4 돈 부족할경우 구매안되게-------------- */
 // 장군이도 같이 쓰면 좋을듯!
 // 변수로 지출할 금액 받아서 그 금액보다 자산이 많으면 1 출력 아니면 0출력해서 사용하면 될듯합니다.
-function checkMoney(playerNo, price){ // 플레이어랑 지불해야할 돈 변수로 받으면 될듯합니다!
-	if(player[playerNo].p_money>=price){
-		return 1; // 결제할 자산 충분하면 1
-	}else return 0; // 결제 금액부족하면 0
+function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변수로 받으면 될듯합니다!
+	if (player[playerNo].p_money >= fee) {
+		return true; // 결제할 자산 충분하면 true
+	} else return false; // 결제 금액부족하면 false
 }

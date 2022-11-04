@@ -77,7 +77,7 @@ function onmessage(obj) {
 		display_dice(parsing.data1, parsing.data2);
 	}
 	else if(parsing.function_name = "levelUp_land"){	// 1103 지웅 추가
-		levelUp_land(parsing.data1, parsing.data2);
+		levelUp_land(parsing.data1, parsing.data2, parsing.data3);
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
@@ -177,7 +177,7 @@ function readybtn( s_no ){
 		}
 		send(object);
 	}else{
-		alert('본인거나 누르쇼ㅗㅗ');
+		alert('자신의 Ready만 누를 수 있습니다.');
 	}	
 }
 
