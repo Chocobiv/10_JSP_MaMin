@@ -576,6 +576,14 @@ function tollfee(nationNo, playerNo) {
 
 }
 
+function inoutcome (playerNo,nationNo,fee){ // 11/04 장군 
+	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+	income(ownerindex, fee)//통행료만큼 땅주인 지급
+	setPlayersInfo
+}	
+			
+
 //지급 함수
 function income(playerNo, fee) {/// playerNo 플레이어인덱스,fee 지급할 액수
 	player[playerNo].p_money += fee
