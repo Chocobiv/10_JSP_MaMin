@@ -499,12 +499,22 @@ function tollfee(nationNo, playerNo) {
 		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
 		income(ownerindex, fee)//통행료만큼 땅주인 지급
 	} else if (nation[nationNo].n_level == 1) {//건물 1단계 일때
-
+		let fee =Math.floor(nation[nationNo].n_payment*1.5/10000)*10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
+		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+		income(ownerindex, fee)//통행료만큼 땅주인 지급
 
 	} else if (nation[nationNo].n_level == 2) {//건물 2단계일때
-
+		let fee =Math.floor(nation[nationNo].n_payment*1.5*1.5/10000)*10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
+		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+		income(ownerindex, fee)//통행료만큼 땅주인 지급
 
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
+		let fee =Math.floor(nation[nationNo].n_payment*1.5*1.5/10000)*10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
+		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+		income(ownerindex, fee)//통행료만큼 땅주인 지급
 
 	}
 
