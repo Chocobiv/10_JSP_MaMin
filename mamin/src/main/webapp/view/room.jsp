@@ -11,7 +11,7 @@
 </head>
 <body oncontextmenu="return false">
 <div class="r_sno" style="display : none;"></div>
-<div class="stateGame" style="display : none;"></div>
+<div class="stateGame" style="display : none;">0</div>
 <div id="pagebox">
 	<%@ include file="header.jsp" %> <!-- file="jsp파일 주소" -->	
 	<div class="wrap">
