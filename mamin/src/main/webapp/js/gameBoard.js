@@ -63,25 +63,25 @@ let nation = [
 	{ n_no: 10, n_name: "싱가폴", owner: 2, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
 	{ n_no: 11, n_name: "아테네", owner: 2, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
 	{ n_no: 12, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 13, n_name: "베른", owner: 3, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
-	{ n_no: 14, n_name: "리스본", owner: 3, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
-	{ n_no: 15, n_name: "마드리드", owner: 3, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 13, n_name: "베른", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 14, n_name: "리스본", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 15, n_name: "마드리드", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
 	{ n_no: 16, n_name: "올림픽", owner: 0, n_type: 4, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 17, n_name: "오타와 ", owner: 3, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
-	{ n_no: 18, n_name: "시드니", owner: 3, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 19, n_name: "하와이", owner: 3, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 17, n_name: "오타와 ", owner: 0, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
+	{ n_no: 18, n_name: "시드니", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 19, n_name: "하와이", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
 	{ n_no: 20, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 21, n_name: "베를린", owner: 4, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 22, n_name: "도쿄", owner: 4, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 23, n_name: "파리", owner: 4, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 21, n_name: "베를린", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 22, n_name: "도쿄", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 23, n_name: "파리", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 24, n_name: "세계여행", owner: 0, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 25, n_name: "로마", owner: 4, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 26, n_name: "런던", owner: 4, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
-	{ n_no: 27, n_name: "뉴욕", owner: 4, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 25, n_name: "로마", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
 	{ n_no: 29, n_name: "부산", owner: 2, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
 	{ n_no: 30, n_name: "제주도", owner: 2, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
-	{ n_no: 31, n_name: "서울", owner: 3, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
+	{ n_no: 31, n_name: "서울", owner: 0, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
 ]
 
 let house = '<i class="fas fa-home"></i>' // 1번째 건설 단계
@@ -419,11 +419,9 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 	} else {		//소유주가 있는 땅일때
 		p_index = nation[nationNo].owner - 1
 		console.log("현재 토지의 소유주 인덱스 p_index) " + p_index)
-		//let p_nick = player[p_index].p_nick
-		//console.log("현재 토지의 소유주 닉네임) " + p_nick)	//error
-		if ((nation[nationNo].owner - 1) == playerNo) {	//소유주가 나일때
+		if (p_index == playerNo) {	//소유주가 나일때
 			console.log("내땅!!")
-		} else if ((nation[nationNo].owner) != 0 && (nation[nationNo].owner - 1) != playerNo) {	//다른 사람 땅일때
+		} else if (p_index != playerNo) {	//다른 사람 땅일때
 			console.log("다른 사람 땅!!")
 		}
 	}
