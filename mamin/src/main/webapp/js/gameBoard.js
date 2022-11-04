@@ -241,6 +241,7 @@ function playerLocation() {
 	if (start == true) {// 게임이 시작되고 나서일때!
 		landEventCheck(playerTurn);
 	}
+	
 
 }
 
@@ -290,11 +291,16 @@ function rollDice() {
 	// 	->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
 }
 
-
+// 주사위 굴러가고 다른 메소드들 실행될 수 있게 
+function sleep(sec) {
+  return new Promise(resolve => setTimeout(resolve, sec * 1000));
+} 
 //////////////////////////////////// 비아 - 주사위 비동기로 수정함!!!! /////////////////////////////////////
 async function display_dice(dice1, dice2) {
 	await run_dice(dice1, dice2)
-	setPlayerPosition(dice1, dice2)
+	await setPlayerPosition(dice1, dice2)
+	await sleep(1);
+	playerLocation(playerTurn)
 }
 
 // 주사위가 굴러가는 모션 메소드
@@ -309,13 +315,15 @@ function run_dice(dice1, dice2) {
 			if (count == 10)
 				clearInterval(diceLotation)
 		}, 100)
+		
 		resolve()	//return
 	})
 }
 
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
-	player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+	return new Promise(function(resolve, reject){
+			player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 	// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 	if (player[playerTurn].p_position > 31) {
 		player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -323,7 +331,9 @@ function setPlayerPosition(dice1, dice2) {
 		get_wage(playerTurn);
 	}
 	if (++playerTurn == player.length) { playerTurn = 0 }
-	playerLocation(playerTurn);
+		resolve()
+	})
+	
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -553,7 +563,7 @@ function buyNation(nationNo, playerNo){
 	let log=document.querySelector(".game_info")
 	let yes_btn=document.querySelector(".yes_btn")
 	let no_btn=document.querySelector(".no_btn")
-
+	let price=0; // 결제할 금액 넣어주려고 사용
 	log.innerHTML=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
 	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
 	displayLog(2);
@@ -564,14 +574,23 @@ function buyNation(nationNo, playerNo){
 		 displayLog(2);
 		 yes_btn.addEventListener('click' , ()=>{ // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
-			player[playerNo].p_money-=(nation[nationNo].n_price+(nation[nationNo].n_price/2));
+			price=(nation[nationNo].n_price+(nation[nationNo].n_price/2));
+			let result=checkMoney(playerNo, price);
+			if(result==1){}//지출 메소드 요청
+			else{log.innerHTML='자산이 부족합니다.'; return;}
+			
+			log.innerHTML='구매완료했습니다.'
 			console.log(player[playerNo].p_money);
 		})
 		no_btn.addEventListener('click', ()=>{ // 토지만 구매
-			player[playerNo].p_money-=nation[nationNo].n_price;
+			price==nation[nationNo].n_price;
+			let result=checkMoney(playerNo, price);
+			if(result==1){}//지출 메소드 요청
+			else{log.innerHTML='자산이 부족합니다.'; return;}
 			console.log(player[playerNo].p_money);
+			log.innerHTML='구매완료했습니다.'
 		})
-		log.innerHTML='구매완료했습니다.'
+		
 		displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
 	})
 
@@ -581,4 +600,13 @@ function buyNation(nationNo, playerNo){
 		return;
 	})
 
+}
+
+/*----------  수현 11/4 돈 부족할경우 구매안되게-------------- */
+// 장군이도 같이 쓰면 좋을듯!
+// 변수로 지출할 금액 받아서 그 금액보다 자산이 많으면 1 출력 아니면 0출력해서 사용하면 될듯합니다.
+function checkMoney(playerNo, price){ // 플레이어랑 지불해야할 돈 변수로 받으면 될듯합니다!
+	if(player[playerNo].p_money>=price){
+		return 1; // 결제할 자산 충분하면 1
+	}else return 0; // 결제 금액부족하면 0
 }
