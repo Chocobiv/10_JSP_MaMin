@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- 캐러셀
+	<!-- 캐러셀s
 	
 	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
 	  <div class="carousel-inner">

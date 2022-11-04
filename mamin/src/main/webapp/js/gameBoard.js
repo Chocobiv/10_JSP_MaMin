@@ -219,6 +219,7 @@ function gamePlayer() {
 			'<div class="g_intro">' +
 			'<div class="g_m_nick">' + player[i - 1].p_nick + '</div>' + //플레이어 닉네임 출력 위치
 			'<div class="g_money">' + player[i - 1].p_money + '</div>' + // 플레이어 순자산 출력 위치
+			
 			'</div>'
 	}
 }
@@ -482,6 +483,7 @@ function levelUp_check(playerNo) {
 					data2: fee,
 					data3: playerNo
 				}
+				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 				send(object);	// 실행할 함수 객체화 해서 서버로 전송
 			}
 		}else{ alert('돈 부족') }
@@ -524,6 +526,8 @@ function tollfee(nationNo, playerNo) {
 			outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
 			let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
 			income(ownerindex, fee)//통행료만큼 땅주인 지급
+			
+			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		}else{
 			//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
 			alert('돈 부족')
@@ -622,6 +626,8 @@ function buyNation(nationNo, playerNo) {
 			log.innerHTML = '구매완료했습니다.'
 			console.log(player[playerNo].p_money);
 			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+			
+			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
 		no_btn.addEventListener('click', () => { // 토지만 구매
 			fee = nation[nationNo].n_price;
@@ -631,6 +637,7 @@ function buyNation(nationNo, playerNo) {
 			console.log(player[playerNo].p_money);
 			log.innerHTML = '구매완료했습니다.'
 			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
 
 		
