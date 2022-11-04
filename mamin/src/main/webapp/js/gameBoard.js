@@ -1,8 +1,11 @@
 /*---------- 전역변수 ---------------- */
 let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
-
-
+//------------수현 추가 -로그 글 ,버튼 출력 부분
+let log = document.querySelector(".game_info")
+let yes_btn = document.querySelector(".yes_btn")
+let no_btn = document.querySelector(".no_btn")
+let g_status; // 수현 추가 - 토지구매시 버튼 타입 저장하기 위한 변수
 /* 
 	20221104 지웅 추가
 	
@@ -395,8 +398,10 @@ function landEventCheck(playerTurn) {
 		playerNo = playerTurn - 1      //현재 이동한 플레이어 인덱스 = (p_no-1)
 	}
 	// 도착한 땅 안내!
-	document.querySelector(".game_info").innerHTML
+	if(document.querySelector('.r_sno').innerHTML == playerNo+1){
+			document.querySelector(".game_info").innerHTML
 		= '' + nation[nationNo].n_name + '에 도착했습니다.'
+		}
 	displayLog(1)
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
@@ -570,12 +575,15 @@ function outcome(playerNo, fee) {///플레이어인덱스,fee 지출 액수
 
 /*------------------수현 11/03 글 출력 메소드--------------------------------- */
 // log 출력시키려면 display 변경해줘야되는데 계속 사용할것같아서 함수로 만들었습니다.
-function displayLog(msgtype) {
+function displayLog(msgtype, playerNo) {
 	// 글만 출력시키면 되는 경우에는 변수로 1넣어주면되고
 	// 버튼까지 출력시켜야하면 2 넣어주면 됩니다!
 	if (msgtype == 1) { // 글 출력되는 부분만 display 바꿔줌
 		document.querySelector(".game_info").style.display = "block"
 	} else if (msgtype == 2) { // 버튼 까지 출력되게 display 변경 // yes , no 선택할때까지 주사위굴리기 버튼도 안보이게
+		if(document.querySelector('.r_sno').innerHTML != playerNo+1){
+			return;
+		}
 		document.querySelector(".diceBtn").style.display = "none";
 		document.querySelector(".game_info").style.display = "block"
 		document.querySelector(".yes_btn").style.display = "inline-block"
@@ -589,65 +597,100 @@ function displayLog(msgtype) {
 
 /*---------------- 수현  11/03 토지구매 ------------------------- */
 function buyNation(nationNo, playerNo) {
-	// 소유주가 없는 땅에 도착하면 출력될 메소드
-	// 땅만 살지 건물까지 같이 살지 물어봐야됨
-	//잔액 충분하면 구매완료 되게
-	// 잔액부족하면 구매안되게 해야함
-	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
-	// 땅을 구매할지 부터 물어봐야함
-	let log = document.querySelector(".game_info")
-	let yes_btn = document.querySelector(".yes_btn")
-	let no_btn = document.querySelector(".no_btn")
+	g_status=1; // 토지구매실행중 1
+	// 11/4
+	// 토지구매할지 선택 버튼이 상대방한테도 
 	let fee = 0; // 결제할 금액 넣어주려고 사용
 	log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
 	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
-	displayLog(2);
+	
+	//********** 턴종료 함수 넣으면 이거 삭제해도 될것같음!
+	displayLog(2,playerNo);
+	
+	
+	yes_btn.addEventListener('click', yesevent)// 구매하기로 했을경우
+		
+	
+	//document.querySelector('.btnbox').innerHTML = `<button onclick="내가 호출할 함수">yes</button>`;
+	
+	//document.querySelector('.btnbox').innerHTML = '';
+	no_btn.addEventListener('click', () => { // 구매 안하기로 했을경우
+		
+					
+	})
+	
+	
+}
 
-	yes_btn.addEventListener('click', () => {// 구매하기로 했을경우
-		// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
+/*---------------  수현 테스트중----------------- */
+function yesevent(){
+	// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
 		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
-		displayLog(2);
 		yes_btn.addEventListener('click', () => { // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
 			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
-			let result = checkMoney(playerNo, fee);
-			if (result) { 
-				outcome(playerNo, fee) //지출 메소드 요청
-				//토지 소유주 변경
-				nation[nationNo].owner = player[playerNo].p_no
-			}
-			else { log.innerHTML = '자산이 부족합니다.'; return; }
-
-			log.innerHTML = '구매완료했습니다.'
-			console.log(player[playerNo].p_money);
-			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
-
-			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+			buyResult(playerNo, fee, nationNo) // 이 메소드에서 소유주변경까지 모두 해결
+			console.log("test2")
 		})
 		no_btn.addEventListener('click', () => { // 토지만 구매
 			fee = nation[nationNo].n_price;
-			let result = checkMoney(playerNo, fee);
-			if (result) { 
-				outcome(playerNo, fee) //지출 메소드 요청
-				//토지 소유주 변경
-				nation[nationNo].owner = player[playerNo].p_no
-			}
-			else { log.innerHTML = '자산이 부족합니다.'; return; }
-			console.log(player[playerNo].p_money);
-			log.innerHTML = '구매완료했습니다.'
-			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
-			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+			buyResult(playerNo, fee,nationNo)
+			console.log("test3")
+			
 		})
-
-
-	})
-
-
-	no_btn.addEventListener('click', () => { // 구매 안하기로 했을경우
-		alert("구매안함")
-		return;
-	})
+		
+		
 }
+
+function firstNo(){
+	alert("ff")
+	displayLog(3);
+	// 턴 종료 함수 넣기
+}
+
+/*-------------------- 수현 11/4 토지구매 겹치는 부분 메소드 ------------------------------- */
+function buyResult(playerNo, fee, nationNo){
+	let result = checkMoney(playerNo, fee);
+	if (result) { 
+		outcome(playerNo, fee) //지출 메소드 요청
+		//토지 소유주 변경
+		nation[nationNo].owner = player[playerNo].p_no
+		log.innerHTML = '구매완료했습니다.'
+		console.log(player[playerNo].p_money);
+		displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+		gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+	}
+	else { log.innerHTML = '자산이 부족합니다.'; return; }
+}
+
+/*----------------------  수현 토지매각------------------------------------- */
+// 통행료, 황금열쇠 돈 지출시 부족하면 토지매각 실행
+function saleLand(playerNo){
+	// 보유한 땅 있는지 체크
+	// 땅 있으면 보유한 땅 목록 출력
+	// 선택받은 땅의 가격 50%가 매각가
+	// 매각했는데도 자산 부족하면 또 이리로 들어와야함
+	
+	// 보유한 땅 담으려고
+	let Landlist=[]
+	// 여기에 하나도 없으면 함수종료시키기	
+	for(let i=0; i<=31; i++){
+		if(nation[i].owner==(playerNo+1)){
+			// 맞으면 리스트에 담아두기
+			Landlist.push(nation[i])
+			
+			
+			
+		}
+	}
+	
+
+	
+}
+	
+	
+	
+
 
 /*----------  수현 11/4 돈 부족할경우 구매안되게-------------- */
 // 장군이도 같이 쓰면 좋을듯!
