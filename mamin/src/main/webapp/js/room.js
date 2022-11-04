@@ -40,7 +40,7 @@ if (m_id !== 'null') {
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
 	websocket.onclose = (e) => { onclose(e) };
-	websocket.onmessage = (e) => { onmessage(e) };
+	websocket.onmessage = (e) => {onmessage(e) };
 	websocket.onerror = (e) => { onerror(e) };
 } else {
 	alert('로그인 후 이용해주세요.');
@@ -48,7 +48,7 @@ if (m_id !== 'null') {
 }
 
 //20221029[지웅] websocket 기본 function에 대입할 기능 구현
-function onopen(e) {}
+function onopen(e) { console.log(e)}
 function onerror(e) { alert(e); }
 function onclose(e) { 
 	readyCounter();
@@ -71,18 +71,19 @@ function onmessage(obj) {
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 들어왔습니다.</div>`
 	}else if(parsing.type =="close"){//플레이어 퇴장
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
-	}else{// 채팅 메세지 받을때
+	}else if(parsing.type =="message"){// 채팅 메세지 받을때
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
+	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
+		display_dice(parsing.data1, parsing.data2);
 	}
-	
+	else if(parsing.function_name = "levelUp_land"){
+		levelUp_land(parsing.data1, parsing.data2);
+	}
+	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
-		if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
-			display_dice(parsing.data1, parsing.data2);
-		}
-		else if(parsing.function_name = "levelUp_land"){
-			levelUp_land(parsing.data1, parsing.data2);
-		}
-	}	
+		
+	}
+	*/	
 }
 
 function send(object) {
@@ -151,15 +152,12 @@ function enterKey() {
 	}
 }
 function sendMessage() {// 11/03 장군 채팅 메세지 보내기
-	
-	
 	let msg={
 		m_nick :m_nick,
-		content:document.querySelector('.c_inputbox').value
+		content:document.querySelector('.c_inputbox').value,
+		type : 'message'	// 1104 지웅 추가 -> onmessage에 else있는 경우 오류 발생, type 추가 후 else if로 제어
 	}
-	
-	websocket.send( JSON.stringify(msg) )
-	
+	send(msg);	
 	document.querySelector('.c_inputbox').value = '';
 	document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;
 }
