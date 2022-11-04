@@ -449,10 +449,15 @@ function displayLog(msgtype){
 	// 버튼까지 출력시켜야하면 2 넣어주면 됩니다!
 	if(msgtype==1){ // 글 출력되는 부분만 display 바꿔줌
 		document.querySelector(".game_info").style.display="block"
-	}else if(msgtype==2){ // 버튼 까지 출력되게 display 변경
+	}else if(msgtype==2){ // 버튼 까지 출력되게 display 변경 // yes , no 선택할때까지 주사위굴리기 버튼도 안보이게
+		document.querySelector(".diceBtn").style.display="none";
 		document.querySelector(".game_info").style.display="block"
 		document.querySelector(".yes_btn").style.display="inline-block"
 		document.querySelector(".no_btn").style.display="inline-block"
+	}else if(msgtype==3){// 버튼 다시 none으로 , 주사위 버튼은다시 보이게
+		document.querySelector(".diceBtn").style.display="block";
+		document.querySelector(".yes_btn").style.display="none"
+		document.querySelector(".no_btn").style.display="none"
 	}
 }
 
@@ -461,29 +466,36 @@ function buyNation(nationNo, playerNo){
 	// 소유주가 없는 땅에 도착하면 출력될 메소드
 	// 땅만 살지 건물까지 같이 살지 물어봐야됨
 	//잔액 충분하면 구매완료 되게
+	// 잔액부족하면 구매안되게 해야함
 	// 주택 토지가격 0.5 / 빌딩 토지가격  / 호텔 토지가격 * 1.5
 	// 땅을 구매할지 부터 물어봐야함
 	let log=document.querySelector(".game_info")
 	let yes_btn=document.querySelector(".yes_btn")
-	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
-	document.querySelector(".diceBtn").style.displqy="none";
+	let no_btn=document.querySelector(".no_btn")
 	
 	log.innerHTML=''+nation[nationNo].n_name+'을(를) 구매하시겠습니까?'
+	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
 	displayLog(2);
 	
-	yes_btn.addEventListener('click',()=>{
+	yes_btn.addEventListener('click',()=>{// 구매하기로 했을경우
 	 // 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
-		 log.innerHTML='토지만은'+nation[nationNo].n_price+'원 이고 <br>주택 가격은 '+(nation[nationNo].n_price/2)+'원 입니다. 같이 구입하시겠습니까?';
+		 log.innerHTML='토지가격 '+nation[nationNo].n_price+'원 , <br>주택 가격 '+(nation[nationNo].n_price/2)+'원 입니다. 같이 구입하시겠습니까?';
 		 displayLog(2);
-		 yes_btn.addEventListener('click' , ()=>{
+		 yes_btn.addEventListener('click' , ()=>{ // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
 			player[playerNo].p_money-=(nation[nationNo].n_price+(nation[nationNo].n_price/2));
 			console.log(player[playerNo].p_money);
-			log.innerHTML='구매완료했습니다.'
-			
-			
 		})
+		no_btn.addEventListener('click', ()=>{ // 토지만 구매
+			player[playerNo].p_money-=nation[nationNo].n_price;
+			console.log(player[playerNo].p_money);
+		})
+		log.innerHTML='구매완료했습니다.'
+		displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
 	})
-	
+	no_btn.addEventListener('click', ()=>{ // 구매 안하기로 했을경우
+		alert("구매안함")
+		return;
+	})
 	
 }
