@@ -75,9 +75,12 @@ function onmessage(obj) {
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
 	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
 		display_dice(parsing.data1, parsing.data2);
-	}
-	else if(parsing.function_name = "levelUp_land"){	// 1103 지웅 추가
+	}else if(parsing.function_name == "levelUp_land"){	// 1103 지웅 추가 //1104 비아 수정
 		levelUp_land(parsing.data1, parsing.data2, parsing.data3);
+	}else if(parsing.object_name == 'nation'){			// 1104 비아 추가
+		updateNationInfo(parsing.index, parsing.p_no)
+	}else if(parsing.object_name == 'player'){			// 1104 비아 추가
+		updatePlayerInfo(parsing.index, parsing.cash)
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
