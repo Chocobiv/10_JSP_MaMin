@@ -11,6 +11,7 @@
 </head>
 <body oncontextmenu="return false">
 <div class="r_sno" style="display : none;"></div>
+<div class="stateGame" style="display : none;"></div>
 <div id="pagebox">
 	<%@ include file="header.jsp" %> <!-- file="jsp파일 주소" -->	
 	<div class="wrap">
@@ -59,5 +60,6 @@
 	</div>
 </div>
 	<script src="../js/room.js"></script>
+	<script src="../js/gameBoard.js"></script>
 </body>
 </html>

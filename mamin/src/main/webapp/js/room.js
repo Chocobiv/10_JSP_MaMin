@@ -58,8 +58,6 @@ function onmessage(obj) {
 	console.log(parsing);
 	if(parsing.function_name=='addplayer'){	// 20221031 낮 언젠가... 지웅 추가
 		addPlayer(parsing.data);
-		
-		
 	}else if(parsing.function_name=='exit'){ // 20221031 23:49 지웅 추가
 		alert('남은 자리가 없어요ㅠㅠ')
 		exit();
@@ -67,21 +65,24 @@ function onmessage(obj) {
 		ready(parsing.data);
 	}else if(parsing.function_name=='start_game'){ // 1101 지웅 추가
 		start_game();
-	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
-		display_dice(parsing.data1, parsing.data2);
 	}else if(parsing.function_name=='duplicated'){		// 1102 지웅 추가
 		duplicated();
 	}else if(parsing.type =="open"){//플레이어 입장
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 들어왔습니다.</div>`
-	}
-	else if(parsing.type =="close"){//플레이어 퇴장
+	}else if(parsing.type =="close"){//플레이어 퇴장
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
 	}else{// 채팅 메세지 받을때
-		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`
-		
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
 	}
 	
-	
+	if(document.querySelector('.stateGame').innerHTML != ''){
+		if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
+			display_dice(parsing.data1, parsing.data2);
+		}
+		else if(parsing.function_name = "levelUp_land"){
+			levelUp_land(parsing.data1, parsing.data2);
+		}
+	}	
 }
 
 function send(object) {
@@ -208,6 +209,7 @@ function open_game(){
 }
 
 function start_game(){
+	document.querySelector('.stateGame').innerHTML = 1;
 	$('#pagebox').load('gameBoard.jsp');
 }
 
