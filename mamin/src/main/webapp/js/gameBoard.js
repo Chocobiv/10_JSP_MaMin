@@ -627,12 +627,15 @@ function buyNation(nationNo, playerNo) {
 		// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
 		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
 		displayLog(2);
+		console.log('토지 구매 전 플레이어 현금)'+player[playerNo].p_money)
 		yes_btn.addEventListener('click', () => { // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
 			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 			let result = checkMoney(playerNo, fee);
 			if (result) { 
 				outcome(playerNo, fee) //지출 메소드 요청
+				//비아 - 테스트중
+				console.log('토지+주택 구매 후 플레이어 현금)'+player[playerNo].p_money)
 				//토지 소유주 변경
 				nation[nationNo].owner = player[playerNo].p_no
 			}
@@ -656,6 +659,8 @@ function buyNation(nationNo, playerNo) {
 				outcome(playerNo, fee) //지출 메소드 요청
 				//토지 소유주 변경
 				nation[nationNo].owner = player[playerNo].p_no
+				//비아 - 테스트중
+				console.log('토지+주택 구매 후 플레이어 현금)'+player[playerNo].p_money)
 			}
 			else { log.innerHTML = '자산이 부족합니다.'; return; }
 			console.log(player[playerNo].p_money);
