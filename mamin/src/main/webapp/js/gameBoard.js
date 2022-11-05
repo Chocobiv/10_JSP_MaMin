@@ -1,11 +1,8 @@
 /*---------- 전역변수 ---------------- */
 let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
-//------------수현 추가 -로그 글 ,버튼 출력 부분
+//------------수현 추가 -로그 글출력 부분
 let log = document.querySelector(".game_info")
-let yes_btn = document.querySelector(".yes_btn")
-let no_btn = document.querySelector(".no_btn")
-let g_status; // 수현 추가 - 토지구매시 버튼 타입 저장하기 위한 변수
 /* 
 	20221104 지웅 추가
 	
@@ -296,7 +293,7 @@ function playerLocation() {
 function rollDice() {
 	console.log(playerTurn);
 	console.log(player);
-
+	
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		alert('다른 사람의 턴이에요.')
 		return;
@@ -335,6 +332,7 @@ async function display_dice(dice1, dice2) {
 
 // 주사위가 굴러가는 모션 메소드
 function run_dice(dice1, dice2) {
+	log.innerHTML="	"
 	return new Promise(function(resolve, reject) {
 		//코드 입력
 		let count = 0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
@@ -572,9 +570,10 @@ function outcome(playerNo, fee) {///플레이어인덱스,fee 지출 액수
 	player[playerNo].p_money -= fee
 }
 
-
+//********************수현 - 이거  턴종료함수 만들고 하면 필요없어서 삭제할것같습니다!!!!!!!! */
+// 턴종료 함수만들면 굳이 버튼 없앨 필요도 없고 , 토지구매시 선택 2번을 하는데 이떄 똑같은 버튼이 사용되서 문제가 있어 
+// 다른 버튼을 만들어서 사용해야해서 이건 안쓸것같습니다. 아무도 사용하지 않으시면 삭제하겠습니다!
 /*------------------수현 11/03 글 출력 메소드--------------------------------- */
-// log 출력시키려면 display 변경해줘야되는데 계속 사용할것같아서 함수로 만들었습니다.
 function displayLog(msgtype, playerNo) {
 	// 글만 출력시키면 되는 경우에는 변수로 1넣어주면되고
 	// 버튼까지 출력시켜야하면 2 넣어주면 됩니다!
@@ -597,56 +596,41 @@ function displayLog(msgtype, playerNo) {
 
 /*---------------- 수현  11/03 토지구매 ------------------------- */
 function buyNation(nationNo, playerNo) {
-	g_status=1; // 토지구매실행중 1
-	// 11/4
-	// 토지구매할지 선택 버튼이 상대방한테도 
+	if(document.querySelector('.r_sno').innerHTML != playerNo+1){
+			return;
+		}
 	let fee = 0; // 결제할 금액 넣어주려고 사용
 	log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
-	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠!
+	// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠! //********** 턴종료 함수 넣으면 이거 삭제해도 될것같음!
 	
-	//********** 턴종료 함수 넣으면 이거 삭제해도 될것같음!
-	displayLog(2,playerNo);
+	document.querySelector(".btnbox").innerHTML // 최초 선택 버튼 출력
+		='<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 	
-	
-	yes_btn.addEventListener('click', yesevent)// 구매하기로 했을경우
+	document.querySelector(".yes_btn").addEventListener('click',()=>{// 구매하기로 했을경우
+		// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
+		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
+		document.querySelector(".btnbox").innerHTML
+			='<button class="yes_btn2 Btnyes">YES</button><button class="no_btn2 Btnno">NO</button>'
+		document.querySelector(".yes_btn2").addEventListener('click', () => { // 주택 같이 구매
+			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
+			buyResult(playerNo, fee, nationNo) // 이 메소드에서 소유주변경까지 모두 해결
+		})
+		document.querySelector(".no_btn2").addEventListener('click', () => { // 토지만 구매
+			fee = nation[nationNo].n_price;
+			buyResult(playerNo, fee,nationNo)
+			
+		})
 		
-	
-	//document.querySelector('.btnbox').innerHTML = `<button onclick="내가 호출할 함수">yes</button>`;
-	
-	//document.querySelector('.btnbox').innerHTML = '';
-	no_btn.addEventListener('click', () => { // 구매 안하기로 했을경우
-		
-					
+	})
+	document.querySelector(".no_btn").addEventListener('click', () => { // 구매 안하기로 했을경우
+		log.innerHTML="구매하지 않습니다."
+		document.querySelector(".btnbox").innerHTML=""	
+		// *******턴종료 메소드 넣기		
 	})
 	
 	
 }
 
-/*---------------  수현 테스트중----------------- */
-function yesevent(){
-	// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
-		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
-		yes_btn.addEventListener('click', () => { // 주택 같이 구매
-			// 주택까지 함께 구매 같이 자산에서 빠지게
-			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
-			buyResult(playerNo, fee, nationNo) // 이 메소드에서 소유주변경까지 모두 해결
-			console.log("test2")
-		})
-		no_btn.addEventListener('click', () => { // 토지만 구매
-			fee = nation[nationNo].n_price;
-			buyResult(playerNo, fee,nationNo)
-			console.log("test3")
-			
-		})
-		
-		
-}
-
-function firstNo(){
-	alert("ff")
-	displayLog(3);
-	// 턴 종료 함수 넣기
-}
 
 /*-------------------- 수현 11/4 토지구매 겹치는 부분 메소드 ------------------------------- */
 function buyResult(playerNo, fee, nationNo){
@@ -656,11 +640,16 @@ function buyResult(playerNo, fee, nationNo){
 		//토지 소유주 변경
 		nation[nationNo].owner = player[playerNo].p_no
 		log.innerHTML = '구매완료했습니다.'
-		console.log(player[playerNo].p_money);
-		displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+		//yse , no 버튼 없애기
+		document.querySelector(".btnbox").innerHTML=""
 		gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+		
 	}
-	else { log.innerHTML = '자산이 부족합니다.'; return; }
+	// 돈 부족하면
+	else { log.innerHTML = '자산이 부족합니다.'; }
+	document.querySelector(".btnbox").innerHTML=""
+	
+	// *******턴종료 메소드 넣기
 }
 
 /*----------------------  수현 토지매각------------------------------------- */

@@ -43,7 +43,6 @@
 					<div class="b_log"> <!-- 게임상황 로그 -->
 						<h3 class="game_info">아무개님이 서울을 구매하셨습니다.</h3>
 						<div class="btnbox">
-							<button class="yes_btn" onclick="yesBtnClick()">YES</button><button class="no_btn" onclick="noBtnClick()">NO</button>
 						</div>
 					</div>
 					<div class="b_logo"><!-- 로고 넣을 부분 -->
