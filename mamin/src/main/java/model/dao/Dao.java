@@ -13,7 +13,7 @@ public class Dao {
 			 con = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/bluemarble", 
 					"root",
-					"1234");
+					"123456");
 		}catch (Exception e) { System.out.println(e);}
 	}
 }

@@ -4,7 +4,7 @@ let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변�
 
 //------------수현 추가 -로그 글출력 부분
 let log = document.querySelector(".game_info")
-
+let saleLandCheck=true; // 매각 반복실행위한 변수설정
 /* 
 	20221104 지웅 추가
 	
@@ -55,7 +55,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 500000, // 수현 토지구매확인하려고 50만원으로 늘렸어요!
+			p_money: 100000, // 수현 테스트하려고 자산많이 늘려놓음
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -345,8 +345,11 @@ async function display_dice(dice1, dice2) {
 function run_dice(dice1, dice2) {
 	log.innerHTML = "	"
 	for (let i = 0; i < nation.length; i++) {
-		console.log('nation[' + i + '] : ' + nation[i].owner)
+		console.log('nation[' + i + '] 소유주 : ' + nation[i].owner)
+		console.log('nation[' + i + '] 건물레벨 : ' + nation[i].n_level)
+		
 	}
+	
 	return new Promise(function(resolve, reject) {
 		//코드 입력
 		let count = 0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
@@ -451,13 +454,15 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 
 		/*===  수현 11/3 토지 구매 메소드 실행되게 넣어놓음!================================= */
 		buyNation(nationNo, playerNo)
-
+		setHouse(nationNo,nation[nationNo].n_level)
 	} else if(nation[nationNo].owner != 0) {		//소유주가 있는 땅일때
 		let p_index = nation[nationNo].owner - 1
 		console.log("현재 토지의 소유주 인덱스 p_index) " + p_index)
 		console.log("현재 토지의 소유주 번호 playerNo) " + playerNo)
 		if (nation[nationNo].owner == player[playerNo].p_no) {			//소유주가 나일때
 			//건물 업그레이드
+			// 11/5 수현 추가!!!!!!!! 이미 건물레벨이 최상이면 메소드 실행안되고 턴종료되게!!!
+			if(nation[nationNo].n_level==3){log.innerHTML="더 이상 건물을 업그레이드할 수 없습니다."; return;}//***턴종료함수넣기!!!
 			levelUp_check(playerNo)
 		} else if (nation[nationNo].owner != player[playerNo].p_no) {	//다른 사람 땅일때
 			//통행료 지불
@@ -471,39 +476,47 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 
 // 1103 지웅 건물 단계 상승 함수
 // 체커
+// 11/05 수현 컨펌 -> 로그로 수정
 function levelUp_check(playerNo) {
-	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {
-		return;
-	}
-	console.log('levelUp_check 안')
 	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
-	if (nation[nNo].n_level < 3) {
-		console.log('levelUp_check 안에서 첫번째 if문 안으로 드렁옴!')
-		let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
-		fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭		
+	let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
+	fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭	
+	
+	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
-			console.log('levelUp_check 안에서 소유재산 if문 안으로 들어옴!')
 			let building_name;
-			if (nation[nNo].n_level == 0) {
-				building_name = "주택";
-			} else if (nation[nNo].n_level == 1) {
-				building_name = "빌딩";
-			} else if (nation[nNo].n_level == 2) {
-				building_name = "호텔";
-			}
+			if (nation[nNo].n_level == 0) {building_name = "주택";}
+			else if (nation[nNo].n_level == 1) {building_name = "빌딩";} 
+			else if (nation[nNo].n_level == 2) {building_name = "호텔";}
 			
-			if (confirm("비용 : " + fee + "\n" + building_name + "을 지으시겠습니까?")) {
+			log.innerHTML=`${building_name}으로 업그레이드하시겠습니까? 비용은 ${fee}입니다.`
+			document.querySelector(".btnbox").innerHTML
+				='<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
+			
+			// 버튼 이벤트
+			document.querySelector(".yes_btn").addEventListener('click',()=>{
 				let object = {
 					function_name: 'levelUp_land',
 					data: nNo,
 					data2: fee,
 					data3: playerNo
 				}
-				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+				log.innerHTML="업그레이드 완료했습니다."
+				document.querySelector(".btnbox").innerHTML=""
 				send(object);	// 실행할 함수 객체화 해서 서버로 전송
-			}
-		} else { alert('돈 부족') }
+				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+			})
+			document.querySelector(".no_btn").addEventListener('click',()=>{
+				log.innerHTML="업그레이드하지 않습니다."
+				document.querySelector(".btnbox").innerHTML=""
+				return;
+			})
+			
+		} else { log.innerHTML="건물 업그레이드 할 비용이 없습니다." }
+	
 	}
+		
+		
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
@@ -513,6 +526,7 @@ function levelUp_land(nNo, fee, playerNo) {
 	// 객체 조작 -> 출력 분리
 	nation[nNo].n_level++;
 	player[playerNo].money -= fee;
+	gamePlayer() // 1105 수현 추가
 	setHouse(nNo, nation[nNo].n_level); // 게임보드 주택 입력 함수	
 }
 
@@ -521,23 +535,34 @@ function levelUp_land(nNo, fee, playerNo) {
 // 1104 비아 이관
 function setHouse(nNo, land_level) {
 	console.log('!!!setHouse!!!')
+	console.log("sethouse"+nation[nNo].n_level)
+	
 	// 특정 조건에서만 발생하므로 이미지만 삽입
 	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
 		document.querySelector('.b_house' + nNo).innerHTML = ''
-		console.log('0~~~~~~~')
 	} else if (land_level == 1) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home"></i>'
-		console.log('1~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home house"></i>'
+		houseColor(nNo) // 1105 수현 추가!!!
 	} else if (land_level == 2) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building"></i>'
-		console.log('2~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building house"></i>'
+		houseColor(nNo)
 	} else if (land_level == 3) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel"></i>'
-		console.log('3~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel house"></i>'
+		houseColor(nNo)
 	}
 }
 
 
+//*****수현 11/05 수현 플레이어에 따라 색깔 다르게 출력 */
+// 어차피 css 변경될거니까 일단 테스트할때 구분만 가능하게 적당히 배경색만 바꿨습니다!!
+// 사실 건물색깔을 바꾸고 싶었는데 요상하게 제대로 되다가 한 3턴 지나면 계속 기본색이 출력되더라고요...
+function houseColor(nNo){
+	if(nation[nNo].owner==1){document.querySelector('.b_house' + nNo).style.backgroundColor="#8BBCCC";}
+	else if(nation[nNo].owner==2){document.querySelector('.b_house' + nNo).style.backgroundColor="#42855B";}
+	else if(nation[nNo].owner==3){document.querySelector('.b_house' + nNo).style.backgroundColor="#87A2FB";}
+	else if(nation[nNo].owner==4){document.querySelector('.b_house' + nNo).style.backgroundColor=="#C689C6";}
+	
+}
 /*---------------------------------------장군 11/03  통행료 -------------------------*/
 ///도착한곳이 남의땅일때
 //현재 이동한 플레이어의 위치(=나라번호=n_no)
@@ -554,19 +579,37 @@ function tollfee(nationNo, playerNo) {
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
 		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
 	}
-	inoutcome(playerNo, nationNo, fee)
+	//*** 1105 수현 수정!!! -- 
+	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
+		log.innerHTML='통행료 : ' +fee
+		let result=checkMoney(playerNo, fee)
+		if(result){
+			inoutcome(playerNo, nationNo, fee) 
+		}else{
+			
+			log.innerHTML="현금이 부족해 매각해야합니다."
+			console.log("매각 메소드 실행")
+			printLandList(playerNo, fee , nationNo) // 통행료를 지불해야했던 토지번호도 가지고가야함!!
+			
+			
+		}
+		
+	}
+	
+	gamePlayer()
 }
 
+//1105 수현 수정
 function inoutcome(playerNo, nationNo, fee) { // 11/04 장군 
-	if (checkMoney(playerNo, fee)) {
-		outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
-		let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
-		income(ownerindex, fee)//통행료만큼 땅주인 지급
-		gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
-	} else {
-		//파산이나 매각이나 턴종료 등등 [*** 구현 필요 ***]
-		alert('돈 부족')
-	}
+
+	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
+	income(ownerindex, fee)//통행료만큼 땅주인 지급
+	gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+	log.innerHTML+="<br>통행료 지불 완료됐습니다."
+	return; // 턴 종료 메소드 넣기
+
+
 
 }
 
@@ -624,15 +667,27 @@ function buyNation(nationNo, playerNo) {
 				= '<button class="yes_btn2 Btnyes">YES</button><button class="no_btn2 Btnno">NO</button>'
 			document.querySelector(".yes_btn2").addEventListener('click', () => { // 주택 같이 구매
 				fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
-
-				buyResult(playerNo, fee, nationNo) // 이 메소드에서 소유주변경까지 모두 해결
-				sendNationPlayer(nationNo, playerNo)
+				if(!checkMoney(playerNo, fee)){
+					log.innerHTML="자산이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
+					return;
+				}
+				buyResult(playerNo, fee, nationNo ,1) // 이 메소드에서 소유주변경까지 모두 해결
+				
+				// 이 안에 있으면 안돼...다른 플레이어도 보긴해야돼
+				// 소켓연결은 이안에 있어도 상관없지 어차피 소켓통신시키면 모든 플레이어한테 보여주는 함수를 실행할거니까
+				
+				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
+				sendNationPlayer(nationNo, playerNo, 1) // 11/5 수현 변수 추가!!!!!! - 주택까지 구매할경우
 			})
 			document.querySelector(".no_btn2").addEventListener('click', () => { // 토지만 구매
 				fee = nation[nationNo].n_price;
-
-				buyResult(playerNo, fee, nationNo)
-				sendNationPlayer(nationNo, playerNo)
+				if(!checkMoney(playerNo, fee)){
+					log.innerHTML="자산이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
+					return;
+				}
+				buyResult(playerNo, fee, nationNo ,0)
+				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
+				sendNationPlayer(nationNo, playerNo, 0) // 토지만 구매하면 n_level 0 으로 넘기기
 			})
 
 		})
@@ -644,62 +699,93 @@ function buyNation(nationNo, playerNo) {
 		})
 
 	}
-	// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
-
+	
 	gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 }
 
 
 /*-------------------- 수현 11/4 토지구매 겹치는 부분 메소드 ------------------------------- */
-function buyResult(playerNo, fee, nationNo) {
-	let result = checkMoney(playerNo, fee);
-	if (result) {
-		outcome(playerNo, fee) //지출 메소드 요청
-		//토지 소유주 변경
-		nation[nationNo].owner = player[playerNo].p_no
-		log.innerHTML = '구매완료했습니다.'
-		//yse , no 버튼 없애기
-		document.querySelector(".btnbox").innerHTML = ""
-
-
-
-
-
-	}
-	// 돈 부족하면
-	else { log.innerHTML = '자산이 부족합니다.'; }
+function buyResult(playerNo, fee, nationNo ,type) {
+	// 수현 11/5 추가
+	// type 1이면 주택까지 함께구매로 건물레벨 상승
+	// 0이면 그냥 토지만 구매
+	
+	outcome(playerNo, fee) //지출 메소드 요청
+	//토지 소유주 변경
+	nation[nationNo].owner = player[playerNo].p_no
+	if(type==1){nation[nationNo].n_level=1; console.log("주택구매완료")}
+	log.innerHTML = '구매완료했습니다.'
+	//yse , no 버튼 없애기
 	document.querySelector(".btnbox").innerHTML = ""
+
+	
 
 	// *******턴종료 메소드 넣기
 }
 
-/*----------------------  수현 토지매각------------------------------------- */
+/*----------------------  수현 토지매각 리스트 출력------------------------------------- */
 // 통행료, 황금열쇠 돈 지출시 부족하면 토지매각 실행
-function saleLand(playerNo) {
+function printLandList(playerNo ,fee , nowNationNo) {
 	// 보유한 땅 있는지 체크
 	// 땅 있으면 보유한 땅 목록 출력
 	// 선택받은 땅의 가격 50%가 매각가
 	// 매각했는데도 자산 부족하면 또 이리로 들어와야함
-
+	
 	// 보유한 땅 담으려고
-	let Landlist = []
-	// 여기에 하나도 없으면 함수종료시키기	
-	for (let i = 0; i <= 31; i++) {
-		if (nation[i].owner == (playerNo + 1)) {
+	let Landlist=[]
+	// 여기에 하나도 없으면 함수종료시키기
+	// -> 파산	
+	for(let i=0; i<nation.length; i++){
+		if(nation[i].owner==(playerNo+1)){
 			// 맞으면 리스트에 담아두기
 			Landlist.push(nation[i])
-
-
-
 		}
 	}
-
-
-
+	//*****  파산메소드 넣어야함!!!
+	if(Landlist.length<1){console.log("매각할 토지없음"); log.innerHTML="매각할 땅이 없습니다. 파산!!"; return;}
+	
+	let html=fee+ "원을 지불하기 위해 매각할 땅을 선택해주세요"
+	Landlist.forEach(l=>{
+		console.log("보유한 땅 :" +l.n_name)
+		
+		html+='<div onclick="saleLand('+l.n_no +','+ playerNo +','+ fee+','+nowNationNo+')">'+l.n_name+'</div>'
+		
+	})
+	log.innerHTML=html
 }
 
+/*--------------- 수현 토지매각 실행 ----------------- */
+function saleLand(n_no, playerNo,fee , nowNationNo){
+	// 소유주 , 건물단계 리셋
+	// 매각가는 50%
+	log.innerHTML=nation[n_no].n_name+'을 선택했습니다.'
+	player[playerNo].p_money+=(nation[n_no].n_price/2)
+	nation[n_no].owner=0;
+	nation[n_no].n_level=0;
+	
+	sendNationPlayer(n_no, -1 , 0) 
+	// owner 없애주려고 pno -1 으로 넘김
+	// nation 객체 정보변경사항 소켓전달
+	
+	console.log("현재 잔액 : "+player[playerNo].p_money)
+	setTimeout(()=>{ // 1초만 있다가 실행되게
+		if(fee>player[playerNo].p_money){
+		console.log(fee+"금액 부족")
+		//매각해도 자산이 부족하면
+		log.innerHTML="아직 통행료를 지불할 수 없습니다."
+		printLandList(playerNo ,fee)
+		return;
+		}else{// 금액이 맞으면 // 통행료지불 재진행
+			inoutcome(playerNo, nowNationNo, fee)
+		}
+	
+	},1000)
+	
+	
+	
+	
 
-
+}
 
 
 /*----------  수현 11/4 돈 부족할경우 구매안되게-------------- */
@@ -711,15 +797,48 @@ function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변�
 	} else return false; // 결제 금액부족하면 false
 }
 
+//////////// 수현 11/05 추가 //////////////
+// 통행료 지불 후 자산 업데이트 소켓 전달!!!
+function playerMoneyUpdate(playerNo ,ownerindex){
+	let object = null
+	//2. player 객체 소켓 전달
+	object = {
+		Info_update: 'player',
+		giveIndex: playerNo,
+		takeIndex : ownerindex,
+		cash: player[playerNo].p_money
+	}
+	send(object)
+	
+	
+}
+function takeMoneyInfo(give_player, take_player, cash){
+	player[give_player].p_money-=cash;
+	player[take_player].p_money+=cash;
+}
+
 /////////////////////////// 비아[11/04] ///////////////////////////
 //nation(소유주) / player(현금) 소켓 전달 메소드
-function sendNationPlayer(nationNo, playerNo) {
+function sendNationPlayer(nationNo, playerNo , n_level) {
+	
 	let object = null
+	if(playerNo==-1){ 
+		//1105 수현 추가!! 매각시 owner를 0으로 바꿔줘야해서 다르게 설정함! 혹시 문제되면 말해주세여...
+		object = {
+		object_name: 'nation',
+		index: nationNo,
+		p_no: 0,
+		n_level: n_level	// 수현 추가함!!!!!
+		}
+		send(object)
+		return;
+	}
 	//1. nation 객체 소켓 전달
 	object = {
 		object_name: 'nation',
 		index: nationNo,
-		p_no: player[playerNo].p_no
+		p_no: player[playerNo].p_no,
+		n_level: n_level	// 수현 추가함!!!!!
 	}
 	send(object)
 	//2. player 객체 소켓 전달
@@ -732,12 +851,14 @@ function sendNationPlayer(nationNo, playerNo) {
 }
 
 //nation 업데이트 메소드
-function updateNationInfo(nation_index, p_no) {
+function updateNationInfo(nation_index, p_no, n_level) {
 	nation[nation_index].owner = p_no
+	nation[nation_index].n_level = n_level // 11/5 수현 추가함!!!!!!
 }
 
 //player 업데이트 메소드
 function updatePlayerInfo(player_index, cash) {
 	player[player_index].p_money = cash
 }
+
 /////////////////////////////////////////////////////////////////
