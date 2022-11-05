@@ -211,18 +211,10 @@ function gameboard() {
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지 출력할 함수
 function gamePlayer() {
-
+	let nation_sum = calculateMoney()
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
-		// 비아 - 현금 출력하도록 수정
-		let nation_sum = player[i - 1].p_money			//현금 저장 변수
-		for (let j = 0; j < nation.length; j++) {
-			if (nation[j].owner == player[i - 1].p_no) {
-				nation_sum += nation[j].n_price
-			}
-		}
-
-
+		
 		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
 			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
 			'</div>' +
@@ -233,6 +225,23 @@ function gamePlayer() {
 			'</div>'
 	}
 }
+
+
+///////////////////// 비아 - 순자산 계산 메소드[11/04] /////////////////////
+function calculateMoney(){
+	let nation_sum = 0
+	for (let i = 1; i <= player.length; i++) {
+		nation_sum = player[i - 1].p_money			//현금 저장 변수
+		for (let j = 0; j < nation.length; j++) {
+			if (nation[j].owner == player[i - 1].p_no) {
+				nation_sum += nation[j].n_price
+			}
+		}
+	}
+	return nation_sum
+}
+/////////////////////////////////////////////////////////////////////
+
 
 /*---------수현 플레이어 위치 출력---------- */
 
@@ -451,7 +460,7 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 
 		/*===  수현 11/3 토지 구매 메소드 실행되게 넣어놓음!================================= */
 		buyNation(nationNo, playerNo)
-
+		
 		return
 	} else {		//소유주가 있는 땅일때
 		p_index = nation[nationNo].owner - 1
@@ -472,11 +481,14 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 // 1103 지웅 건물 단계 상승 함수
 // 체커
 function levelUp_check(playerNo) {
+	console.log('levelUp_check 안')
 	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
 	if (nation[nNo].n_level < 3) {
+		console.log('levelUp_check 안에서 첫번째 if문 안으로 드렁옴!')
 		let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
 		fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭		
 		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
+			console.log('levelUp_check 안에서 소유재산 if문 안으로 들어옴!')
 			let building_name;
 			if (nation[nNo].n_level == 0) {
 				building_name = "주택";
@@ -502,6 +514,8 @@ function levelUp_check(playerNo) {
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
 function levelUp_land(nNo, fee, playerNo) {
+	//비아 수정
+	console.log('levelUp_land 함수 in!! '+nNo+' '+fee+' '+playerNo)
 	// 객체 조작 -> 출력 분리
 	nation[nNo].n_level++;
 	player[playerNo].money -= fee;
@@ -510,16 +524,22 @@ function levelUp_land(nNo, fee, playerNo) {
 
 
 // 1103 지웅 이관
+// 1104 비아 이관
 function setHouse(nNo, land_level) {
+	console.log('!!!setHouse!!!')
 	// 특정 조건에서만 발생하므로 이미지만 삽입
 	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
-		document.querySelector('.b_house' + nNo).innerHTML = '';
+		document.querySelector('.b_house' + nNo).innerHTML = ''
+		console.log('0~~~~~~~')
 	} else if (land_level == 1) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home"></i>';
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home"></i>'
+		console.log('1~~~~~~~')
 	} else if (land_level == 2) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building"></i>';
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building"></i>'
+		console.log('2~~~~~~~')
 	} else if (land_level == 3) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel"></i>';
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel"></i>'
+		console.log('3~~~~~~~')
 	}
 }
 
@@ -607,20 +627,28 @@ function buyNation(nationNo, playerNo) {
 		// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
 		log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
 		displayLog(2);
+		console.log('토지 구매 전 플레이어 현금)'+player[playerNo].p_money)
 		yes_btn.addEventListener('click', () => { // 주택 같이 구매
 			// 주택까지 함께 구매 같이 자산에서 빠지게
 			fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 			let result = checkMoney(playerNo, fee);
 			if (result) { 
 				outcome(playerNo, fee) //지출 메소드 요청
+				//비아 - 테스트중
+				console.log('토지+주택 구매 후 플레이어 현금)'+player[playerNo].p_money)
 				//토지 소유주 변경
 				nation[nationNo].owner = player[playerNo].p_no
 			}
 			else { log.innerHTML = '자산이 부족합니다.'; return; }
 
 			log.innerHTML = '구매완료했습니다.'
-			console.log(player[playerNo].p_money);
+			console.log('구매완료 후 토지소유자) '+nation[nationNo].owner)		//정상적으로 바뀜 -> 단, 소켓으로 다른 플레이어한테 전달이 안되서 다른 플레이어가 또 구매할 수 있음. 이는 플레이어 자산도 동일함
 			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+
+			
+			// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
+			sendNationPlayer(nationNo, playerNo)
+			
 
 			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
@@ -631,11 +659,19 @@ function buyNation(nationNo, playerNo) {
 				outcome(playerNo, fee) //지출 메소드 요청
 				//토지 소유주 변경
 				nation[nationNo].owner = player[playerNo].p_no
+				//비아 - 테스트중
+				console.log('토지+주택 구매 후 플레이어 현금)'+player[playerNo].p_money)
 			}
 			else { log.innerHTML = '자산이 부족합니다.'; return; }
 			console.log(player[playerNo].p_money);
 			log.innerHTML = '구매완료했습니다.'
 			displayLog(3);// yes, no 버튼 숨기고 주사위버튼 보이게
+			
+			
+			// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
+			sendNationPlayer(nationNo, playerNo)
+			
+
 			gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 		})
 
@@ -657,3 +693,34 @@ function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변�
 		return true; // 결제할 자산 충분하면 true
 	} else return false; // 결제 금액부족하면 false
 }
+
+/////////////////////////// 비아[11/04] ///////////////////////////
+//nation(소유주) / player(현금,자산) 소켓 전달 메소드
+function sendNationPlayer(nationNo, playerNo){
+	let object = null
+	//1. nation 객체 소켓 전달
+	object = {
+		object_name: 'nation',
+		index: nationNo,
+		p_no: player[playerNo].p_no
+	}
+	send(object)
+	//2. player 객체 소켓 전달
+	object = {
+		object_name: 'player',
+		index: playerNo,
+		cash: player[playerNo].p_money
+	}
+	send(object)
+}
+
+//nation 업데이트 메소드
+function updateNationInfo(nation_index, p_no){
+	nation[nation_index].owner = p_no
+}
+
+//player 업데이트 메소드
+function updatePlayerInfo(player_index, cash){
+	player[player_index].p_money = cash
+}
+/////////////////////////////////////////////////////////////////
