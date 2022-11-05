@@ -120,32 +120,33 @@ gamePlayer() // 플레이어 정보 출력
 // 수현 게임 보드판 출력 함수
 function gameboard() {
 
-
+// 20221105 지웅 수정
+	// 일반 땅 아닌 곳 숫자 안나오도록 수정
 
 	//시작점
 	//p_location0 == 시작
 	document.querySelector(".b_start").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[0].n_name + '</div>' +
-		'<div class="n_player">' + nation[0].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location0 location"></span>' + // 플레이어 말 출력 위치
 		'</div>'
 
 	//무인도
 	document.querySelector(".b_island").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[8].n_name + '</div>' +
-		'<div class="n_player">' + nation[8].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location8 location"></span>' +
 		'</div>'
 	//올림픽
 	document.querySelector(".b_olympic").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[16].n_name + '</div>' +
-		'<div class="n_player">' + nation[16].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location16 location"></span>' +
 		'</div>'
 	//세계여행
 	document.querySelector(".b_travle").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[24].n_name + '</div>' +
-		'<div class="n_player">' + nation[24].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location24 location"></span>' +
 		'</div>'
 	//오른쪽 줄 
@@ -154,28 +155,44 @@ function gameboard() {
 		//통행료 천원단위로 나오게 잘라줌
 		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-
-		document.querySelector(".right_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+			//황금열쇠 자리에 gold_key class부여
+		let html = '<div class="g_space">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
-
+		if(i==4){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}	
+		document.querySelector(".right_row").innerHTML += html
 	}
 	//윗 줄
 	for (let i = 15; i >= 9; i--) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".top_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==12){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}	
+		document.querySelector(".top_row").innerHTML += html
 
 	}
 	//왼쪽 줄
@@ -183,13 +200,22 @@ function gameboard() {
 	for (let i = 17; i <= 23; i++) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".left_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==20){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}	
+		document.querySelector(".left_row").innerHTML += html
 
 	}
 	//아랫줄
@@ -197,13 +223,22 @@ function gameboard() {
 	for (let i = 25; i <= 31; i++) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".bottom_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==28){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}
+		document.querySelector(".bottom_row").innerHTML += html
 
 	}
 	playerLocation() // 최초 플레이어 위치 출력
@@ -217,14 +252,17 @@ function gamePlayer() {
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
 
-		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
-			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
-			'</div>' +
-			'<div class="g_intro">' +
-			'<div class="g_m_nick">' + player[i - 1].p_nick + '</div>' + //플레이어 닉네임 출력 위치
-			'<div class="g_money">순자산 : ' + nation_sum + '</div>' + // 플레이어 순자산 출력 위치
-			'<div class="g_cash">현금 : ' + player[i - 1].p_money + '</div>' + // 플레이어 현금 출력 위치
-			'</div>'
+		document.querySelector(".player" + i + "_info").innerHTML = 
+									   `<div class="g_m_img">
+											<img class="ingameProfile" src="${player[i-1].m_img}">										
+										</div>
+										<div class="g_m_info">
+											<div class="g_moneyDisplay">
+												<div class="g_cash">현금 : ${player[i-1].p_money}원 <span class="g_money">(순자산)${nation_sum}원</span> </div>
+												<div class="g_minusMoney"></div>
+											</div>
+											<div class="g_m_nick">${player[i - 1].p_nick}</div>
+										</div>`;
 	}
 }
 

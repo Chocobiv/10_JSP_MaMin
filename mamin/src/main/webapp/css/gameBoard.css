@@ -25,44 +25,84 @@
 }
 
 
+body{
+	background-image: url("/mamin/img/game/background/도시_밤.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
 
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
-
 .gameboard{	/*보드판 전체*/
 	position: relative;
-	width: 1900px;
+	width: 2300px;
 	margin: 0 auto;
 	font-family: "KOTRAHOPE";
 }
+
 .player1_info{ /*플레이어1 정보칸*/
-	border: 1px solid black;
+	border: 4px solid #283C63;
 	position: absolute;
+	border-radius : 20px;
 	top:90px;
 	left:30px;
-	width: 300px;
+	width: 500px;
+	height: 230px;
+	display : flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: rgba(40,60,99,0.8);
 }
 
 .player2_info{ /*플레이어2 정보칸*/
-	border: 1px solid black;
+	border: 4px solid #FBE8D3;
 	position: absolute;
+	border-radius : 20px;
 	top:90px;
 	right:30px;
-	width: 300px;
+	width: 500px;
+	height: 230px;
+	display : flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: rgba(251,232,211,0.8);
 }
 .player3_info{ /*플레이어3 정보칸*/
-	border: 1px solid black;
+	border: 4px solid #928A97;
 	position: absolute;
+	border-radius : 20px;
 	bottom:90px;
 	left:30px;
-	width: 300px;
+	width: 500px;
+	height: 230px;
+	display : flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: rgba(146,138,151,0.8);
 }
 .player4_info{ /*플레이어4 정보칸*/
-	border: 1px solid black;
+	border: 4px solid #F85F73;
 	position: absolute;
+	border-radius : 20px;
 	bottom:90px;
 	right:30px;
-	width: 300px;
+	width: 500px;
+	height: 230px;
+	display : flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: rgba(248,95,115,0.8);
 }
+
+.g_m_img img{width:150px;}
+
+.g_m_info{
+	height : 170px;
+	display : flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
 .g_intro{/*플레이어 닉네임, 자산 들어갈 칸*/
 	display: flex;
 	flex-direction:column;
@@ -76,13 +116,17 @@
 	font-size: 40px;
 
 }
-.g_money{ /*순자산 칸*/
+
+.g_cash{
 	font-weight: bold;
 	font-size: 30px;
 }
-.g_m_img{ /*플레이어 프로필 이미지*/
-	float: left;
+
+.g_money{ /*순자산 칸*/
+	font-size : 15px;
 }
+
+.g_minusMoney{ color : #0d2e61; text-align: center; font-size: 25px;}
 
 /*---------------- 게임판 박스 -----------------------*/
 .boardbox {
@@ -95,7 +139,6 @@
 	height: 1093px;
 	color:white;
 	border: 2px solid black;
-	background-color: #B6E388;
 }
 
 /*---------------- 게임판 가운데 -----------------------*/
@@ -153,6 +196,14 @@
 .top_row {grid-column: 2 / 9; grid-row: 1; }
 
 
+.gold_key{
+	background-image: url("/mamin/img/game/background/key.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: 40px;
+    background-position-x: 6px;
+}
+
 /*칸 공간*/
 .g_space {
 	display: flex;
@@ -173,28 +224,42 @@
 }
 .b_start .g_space{
 	justify-content: flex-start;
-	width: 150px;	height: 155px;
+	width: 155px;
+	height: 155px;
 }
-.b_start .n_name{width: 143px;}
+.b_start .n_name{width: 148px;}
 /*--------------- 무인도 --------------------*/
 .b_island{
 	grid-column: 9;
 	grid-row: 1;
 }
 .b_island .g_space{
-	width: 150px;	height: 150px;
+	width: 155px;
+	height: 150px;
+	background-image : url("/mamin/img/game/background/무인도2.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+    background-position-y: 15px;
 }
-.b_island .n_name{width: 143px;}
+.b_island .n_name{width: 148px;}
 /*------------------ 올림픽 -----------------------*/
 .b_olympic{grid-column: 1;grid-row: 1 / 1;}
 .b_olympic .g_space{
 	width: 150px;	height: 150px;
+	background-image: url("/mamin/img/game/background/올림픽로고.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position-y : 20px;
 }
 .b_olympic .n_name{width: 143px;}
 /*------------------ 세계여행 -----------------------*/
 .b_travle{grid-column: 1;grid-row:9;}
 .b_travle .g_space{
 	width: 150px;	height: 155px;
+	background-image: url("/mamin/img/game/background/비행기.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: 43px;
 }
 .b_travle .n_name{width: 143px;}
 
