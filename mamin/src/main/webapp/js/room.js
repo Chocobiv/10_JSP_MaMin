@@ -81,6 +81,7 @@ function onmessage(obj) {
 		updateNationInfo(parsing.index, parsing.p_no)
 	}else if(parsing.object_name == 'player'){			// 1104 비아 추가
 		updatePlayerInfo(parsing.index, parsing.cash)
+		//gamePlayer()
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
