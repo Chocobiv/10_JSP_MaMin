@@ -408,8 +408,9 @@ function landEventCheck(playerTurn) {
 			console.log("올림픽");
 			break;
 
-		case 5: //세계여행 메소드
-			console.log("세계여행");
+		case 5: // 비아 - 세계여행 메소드
+			console.log("세계여행")
+			goWorldtravel(playerNo)
 			break;
 	}
 
@@ -502,7 +503,7 @@ function levelUp_land(nNo, fee, playerNo) {
 
 
 // 1103 지웅 이관
-// 1104 비아 이관
+// 1104 비아 이관 - 각 플레이어 별로 색 다르게 지정
 function setHouse(nNo, land_level, playerNo) {
 	console.log('!!!setHouse!!!')
 	// 특정 조건에서만 발생하므로 이미지만 삽입
@@ -621,7 +622,6 @@ function buyNation(nationNo, playerNo) {
 				sendNationPlayer(nationNo, playerNo)
 				
 				setHouse(nationNo, nation[nationNo].n_level, playerNo)	// 게임보드 주택 입력 함수
-				//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 			})
 			document.querySelector(".no_btn2").addEventListener('click', () => { // 토지만 구매
 				fee = nation[nationNo].n_price;
@@ -629,7 +629,6 @@ function buyNation(nationNo, playerNo) {
 				buyResult(playerNo, fee, nationNo)
 				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
 				sendNationPlayer(nationNo, playerNo)
-				//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 			})
 
 		})
@@ -740,4 +739,42 @@ function updateNationLevel(nation_index, playerNo) {
 	setHouse(nation_index, nation[nation_index].n_level, playerNo)	// 게임보드 주택 입력 함수
 }
 
+//세계여행 메소드
+function goWorldtravel(playerNo){
+	//1. 이동가능한 나라[자신이 소유한 나라] 목록 출력
+	console.log("== 이동할 수 있는 나라 ==")
+	for(let i=0; i<nation.length; i++){
+		if((nation[i].owner-1) == playerNo){
+			//추후에 모달로 변경해야함
+			console.log(nation[i].n_no+'번) '+nation[i].n_name)
+		}
+	}
+	//2. 이동할 나라 입력 받기
+	log.innerHTML = '세계여행을 떠납시다!'
+	document.querySelector(".btnbox").innerHTML
+		= '<input type="text" class="goWorld" placeholder="이동할 나라 번호 입력"> <button type="button" onclick="checkMyLand('+playerNo+')">입력</button>'
+}
+
+//입력받은 땅이 내 땅이 맞는지 확인 메소드
+function checkMyLand(playerNo){
+	let n_no = document.querySelector('.goWorld').value
+	if((nation[n_no].owner-1) == playerNo){		//입력받은 땅번호가 내 땅이 맞을 경우
+		player[playerNo].p_position = n_no	//플레이어 위치를 입력받은 땅번호로 수정
+		//세션 통신
+		let object = {
+			function_name: 'updatePlayerPosition',
+			playerNo: playerNo,
+			n_no: n_no
+		}
+		
+	}else{	//입력받은 땅번호가 내 땅이 아닐 경우
+		alert('목록에 있는 땅 번호만 입력할 수 있습니다.')	//모달로 수정 필요
+	}
+}
+
+function updatePlayerPosition(playerNo, n_no){
+	player[playerNo].p_position = n_no
+	//플레이어 위치 다시 로드
+	playerLocation()
+}
 /////////////////////////////////////////////////////////////////
