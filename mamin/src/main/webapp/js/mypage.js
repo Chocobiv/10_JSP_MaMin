@@ -15,29 +15,6 @@ function getmember(){
 			document.querySelector(".m_profile").value = member.m_profile
 			
 			document.querySelector('.cimg').src = '../img/member/'+member.m_img
-			switch(member.m_img){
-				case '1.png':
-					document.querySelector('.characterbtn[value="1"]').checked = true
-					break
-				case '2.png':
-					document.querySelector('.characterbtn[value="2"]').checked = true
-					break
-				case '3.png':
-					document.querySelector('.characterbtn[value="3"]').checked = true
-					break
-				case '4.png':
-					document.querySelector('.characterbtn[value="4"]').checked = true
-					break
-				case '5.png':
-					document.querySelector('.characterbtn[value="5"]').checked = true
-					break
-				case '6.png':
-					document.querySelector('.characterbtn[value="6"]').checked = true
-					break
-				case '아가양.jpg':
-					document.querySelector('.characterbtn[value="아가양"]').checked = true
-					break	
-			}
 
 		}
 	})
@@ -74,18 +51,11 @@ function mevent2(){
 }
 
 //비아 -  ----------- 캐릭터 선택 버튼 -----------
-let characterbtns = document.querySelectorAll('.characterbtn')
-let cimg = document.querySelector('.cimg')
-var prev = null;
-for (var i = 0; i < characterbtns.length; i++) {
-    characterbtns[i].addEventListener('change', function() {
-        (prev) ? console.log(prev.value): null;
-        if (this !== prev) {
-            prev = this;
-        }
-        if(this.value == '아가양') cimg.src = '../img/member/'+this.value+'.jpg'
-        else cimg.src = '../img/member/'+this.value+'.png'
-    });
+function hexbtn(image){
+	let cimg = document.querySelector('.cimg')
+	cimg.src = '../img/member/'+image+'.png'
+	if(image!=null)
+		document.querySelector('input[id=character]').value = image
 }
 
 //비아 -  -------------- form 전송 --------------

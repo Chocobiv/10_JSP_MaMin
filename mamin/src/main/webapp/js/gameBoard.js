@@ -213,10 +213,9 @@ function gameboard() {
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지 출력할 함수
 function gamePlayer() {
-	let nation_sum = calculateMoney()
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
-
+		let nation_sum = calculateMoney(i)
 		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
 			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
 			'</div>' +
@@ -230,14 +229,11 @@ function gamePlayer() {
 
 
 ///////////////////// 비아 - 순자산 계산 메소드[11/04] /////////////////////
-function calculateMoney() {
-	let nation_sum = 0
-	for (let i = 1; i <= player.length; i++) {
-		nation_sum = player[i - 1].p_money			//현금 저장 변수
-		for (let j = 0; j < nation.length; j++) {
-			if (nation[j].owner == player[i - 1].p_no) {
-				nation_sum += nation[j].n_price
-			}
+function calculateMoney(i) {
+	let nation_sum = player[i - 1].p_money			//순자산 저장 변수
+	for (let j = 0; j < nation.length; j++) {
+		if (nation[j].owner == i) {
+			nation_sum += nation[j].n_price
 		}
 	}
 	return nation_sum
@@ -284,20 +280,7 @@ function playerLocation() {
 }
 
 
-/*
- 지웅 - 11/02 추가
- rollDice -> diceBtn 함수 통해서 작동하도록 변경
 
- function diceBtn(){
-	  console.log('test');
-	let object = {
-		function_name : 'rollDice'
-	}
-	send(object);
- } 
- 각 플레이어의 난수가 모두 다르므로 메서드는 동시에 동작하나 이동값이 달라짐
- rollDice -> 난수 생성 + 이동 함수로 분할 필요
-*/
 
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
@@ -438,7 +421,8 @@ function landEventCheck(playerTurn) {
 // 지급 및 지출 매서드 생성 시 변경될 수 있음
 function get_wage(playerTurn) {
 	player[playerTurn].p_money += 200000;
-	console.log(player[playerTurn].p_money)
+	console.log('[출발지 통과] 월급 지급)'+player[playerTurn].p_money)
+	gamePlayer() // 플레이어 정보출력 갱신
 }
 
 
@@ -475,10 +459,10 @@ function levelUp_check(playerNo) {
 	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {
 		return;
 	}
-	console.log('levelUp_check 안')
+	console.log('levelUp_check 안!!')
 	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
 	if (nation[nNo].n_level < 3) {
-		console.log('levelUp_check 안에서 첫번째 if문 안으로 드렁옴!')
+		console.log('levelUp_check 안에서 첫번째 if문 안으로 들어옴!')
 		let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
 		fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭		
 		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
@@ -513,27 +497,23 @@ function levelUp_land(nNo, fee, playerNo) {
 	// 객체 조작 -> 출력 분리
 	nation[nNo].n_level++;
 	player[playerNo].money -= fee;
-	setHouse(nNo, nation[nNo].n_level); // 게임보드 주택 입력 함수	
+	setHouse(nNo, nation[nNo].n_level, playerNo); // 게임보드 주택 입력 함수	
 }
 
 
 // 1103 지웅 이관
 // 1104 비아 이관
-function setHouse(nNo, land_level) {
+function setHouse(nNo, land_level, playerNo) {
 	console.log('!!!setHouse!!!')
 	// 특정 조건에서만 발생하므로 이미지만 삽입
 	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
 		document.querySelector('.b_house' + nNo).innerHTML = ''
-		console.log('0~~~~~~~')
 	} else if (land_level == 1) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home"></i>'
-		console.log('1~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-home" id="icon_house'+playerNo+'"></i>'
 	} else if (land_level == 2) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building"></i>'
-		console.log('2~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-building" id="icon_house'+playerNo+'"></i>'
 	} else if (land_level == 3) {
-		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel"></i>'
-		console.log('3~~~~~~~')
+		document.querySelector('.b_house' + nNo).innerHTML = '<i class="fas fa-hotel" id="icon_house'+playerNo+'"></i>'
 	}
 }
 
@@ -612,7 +592,6 @@ function buyNation(nationNo, playerNo) {
 		log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
 		// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠! //********** 턴종료 함수 넣으면 이거 삭제해도 될것같음!
 
-		console.log('buyNation() 안에 들어옴!!!!!')
 		document.querySelector(".btnbox").innerHTML // 최초 선택 버튼 출력
 			= '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 
@@ -626,13 +605,31 @@ function buyNation(nationNo, playerNo) {
 				fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 
 				buyResult(playerNo, fee, nationNo) // 이 메소드에서 소유주변경까지 모두 해결
+				
+				
+				// 비아추가 - n_level 1로 수정
+				nation[nationNo].n_level = 1
+				// 비아추가 - 건물 지을건지 또 물어보지 않고 바로 소켓 전달 [JS는 오버로딩 불가]
+				let object = {
+					function_name: 'updateNationLevel',
+					n_index: nationNo,
+					p_index: playerNo
+				}
+				send(object)
+				
+				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
 				sendNationPlayer(nationNo, playerNo)
+				
+				setHouse(nationNo, nation[nationNo].n_level, playerNo)	// 게임보드 주택 입력 함수
+				//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 			})
 			document.querySelector(".no_btn2").addEventListener('click', () => { // 토지만 구매
 				fee = nation[nationNo].n_price;
 
 				buyResult(playerNo, fee, nationNo)
+				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
 				sendNationPlayer(nationNo, playerNo)
+				//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 			})
 
 		})
@@ -644,9 +641,9 @@ function buyNation(nationNo, playerNo) {
 		})
 
 	}
-	// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
+	
 
-	gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+	
 }
 
 
@@ -660,11 +657,6 @@ function buyResult(playerNo, fee, nationNo) {
 		log.innerHTML = '구매완료했습니다.'
 		//yse , no 버튼 없애기
 		document.querySelector(".btnbox").innerHTML = ""
-
-
-
-
-
 	}
 	// 돈 부족하면
 	else { log.innerHTML = '자산이 부족합니다.'; }
@@ -731,13 +723,21 @@ function sendNationPlayer(nationNo, playerNo) {
 	send(object)
 }
 
-//nation 업데이트 메소드
+//nation 소유주 업데이트 메소드
 function updateNationInfo(nation_index, p_no) {
 	nation[nation_index].owner = p_no
 }
 
-//player 업데이트 메소드
+//player 현금 업데이트 메소드
 function updatePlayerInfo(player_index, cash) {
 	player[player_index].p_money = cash
+	gamePlayer() // 플레이어 정보출력 갱신
 }
+
+//nation 건물 단계 업데이트 메소드 - 처음 토지 구매할 때 건물도 같이 구매할 경우
+function updateNationLevel(nation_index, playerNo) {
+	nation[nation_index].n_level = 1
+	setHouse(nation_index, nation[nation_index].n_level, playerNo)	// 게임보드 주택 입력 함수
+}
+
 /////////////////////////////////////////////////////////////////

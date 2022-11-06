@@ -10,7 +10,6 @@ function login(){
 				alert('존재하지 않는 아이디입니다.')
 				location.reload()
 			}else if(re === '1'){	//로그인 성공
-				alert('로그인 성공')
 				location.href = '/mamin/view/index.jsp'
 			}else if(re === '2'){	//비밀번호 틀림
 				alert('패스워드가 다릅니다.')

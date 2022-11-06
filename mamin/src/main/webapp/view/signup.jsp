@@ -109,16 +109,22 @@
 											</div>
 										</div>
 									</div>
+									<div class="hexwrap">
+										<div class="hex">
+											<div class="hex-inner">
+												<div class="content" onclick="hexbtn(7)">
+													<p class="hexbox"> <div class="hex"> <img src="../img/member/7.png"> </div> </p>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</span>
 							
-							<span class="col-md-6"> <!-- 캐릭터 이미지 --> 
+							<span class="col-md-9"> <!-- 캐릭터 이미지 --> 
 								<img src="../img/member/1.png" class="cimg"><br>
 								<input class="characterbtn"  type="hidden" id="character" name="character" value="1">
-								
-								
 							</span>
-							
 						</div>
 					</td>
 				</tr>
