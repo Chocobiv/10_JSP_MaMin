@@ -1,5 +1,8 @@
 package model.dao;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import model.dto.MemberDto;
 
 public class RoomDao extends Dao {
@@ -36,4 +39,44 @@ public class RoomDao extends Dao {
 		return null;
 	}
 
+	
+	public void invalidgameover(String m_nickout, JSONArray arr){
+		
+		arr.forEach((player)->{
+		    JSONObject json = (JSONObject) player;
+		    if(json.get("m_nick").equals(m_nickout)){//게임중 나간 플레이어일경우 total만 +1
+		    	String sql = "update member set total = total+1 where m_nick=?";
+		    	
+		    	try {
+					ps=con.prepareStatement(sql);
+					ps.setString(1, m_nickout);
+					ps.executeUpdate();
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+		    	
+		    }else {///나간플레이어가 아닌경우 wins 와 total 필드 +1
+		    	String sql = "update member set total = total+1 ,wins=wins+1 where m_nick=?";
+		    	try {
+		    		ps=con.prepareStatement(sql);
+		    		ps.setString(1, (String) json.get("m_nick"));
+					ps.executeUpdate();
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+		    }
+		
+
+		});
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

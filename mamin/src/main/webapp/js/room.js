@@ -70,7 +70,12 @@ function onmessage(obj) {
 	}else if(parsing.type =="open"){//플레이어 입장
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 들어왔습니다.</div>`
 	}else if(parsing.type =="close"){//플레이어 퇴장
-		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
+		if(document.querySelector('.stateGame').innerHTML=="0"){// 11/06 장군 추가 게임 진행중이 아닐때
+			document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
+		}else{// 11/06 장군 추가 게임 진행중일 때 퇴장시
+			invalidGameover(parsing.m_nick);
+		}
+		
 	}else if(parsing.type =="message"){// 채팅 메세지 받을때
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
 	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
@@ -112,7 +117,7 @@ function addPlayer(array){
 		blankslot[object.s_no-1] = true;
 		let win_rate;
 		if(object.total!==0){
-			win_rate = (Number(object.wins) / Number(object.total)) * 100 + '%';
+			win_rate =Math.round( (Number(object.wins) / Number(object.total)) * 100 )+ '%';//1106 장군 추가 승률 소수점 반올림
 		}else{
 			win_rate = '전적 없음';
 		}
@@ -199,11 +204,11 @@ function open_game(){
 		let object = {
 			function_name : 'start_game'
 		}
-		if(count_ready==2){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
+		if(count_ready==player_list.length && count_ready>=2){ // 1106 장군수정 레디한 플레이어수가 2명이상이고 현재 접속한 플레이어가 모두 레디했으면
 			send(object);
-		}else{
-			alert('준비되지 않은 플레이어가 있어요.')
-		}
+		}else if(player_list.length==1 ){
+			alert('플레이어가 두명 이상이어야 게임을 시작할수있어요!')//1106 장군 수정
+		}else{alert('아직 준비하지 않은 플레이어가 있습니다.')}//1106 장군수정
 	}else{
 		alert('1번 플레이어만 누를 수 있어요!');
 	}
@@ -224,6 +229,42 @@ function duplicated(){
 	
 }
 	
+
+function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을때 실행 함수
+		let m_nickOut = m_nick; //나간 플레이어의 닉네임
+		let playerArray = JSON.stringify(player_list)//플레이어리스트 JSON문자열로 반환
+		
+		$.ajax({
+			url:"/mamin/game/GameControll",
+			traditional : true,
+			data:{
+				"m_nickOut":m_nickOut,
+				"playerArray":playerArray
+			},
+			success:function(re){
+					
+			alert("게임중 나간 플레이어가 있어 승리로 기록됩니다.(3초후 홈으로 이동)")
+				setTimeout(function(){location.href="index.jsp"},3000)
+			}
+		})
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	
