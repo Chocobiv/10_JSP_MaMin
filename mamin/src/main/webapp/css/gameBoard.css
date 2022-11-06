@@ -28,7 +28,6 @@
 body{
 	background-image: url("/mamin/img/game/background/도시_밤.png");
 	background-size: cover;
-	background-repeat: no-repeat;
 }
 
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
@@ -37,6 +36,7 @@ body{
 	width: 2300px;
 	margin: 0 auto;
 	font-family: "KOTRAHOPE";
+	color : white;
 }
 
 .player1_info{ /*플레이어1 정보칸*/
@@ -51,6 +51,7 @@ body{
 	justify-content: space-around;
 	align-items: center;
 	background-color: rgba(40,60,99,0.8);
+
 }
 
 .player2_info{ /*플레이어2 정보칸*/
@@ -112,9 +113,8 @@ body{
 	font-size: 20px;
 }
 .g_m_nick{ /*닉네임칸*/
-	font-family: "SDSamliphopangche_Outline";
+	font-family: "MaplestoryOTFBold";
 	font-size: 40px;
-
 }
 
 .g_cash{
@@ -179,22 +179,46 @@ body{
 	grid-template-rows: repeat(7, 110px);
 }
 
-.bottom_row {/*아랫줄*/
+/*아랫줄*/
+.bottom_row {
 	grid-column: 2 / 9;  	/*grid-column : 시작번호/끝번호*/
 	grid-row: 9/9;    		/*grid-row : 두고 싶은 row 줄 위치*/
 
 }
-
+.bottom_row .g_space{ background-color : rgba(80, 86, 178, 0.5) }
+.bottom_row .g_space:hover {
+  transform: scale(1.5);
+  transition: all 0.25s linear;
+  z-index : 10;
+}
  /*왼쪽 줄*/
 .left_row {grid-column: 1; grid-row: 2 / 9;}
-.left_row .g_space{transform: translate(-50%, -50%) rotate(90deg);}
+.left_row .g_space{transform: translate(-50%, -50%) rotate(90deg); background-color : rgba(220, 26, 71, 0.5)}
+
+.left_row .g_space:hover {
+  transform: scale(1.5);
+  transition: all 0.25s linear;
+  z-index : 10;
+}
+
  /*오른쪽 줄*/
 .right_row {grid-column: 9;grid-row: 2 / 9;}
-.right_row .g_space{transform: translate(-50%, -50%) rotate(270deg);}
+.right_row .g_space{transform: translate(-50%, -50%) rotate(270deg); background-color : rgba(242,132,20,0.5)}
+.right_row .g_space:hover {
+  transform: scale(1.5);
+  transition: all 0.25s linear;
+  z-index : 10;
+}
+
 .v_row .g_space{top: 50%;left: 50%;}
  /*윗 줄*/
 .top_row {grid-column: 2 / 9; grid-row: 1; }
-
+.top_row .g_space{background-color : rgba(57, 85, 62, 0.5)}
+.top_row .g_space:hover {
+  transform: scale(1.5);
+  transition: all 0.25s linear;
+  z-index : 10;
+}
 
 .gold_key{
 	background-image: url("/mamin/img/game/background/key.png");
@@ -226,6 +250,9 @@ body{
 	justify-content: flex-start;
 	width: 155px;
 	height: 155px;
+	background-image: url(/mamin/img/game/background/start픽셀2.png);
+    background-position-x: 3px;
+    background-position-y: 11px;
 }
 .b_start .n_name{width: 148px;}
 /*--------------- 무인도 --------------------*/
@@ -238,8 +265,9 @@ body{
 	height: 150px;
 	background-image : url("/mamin/img/game/background/무인도2.png");
 	background-repeat: no-repeat;
-	background-size: contain;
-    background-position-y: 15px;
+	background-size: 80%;
+    background-position-y: 32px;
+    background-position-x: 14px;
 }
 .b_island .n_name{width: 148px;}
 /*------------------ 올림픽 -----------------------*/
@@ -248,20 +276,22 @@ body{
 	width: 150px;	height: 150px;
 	background-image: url("/mamin/img/game/background/올림픽로고.png");
 	background-repeat: no-repeat;
-	background-size: contain;
-	background-position-y : 20px;
+	background-size: 80%;
+    background-position-y: 35px;
+    background-position-x: 16px;
 }
 .b_olympic .n_name{width: 143px;}
 /*------------------ 세계여행 -----------------------*/
-.b_travle{grid-column: 1;grid-row:9;}
-.b_travle .g_space{
+.b_travel{grid-column: 1;grid-row:9;}
+.b_travel .g_space{
 	width: 150px;	height: 155px;
 	background-image: url("/mamin/img/game/background/비행기.png");
     background-repeat: no-repeat;
-    background-size: contain;
-    background-position-y: 43px;
+    background-size: 80%;
+    background-position-y: 58px;
+    background-position-x: 12px;
 }
-.b_travle .n_name{width: 143px;}
+.b_travel .n_name{width: 143px;}
 
 /*-------------------- 게임칸 정보 관련 -------------------------*/
 .b_house{/*게임판 건물 아이콘*/
@@ -305,13 +335,13 @@ body{
 .bottom_row .n_name{background-color: #5056b2;}
 
 .b_start .g_space ,
-.b_travle .g_space ,
+.b_travel .g_space ,
 .b_olympic .g_space ,
 .b_island .g_space{
 	border: 3px solid #283C63;
 }
 .b_start .n_name ,
-.b_travle .n_name , 
+.b_travel .n_name , 
 .b_olympic .n_name ,  
 .b_island  .n_name{
 	background-color: #283C63;
@@ -373,3 +403,21 @@ body{
   opacity: 0; 
   transform: scale(0.1, 1);
 }
+
+/* 모달 CSS */
+
+.modalbox{ font-family: 'MaplestoryOTFBold'; display : flex; flex-direction: column; justify-content: center; align-items: center;}
+.modal_user_imgbox, .modal_nation_imgbox{ display : flex; justify-content: center; align-items: center;}
+.modal_user_namebox, .modal_nation_namebox{ display : flex; justify-content: center; align-items: center;
+					font-size : 45px; font-family: 'MaplestoryOTFBold';}
+.modal_nation_imgbox img{width : 400px;}
+.modal_nation_comment{font-size : 18px; text-align: center;}
+.modal_top_box{margin-bottom: 35px}
+.modal_btm_box{font-size : 25px;}
+.modal_tb_left{ width : 100px; height : 30px; }
+.modal_tb_right{ width : 300px; height : 30px; padding-left : 50px;}
+
+
+
+
+

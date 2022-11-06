@@ -119,7 +119,6 @@ function addPlayer(array){
 		
 		// 지웅 수정
 			//ready 상태 표시 위해 변수 생성 후 innerHTML로 대입
-		console.log(object);
 			
 		let slotHTML = `<td class="r_p_img">
 					<img src="/mamin/img/member/${object.m_img}">
@@ -199,7 +198,7 @@ function open_game(){
 		let object = {
 			function_name : 'start_game'
 		}
-		if(count_ready==3){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
+		if(count_ready==2){ // 4명이 ready면 게임스타트 -> test위해 임시로 1 사용
 			send(object);
 		}else{
 			alert('준비되지 않은 플레이어가 있어요.')
