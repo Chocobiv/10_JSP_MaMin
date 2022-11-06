@@ -652,7 +652,7 @@ function displayLog(msgtype, playerNo) {
 function buyNation(nationNo, playerNo) {
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		let fee = 0; // 결제할 금액 넣어주려고 사용
-		log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?'
+		log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?<br>가격 : '+nation[nationNo].n_price.toLocaleString()	+'원'
 		// 토지구매 메소드 끝내기전에 주사위버튼 못누르게 숨겨둠! //********** 턴종료 함수 넣으면 이거 삭제해도 될것같음!
 
 		console.log('buyNation() 안에 들어옴!!!!!')
@@ -660,11 +660,17 @@ function buyNation(nationNo, playerNo) {
 			= '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 
 		document.querySelector(".yes_btn").addEventListener('click', () => {// 구매하기로 했을경우
+			if(checkMoney(playerNo, nation[nationNo].n_price)==false){
+				log.innerHTML="현금이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
+				return;
+				}
+			
 			// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
-			log.innerHTML = '토지가격 ' + nation[nationNo].n_price + '원 , <br>주택 가격 ' + (nation[nationNo].n_price / 2) + '원 입니다. 같이 구입하시겠습니까?';
+			log.innerHTML = '건물도 함께 구매하시겠습니까? <br> 주택 가격 : ' + (nation[nationNo].n_price / 2).toLocaleString() + '원';
 			console.log('토지 구매 전 플레이어 현금)' + player[playerNo].p_money)
-			document.querySelector(".btnbox").innerHTML
+			document.querySelector(".btnbox").innerHTML	// 버튼 출력한번더
 				= '<button class="yes_btn2 Btnyes">YES</button><button class="no_btn2 Btnno">NO</button>'
+				
 			document.querySelector(".yes_btn2").addEventListener('click', () => { // 주택 같이 구매
 				fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 				if(!checkMoney(playerNo, fee)){
@@ -672,20 +678,12 @@ function buyNation(nationNo, playerNo) {
 					return;
 				}
 				buyResult(playerNo, fee, nationNo ,1) // 이 메소드에서 소유주변경까지 모두 해결
-				
-				// 이 안에 있으면 안돼...다른 플레이어도 보긴해야돼
-				// 소켓연결은 이안에 있어도 상관없지 어차피 소켓통신시키면 모든 플레이어한테 보여주는 함수를 실행할거니까
-				
 				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
 				sendNationPlayer(nationNo, playerNo, 1) // 11/5 수현 변수 추가!!!!!! - 주택까지 구매할경우
 			})
 			document.querySelector(".no_btn2").addEventListener('click', () => { // 토지만 구매
-				fee = nation[nationNo].n_price;
-				if(!checkMoney(playerNo, fee)){
-					log.innerHTML="자산이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
-					return;
-				}
-				buyResult(playerNo, fee, nationNo ,0)
+				//토지만 구매하는건 위에서 자산확인 했으니까 그냥 바로 구매!
+				buyResult(playerNo, nation[nationNo].n_price, nationNo ,0)
 				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
 				sendNationPlayer(nationNo, playerNo, 0) // 토지만 구매하면 n_level 0 으로 넘기기
 			})
