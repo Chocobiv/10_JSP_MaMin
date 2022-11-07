@@ -4,6 +4,7 @@ let playerNo = 0;
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 let click_status = 1
 let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
+let playable = true;
 
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
@@ -271,19 +272,6 @@ function gameboard() {
 
 }//gameboard end
 
-//20221107 지웅 추가, nation click type 분할
-function check_clickType(click_status, mtype, index){
-	if(click_status==1){
-		click_ModalBtn(mtype, index);
-	}else if(click_status==2){
-		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
-			// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
-		click_ModalBtn(3, index)
-	}
-}
-
-
-
 // 1106 지웅 추가 모달 클릭 함수
 // 제일 하단에 작성하려고 했으나 이상하게 복사해서 내리면 빨간줄이 쥬루ㅡ르르르르륵 뜹니다...
 // semicolon unexpected 이런거 나오길래 다시 긁어서 출력부 아래로 옮겼습니다.
@@ -445,8 +433,6 @@ function playerLocation() {
 	if (start == true) {// 게임이 시작되고 나서일때!
 		landEventCheck(playerTurn);
 	}
-
-
 }
 
 
@@ -454,7 +440,12 @@ function playerLocation() {
 
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
-function rollDice() {	
+function rollDice() {
+	console.log(playable);
+	if(playable===false){
+		alert('다른사람 턴 진행 중');
+		return;
+	}
 	console.log("turn주사위 던졌다"+playerTurn);
 	console.log("Number 주사위 던졋다!"+playerNo);
 
@@ -488,6 +479,7 @@ function sleep(sec) {
 }
 //////////////////////////////////// 비아 - 주사위 비동기로 수정함!!!! /////////////////////////////////////
 async function display_dice(dice1, dice2) {
+	playable = false;
 	await run_dice(dice1, dice2)
 	await setPlayerPosition(dice1, dice2)
 	await sleep(1);
@@ -536,13 +528,7 @@ function setPlayerPosition(dice1, dice2) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function end_turn(){
-	if(playerNo >= player.length){
-		playerNo = 0;
-		console.log('다음턴 시작');
-	}else{
-		playerNo++;
-		console.log('다음턴 시작');
-	}
+	playable = true;
 }
 
 
@@ -594,8 +580,6 @@ function landEventCheck(playerTurn) {
 			goWorldtravel(playerNo)
 			break;
 	}
-
-
 }
 
 
@@ -674,12 +658,8 @@ function levelUp_check(playerNo) {
 				document.querySelector(".btnbox").innerHTML = ""
 				return;
 			})
-
 		} else { log.innerHTML = "건물 업그레이드 할 비용이 없습니다." }
-
 	}
-
-
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
@@ -851,6 +831,11 @@ function buyNation(nationNo, playerNo) {
 		document.querySelector(".no_btn").addEventListener('click', () => { // 구매 안하기로 했을경우
 			log.innerHTML = "구매하지 않습니다."
 			document.querySelector(".btnbox").innerHTML = ""
+			
+			let object = {
+				function_name : 'end_turn'
+			}
+			send(object);
 			return;
 			// *******턴종료 메소드 넣기		
 		})
