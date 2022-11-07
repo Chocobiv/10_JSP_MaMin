@@ -79,7 +79,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 500000,
+			p_money: 10000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -93,13 +93,13 @@ function setPlayersInfo() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
 	{ n_no: 0, n_name: "출발점", owner: 0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 4, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 5, n_name: "카이로", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 6, n_name: "코펜하겐", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 7, n_name: "이스탄불", owner: 1, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
 	{ n_no: 8, n_name: "무인도", owner: 0, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
 	{ n_no: 9, n_name: "상파울루", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
 	{ n_no: 10, n_name: "싱가폴", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
@@ -117,7 +117,7 @@ let nation = [
 	{ n_no: 22, n_name: "도쿄", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 23, n_name: "파리", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 24, n_name: "세계여행", owner: 0, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 25, n_name: "로마", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 25, n_name: "로마", owner: 2, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
@@ -616,8 +616,8 @@ function levelUp_check(playerNo) {
 			if (nation[nNo].n_level == 0) { building_name = "주택"; }
 			else if (nation[nNo].n_level == 1) { building_name = "빌딩"; }
 			else if (nation[nNo].n_level == 2) { building_name = "호텔"; }
-
-			log.innerHTML = `${building_name}으로 업그레이드하시겠습니까? 비용은 ${fee}입니다.`
+		
+			log.innerHTML = building_name+'으로 업그레이드 하시겠습니까?<br> 비용 : '+ fee.toLocaleString()
 			document.querySelector(".btnbox").innerHTML
 				= '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 
@@ -700,13 +700,10 @@ function tollfee(nationNo, playerNo) {
 		if (result) {
 			inoutcome(playerNo, nationNo, fee)
 		} else {
-
 			log.innerHTML = "현금이 부족해 매각해야합니다."
 			console.log("매각 메소드 실행")
 			printLandList(playerNo, fee, nationNo) // 통행료를 지불해야했던 토지번호도 가지고가야함!!
-
-
-		}
+}
 
 	}
 
@@ -719,8 +716,12 @@ function inoutcome(playerNo, nationNo, fee) { // 11/04 장군
 	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
 	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
 	income(ownerindex, fee)//통행료만큼 땅주인 지급
-	gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+	
+	
+	playerMoneyUpdate(playerNo, ownerindex) // 1107 수현 추가 -- 통행료 지불 자산 업데이트
+	//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 	log.innerHTML += "<br>통행료 지불 완료됐습니다."
+	
 	return; // 턴 종료 메소드 넣기
 
 
@@ -855,10 +856,6 @@ function buyResult(playerNo, fee, nationNo ,type) {
 /*----------------------  수현 토지매각 리스트 출력------------------------------------- */
 // 통행료, 황금열쇠 돈 지출시 부족하면 토지매각 실행
 function printLandList(playerNo, fee, nowNationNo) {
-	// 보유한 땅 있는지 체크
-	// 땅 있으면 보유한 땅 목록 출력
-	// 선택받은 땅의 가격 50%가 매각가
-	// 매각했는데도 자산 부족하면 또 이리로 들어와야함
 
 	// 보유한 땅 담으려고
 	let Landlist = []
@@ -887,7 +884,7 @@ function printLandList(playerNo, fee, nowNationNo) {
 function saleLand(n_no, playerNo, fee, nowNationNo) {
 	// 소유주 , 건물단계 리셋
 	// 매각가는 50%
-	log.innerHTML = nation[n_no].n_name + '을 선택했습니다.'
+	log.innerHTML = nation[n_no].n_name + '가 매각됐습니다..'
 	player[playerNo].p_money += (nation[n_no].n_price / 2)
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
@@ -897,18 +894,23 @@ function saleLand(n_no, playerNo, fee, nowNationNo) {
 	// nation 객체 정보변경사항 소켓전달
 
 	console.log("현재 잔액 : " + player[playerNo].p_money)
-	setTimeout(() => { // 1초만 있다가 실행되게
-		if (fee > player[playerNo].p_money) {
-			console.log(fee + "금액 부족")
-			//매각해도 자산이 부족하면
-			log.innerHTML = "아직 통행료를 지불할 수 없습니다."
+	 // 1초만 있다가 실행되게
+	if (fee > player[playerNo].p_money) {
+		console.log(fee + "금액 부족")
+		//매각해도 자산이 부족하면
+		log.innerHTML = "아직 통행료를 지불할 수 없습니다."
+		setTimeout(()=>{
 			printLandList(playerNo, fee)
-			return;
-		} else {// 금액이 맞으면 // 통행료지불 재진행
+		}, 2000)
+		return;
+	} else {// 금액이 맞으면 // 통행료지불 재진행
+		setTimeout(()=>{
 			inoutcome(playerNo, nowNationNo, fee)
-		}
+		},2000)
+		
+	}
 
-	}, 1000)
+
 
 
 
@@ -935,15 +937,18 @@ function playerMoneyUpdate(playerNo, ownerindex) {
 		Info_update: 'player',
 		giveIndex: playerNo,
 		takeIndex: ownerindex,
-		cash: player[playerNo].p_money
+		give: player[playerNo].p_money,	// 주는 사람 잔액
+		take: player[ownerindex].p_money // 받는 사람 잔액
+		
 	}
 	send(object)
 
 
 }
-function takeMoneyInfo(give_player, take_player, cash) {
-	player[give_player].p_money -= cash;
-	player[take_player].p_money += cash;
+function takeMoneyInfo(give_player, take_player, give, take) {
+	player[give_player].p_money = give;
+	player[take_player].p_money = take;
+	gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 }
 
 /////////////////////////// 비아[11/04] ///////////////////////////
