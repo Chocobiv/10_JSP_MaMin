@@ -50,7 +50,6 @@ public class signup extends HttpServlet {
 		String m_nick = request.getParameter("m_nick");
 		String profile = request.getParameter("profile");
 		String m_img = request.getParameter("character")+".png";
-		//System.out.println("character : "+character);
 		
 		// 2. 변수 6개 -> DTO 객체화
 		// 회원번호와 날짜, 포인트는 일단 0이나 null로

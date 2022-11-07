@@ -21,13 +21,13 @@
 							<!-- id -->
 							<div id="signin_input1">
 								<span class="input_field">
-									<input id="signin_id" type="text" placeholder="ID">
+									<input class = "form-control" id="signin_id" type="text" placeholder="ID">
 								</span>
 							</div>
 							<!-- pw -->
 							<div id="signin_input2">
 								<span class="input_field">
-									<input id="signin_pw" type="password" placeholder="Password">
+									<input class = "form-control" id="signin_pw" type="password" placeholder="Password">
 								</span>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 						
 						<!-- login btn -->
 						<div class="btn_box">
-							<button onclick="login()" class="btn">LOGIN</button>
+							<button onclick="login()" class="loginbtn">LOGIN</button>
 						</div>
 					</div>
 				</div>

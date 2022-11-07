@@ -86,7 +86,10 @@ function onmessage(obj) {
 		updateNationInfo(parsing.index, parsing.p_no)
 	}else if(parsing.object_name == 'player'){			// 1104 비아 추가
 		updatePlayerInfo(parsing.index, parsing.cash)
-		//gamePlayer()
+	}else if(parsing.function_name == "updateNationLevel"){	// 1103 지웅 추가 //1104 비아 수정
+		updateNationLevel(parsing.n_index, parsing.p_index)
+	}else if(parsing.function_name == 'updatePlayerPosition'){
+		updatePlayerPosition(parsing.playerNo, parsing.n_no)
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){

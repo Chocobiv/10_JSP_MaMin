@@ -312,6 +312,7 @@ body{
 .player4_icon{color: #C689C6;}
 
 
+
 /*나라명 출력 위치*/
 .n_name{
 	color: white;
@@ -319,7 +320,6 @@ body{
 	text-align: center;
 	padding: 5px;
 	width: 105px;
-	
 }
 /*각 칸의 경계선과 나라명에 색깔 넣기*/
 .right_row .g_space{border: 3px solid #f28414;}
@@ -421,3 +421,9 @@ body{
 
 
 
+
+/* 비아 추가 - 건물 아이콘 */
+#icon_house0::before { color: #8BBCCC; }
+#icon_house1::before { color: #42855B; }
+#icon_house2::before { color: #87A2FB; }
+#icon_house3::before { color: #C689C6; }

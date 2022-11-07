@@ -14,7 +14,6 @@ input{ vertical-align: baseline; }
 /* css 기본 설정 */
 *{ margin : 0; padding: 0; font-family: 'SDSamliphopangche_Outline'; }
 a{ text-decoration: none; color: black; }
-a:hover{ color: #393B44; }
 li{ list-style-type: none; }
 
 /* 페이지 실제 사이즈 */
@@ -37,14 +36,14 @@ section{ margin: 0 auto; height: 600px; }
 	width: 450px; height: 340px;
 	border: solid 2px white;		/* 안쪽 테두리 */
 	border-radius: 6px;
-	outline: 2px solid #B6E388;		/* 바깥 테두리 */
+	outline: 2px solid #F85F73;		/* 바깥 테두리 */
 	outline-offset: 4px;			/* 안쪽 테두리와 바깥 테두리의 간격 */
 	
 	padding: 0.875rem;
 	margin-bottom: 4rem;
 	position: relative;				/* 로고 배치하기 위해서 */
 	
-	background-color: #B6E388;
+	background-color: #FBE8D3;
 	margin: 0 auto;
 	
 	box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, .4);		/* 떠있는 느낌을 주기 위한 그림자 효과 */
@@ -57,16 +56,23 @@ section .wrap .container{
 	width: 300px; height: 200px; margin: 0 auto; margin-top: 50px;
 }
 
-#signin_input1{ height: 50px; margin-bottom: 15px; border: solid 1.5px white; }
-#signin_input2{ height: 50px; margin-bottom: 15px; border: solid 1.5px white; }
+#signin_input1{ height: 50px; margin-bottom: 15px; }
+#signin_input2{ height: 50px; margin-bottom: 15px; }
 
 
 .input_field{ height: 80px; }
-#signin_id, #signin_pw{ width: 200px; height: 50px; }
+#signin_id, #signin_pw{ width: 100%; height: 50px; }
 
 .option_box{ display: flex; justify-content: space-between; margin-bottom: 30px; }
 .option1{ display: flex; }
 .option1 input{ margin-right: 5px; }
 
 
-.btn{ width: 100%; height:45px; font-weight:bold; background-color: white; color: #B6E388; }
+.loginbtn{ 
+	width: 100%; height:45px; font-weight:bold; color: #F85F73;
+	border: 1px solid #F85F73; border-radius: 7px;
+}
+.loginbtn:hover {
+	color: #FBE8D3;
+	background-color: #F85F73;
+}

@@ -49,8 +49,7 @@ public class mypage extends HttpServlet {
 		String m_nick = request.getParameter("m_nick");
 		String m_profile = request.getParameter("m_profile");
 		String m_img = request.getParameter("character");
-		if(m_img.equals("아가양")) m_img += ".jpg";
-		else m_img += ".png";
+		m_img += ".png";
 		
 		
 		boolean result = MemberDao.getInstance().update(m_id,m_password,m_nick,m_profile,m_img);
