@@ -93,6 +93,8 @@ function onmessage(obj) {
 		updatePlayerPosition(parsing.playerNo, parsing.n_no)
 	}else if(parsing.Info_update == 'player'){	// 1105 수현 추가
 		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
+	}else if(parsing.function_name=='change_color'){
+		change_color(parsing.param, parsing.param2);
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){

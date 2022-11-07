@@ -30,11 +30,6 @@ body{
 	background-size: cover;
 }
 
-/*------------좌표 계산 테스터-------------*/
-
-.positiontester{position : absolute; right : 80px; bottom : 80px;}
-
-
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
 .gameboard{	/*보드판 전체*/
 	position: relative;
@@ -191,7 +186,7 @@ body{
 	grid-row: 9/9;    		/*grid-row : 두고 싶은 row 줄 위치*/
 
 }
-.bottom_row .g_space{ background-color : rgba(80, 86, 178, 0.5) }
+.bottom_row .g_space{ background-color : rgba(238, 238, 238, 0.5) }
 .bottom_row .g_space:hover {
   transform: scale(1.5);
   transition: all 0.25s linear;
@@ -199,7 +194,7 @@ body{
 }
  /*왼쪽 줄*/
 .left_row {grid-column: 1; grid-row: 2 / 9;}
-.left_row .g_space{transform: translate(-50%, -50%) rotate(90deg); background-color : rgba(220, 26, 71, 0.5)}
+.left_row .g_space{transform: translate(-50%, -50%) rotate(90deg); background-color : rgba(238, 238, 238, 0.5)}
 
 .left_row .g_space:hover {
   transform: scale(1.5);
@@ -209,7 +204,7 @@ body{
 
  /*오른쪽 줄*/
 .right_row {grid-column: 9;grid-row: 2 / 9;}
-.right_row .g_space{transform: translate(-50%, -50%) rotate(270deg); background-color : rgba(242,132,20,0.5)}
+.right_row .g_space{transform: translate(-50%, -50%) rotate(270deg); background-color : rgba(238, 238, 238, 0.5)}
 .right_row .g_space:hover {
   transform: scale(1.5);
   transition: all 0.25s linear;
@@ -219,7 +214,7 @@ body{
 .v_row .g_space{top: 50%;left: 50%;}
  /*윗 줄*/
 .top_row {grid-column: 2 / 9; grid-row: 1; }
-.top_row .g_space{background-color : rgba(57, 85, 62, 0.5)}
+.top_row .g_space{background-color : rgba(238, 238, 238, 0.5)}
 .top_row .g_space:hover {
   transform: scale(1.5);
   transition: all 0.25s linear;
@@ -312,10 +307,10 @@ body{
 	font-size: 25px;
 }
 /*플레이어 아이콘 - 색깔은 임의 지정함 나중에 회의하고 바꿀예정!*/
-.player1_icon{color: #8BBCCC;}
-.player2_icon{color: #42855B;}
-.player3_icon{color: #87A2FB;}
-.player4_icon{color: #C689C6;}
+.player1_icon{color: #8BBCCC; font-size : 20px;}
+.player2_icon{color: #42855B; font-size : 20px;}
+.player3_icon{color: #87A2FB; font-size : 20px;}
+.player4_icon{color: #C689C6; font-size : 20px;}
 
 
 
@@ -433,3 +428,45 @@ body{
 #icon_house1::before { color: #42855B; }
 #icon_house2::before { color: #87A2FB; }
 #icon_house3::before { color: #C689C6; }
+
+/* 지웅 추가 - 플레이어 아이콘 이벤트 */
+/* #player1{  transition: all 1s linear; } */
+#player2{  transition: all 1s linear; }
+#player3{  transition: all 1s linear; }
+#player4{  transition: all 1s linear; }
+
+#player1, #player2, #player3, #player4 {
+    -moz-transition: all .5s linear;
+    -webkit-transition: all .5s linear;
+    transition: all .5s linear;
+}
+#player1.down, #player2.down, #player3.down, #player4.down {
+    -moz-transform:rotate(720deg);
+    -webkit-transform:rotate(720deg);
+    transform:rotate(720deg);
+}
+
+/* 지웅 추가 토스트 이벤트*/
+#toast {
+    position: fixed;
+    bottom: 600px;
+    left: 1190px;
+    padding: 15px 20px;
+    transform: translate(-50%, 10px);
+    border-radius: 30px;
+    overflow: hidden;
+    font-size: 50px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s, visibility .5s, transform .5s;
+    background: rgba(0, 0, 0, .35);
+    color: #fff;
+    z-index: 10000;
+}
+
+#toast.reveal {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0)
+}
+.toast_title{ font-family: 'MaplestoryOTFBold'; font-size : 30px; text-align: center;}

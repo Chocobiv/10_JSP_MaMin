@@ -37,6 +37,8 @@
        </div>
      </div>
    </div>
+   <!-- toast -->
+   <div id="toast"></div>
 
 
    <div class="gameroom">
@@ -52,7 +54,6 @@
          </div>
 
          <div class="boardbox"><!-- 게임판 박스 -->
-            <div class="positiontester"><i class="fas fa-ghost player1_icon"></i></div>
             <div class="b_center"> <!-- 게임판 가운데 부분 -->
 
                <!-- 주사위 굴러갈 부분, 게임로고 표시 -->

@@ -7,6 +7,11 @@ let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
 let playable = true;
 
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
+// 1107 지웅 추가
+
+// let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
+let playerColor =['#eeeeee', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
+
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
 // nation index <-> nation_infobox index끼리 매칭되도록 작성
 let nation_infobox = [{ n_comment: '부자가 되어 돌아오세요!', n_img: '' },
@@ -33,7 +38,7 @@ let nation_infobox = [{ n_comment: '부자가 되어 돌아오세요!', n_img: '
 { n_comment: '장벽이 있던 아픔과 강을 따라 일어난 기적부터<br>그 위에 피어난 문화가 겹겹이 쌓여있는<br>어쩌면 우리와 아주 닮아있는 베를린에 어서 오세요!', n_img: '/mamin/img/game/nation/베를린.webp' },
 { n_comment: '문화도 더할 나위 없이 아름답지만, 일단 음식과 맥주가 맛있잖아요. 더 필요한 게 있을까요? 도쿄에 어서 오세요!', n_img: '/mamin/img/game/nation/도쿄도트.gif' },
 { n_comment: '루브르와 베르사유, 몽마르트와 노트르담. 저녁 시간 유람선을 타고 세느강을 따라 흘러가다 보면, 어느새 금빛으로 몸을 휘감은 에펠탑을 만날 수 있지요. 미술과 패션의 도시 파리에 어서 오세요!', n_img: '/mamin/img/game/nation/파리.JPG' },
-{ n_comment: '세계여행', n_img: '' },
+{ n_comment: '굳이 권장하진 않겠지만, 원한다면 무인도에 착륙시켜 보겠어요.', n_img: '' },
 { n_comment: '제국의 수도였으면서 가톨릭의 성지 바티칸을 품고 있는<br>유럽 역사의 보고, 로마에 어서 오세요!', n_img: '/mamin/img/game/nation/로마.JPG' },
 { n_comment: '유럽 경제의 중심이자 영국의 중심. 왕가의 버킹엄과 타워가 아름다운 브릿지, 세계 역사가 모여있는 박물관까지! 런던에 어서 오세요!', n_img: '/mamin/img/game/nation/런던.png' },
 { n_comment: 'America-! 여러 영화에서 이민자들이 외치곤 하는 저 말은 보통 자유의 여신상과 함께 나오죠. 세계 경제의 마천루, 뉴욕에 어서 오세요!', n_img: '/mamin/img/game/nation/뉴욕2.jpg' },
@@ -133,10 +138,10 @@ let nation = [
 let house = '<i class="fas fa-home"></i>' // 1번째 건설 단계
 let building = '<i class="fas fa-building"></i>' // 2번째 건설 단계
 let hotel = '<i class="fas fa-hotel"></i>' // 3번째 건설 단계
-let player1_icon = '<i class="fas fa-ghost player1_icon"></i>'
-let player2_icon = '<i class="fas fa-ghost player2_icon"></i>'
-let player3_icon = '<i class="fas fa-ghost player3_icon"></i>'
-let player4_icon = '<i class="fas fa-ghost player4_icon"></i>'
+let player1_icon = '<i class="fas fa-ghost player1_icon" id="player1" onclick="animateCharacter(1)"></i>'
+let player2_icon = '<i class="fas fa-ghost player2_icon" id="player2"></i>'
+let player3_icon = '<i class="fas fa-ghost player3_icon" id="player3"></i>'
+let player4_icon = '<i class="fas fa-ghost player4_icon" id="player4"></i>'
 
 
 /*======================== 수현 10/27 보드판 생성 ================================ */
@@ -186,7 +191,7 @@ function gameboard() {
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
-		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -207,7 +212,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -230,7 +235,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -252,7 +257,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -295,14 +300,21 @@ function click_ModalBtn(type, index) {
 function make_user_info(index) {
 	let win_rate;
 	if (player_list[index].total != 0) {
-		win_rate = (Number(player_list[index].wins) / Number(player_list[index].total)) * 100 + '%';
+		win_rate =Math.floor((Number(player_list[index].wins) / Number(player_list[index].total)) * 100) + '%';
 	} else {
 		win_rate = '전적 없음';
 	}
+	let lands = '';
+	for(let i = 0 ; i<nation.length ; i++){
+		if(nation[i].owner==index+1){
+			lands += `${nation[i].n_name} `;
+		}
+	}	
 	let html = `<div class="modal-body user_info">
 					<div class="modal_top_box">
 						<div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
 						<div class="modal_user_namebox">${player[index].p_nick}</div>
+						<div class="modal_user_nations">${lands}</div>
 					</div>
 					<div class="modal_btm_box">
 						<table class="modal_user_data">
@@ -318,8 +330,17 @@ function make_user_info(index) {
 // 1106 지웅 추가 
 // 국가 소개 html구성 후 return
 function make_nation_info(index) {
-	let nation_payment = Math.floor(nation[index].n_payment * (1 + nation[index].n_level)) / 1000 * 1000;
-	let nation_price = nation[index].n_price * 1 + nation[index].n_level * 0.5;
+	let nation_payment = Math.floor(nation[index].n_payment * (Math.pow(1.5, nation[index].n_level))) / 1000 * 1000;
+	let nation_price = (nation[index].n_price * 1);
+	if(nation[index].n_level==1){
+		nation_price += nation[index].n_price * 0.5;
+	}else if(nation[index].n_level==2){
+		nation_price += nation[index].n_price * 1.5;
+	}else if(nation[index].n_level==3){
+		nation_price += nation[index].n_price * 3;
+	}
+	
+	
 	let owner_name;
 	if (nation[index].owner != 0) {
 		owner_name = player[nation[index].owner - 1].p_nick;
@@ -328,11 +349,14 @@ function make_nation_info(index) {
 	}
 	let building_list = '';
 	if (nation[index].n_level == 1) {
-		building_list = '<i class="fas fa-home"></i>';
+		building_list = '<img width="100px;" src="/mamin/img/game/building/주택.png">';
 	} else if (nation[index].n_level == 2) {
-		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i>';
+		building_list = '<img width="100px;" src="/mamin/img/game/building/주택.png">'
+						+ '<img width="100px;" src="/mamin/img/game/building/빌딩.png">';
 	} else if (nation[index].n_level == 3) {
-		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i><i class="fas fa-hotel"></i>';
+		building_list = '<img width="100px;" src="/mamin/img/game/building/주택.png">'
+						+ '<img width="100px;" src="/mamin/img/game/building/빌딩.png">'
+						+ '<img width="100px;" src="/mamin/img/game/building/호텔2.png">';
 	}
 
 	let html = `<div class="modal-body nation_info">
@@ -441,11 +465,7 @@ function playerLocation() {
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
-	console.log(playable);
-	if(playable===false){
-		alert('다른사람 턴 진행 중');
-		return;
-	}
+
 	console.log("turn주사위 던졌다"+playerTurn);
 	console.log("Number 주사위 던졋다!"+playerNo);
 
@@ -527,10 +547,6 @@ function setPlayerPosition(dice1, dice2) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function end_turn(){
-	playable = true;
-}
-
 
 /*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
@@ -565,18 +581,29 @@ function landEventCheck(playerTurn) {
 
 		case 2: // 황금열쇠메소드
 			console.log("황금열쇠");
+			//1107 지웅 추가
+			toast('<h3 class="toast_title">어떤 행운이 기다리고 있을까요?</h3><img width="300px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
 			break;
 
 		case 3: // 무인도메소드
 			console.log("무인도");
+			//1107 지웅 추가
+			toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
 			break;
 
 		case 4: // 올림픽메소드
 			console.log("올림픽");
+			//1107 지웅 추가
+			toast('<h3 class="toast_title">세계의 축제가 열리면 누군가는 부자가 될걸요?</h3><img width="300px;" src="/mamin/img/game/toast/올림픽토스트.jpg">');
 			break;
 
 		case 5: // 비아 - 세계여행 메소드
 			console.log("세계여행")
+			// 20221107 지웅 추가
+				// 세계여행 발생시 토스트 이벤트로 이미지 띄워주기
+				// send로 모두에게 보여줘야 할까요?
+			let toastString = '<h3 class="toast_title">여행이다!</h3><img width="300px;" src="/mamin/img/game/toast/여행토스트.JPG">';
+			toast(toastString);			
 			goWorldtravel(playerNo)
 			break;
 	}
@@ -589,6 +616,7 @@ function get_wage(playerTurn) {
 	player[playerTurn].p_money += 200000;
 	console.log('[출발지 통과] 월급 지급)' + player[playerTurn].p_money)
 	gamePlayer() // 플레이어 정보출력 갱신
+	toast('<h3 class="toast_title">월급...이었던 것</h3><image width="300px;" src="/mamin/img/game/toast/월급토스트2.JPG">');
 }
 
 
@@ -831,11 +859,6 @@ function buyNation(nationNo, playerNo) {
 		document.querySelector(".no_btn").addEventListener('click', () => { // 구매 안하기로 했을경우
 			log.innerHTML = "구매하지 않습니다."
 			document.querySelector(".btnbox").innerHTML = ""
-			
-			let object = {
-				function_name : 'end_turn'
-			}
-			send(object);
 			return;
 			// *******턴종료 메소드 넣기		
 		})
@@ -967,6 +990,23 @@ function takeMoneyInfo(give_player, take_player, give, take) {
 function sendNationPlayer(nationNo, playerNo, n_level) {
 
 	let object = null
+	
+	//20221107 지웅 추가
+		//매각인 경우도 적용되게 하기 위해 가장 위에 뒀음
+		
+	let pno;	// pno 기준을 모르겠는디.. 아래보고 따라 만들어봄
+	if(playerNo==-1){
+		pno = 0;
+	}else{
+		pno = player[playerNo].p_no;
+	}	
+	object = {
+		function_name : 'change_color',
+		param : pno,
+		param2 : nationNo
+	}
+	send(object);	
+	
 	if (playerNo == -1) {
 		//1105 수현 추가!! 매각시 owner를 0으로 바꿔줘야해서 다르게 설정함! 혹시 문제되면 말해주세여...
 		object = {
@@ -1020,6 +1060,7 @@ function goWorldtravel(playerNo) {
 	//1. 로그 변경
 	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
 	
+	
 	//2. 이동할 나라 선택 받기
 	//while(worldtravel_n_no == 24){
 		console.log('다른 나라를 선택하세요.')
@@ -1057,3 +1098,33 @@ function updatePlayerPosition(playerNo, n_no) {
 }
 
 /////////////////////////////////////////////////////////////////
+
+// 20221107 지웅 추가
+	// 캐릭터 회전 효과 
+	// transition으로 고정 좌표로 이동하는 방식을 선택하면 토지div에 hover효과가 들어가도 캐릭터는 허공에 둥둥 떠있게됌
+	// 한칸씩 이동을 대체할 적절한 순간이동 애니매이션 고려 필요
+function animateCharacter( i ){
+	$("#player"+i).toggleClass("down");	
+}
+// 20221107 지웅 추가 
+	// 토지 구매/매각 시 토지 색상 변경
+function change_color(pNo, nNo){
+	let land = document.querySelector('.ncolor'+nNo);
+	land.style.backgroundColor = playerColor[pNo];
+}
+// 20221107 지웅 추가
+	// 토스트 이벤트
+let removeToast;
+function toast(string) {
+    const toast = document.getElementById("toast");
+	
+    toast.classList.contains("reveal") ?
+        (clearTimeout(removeToast), removeToast = setTimeout(function () {
+            document.getElementById("toast").classList.remove("reveal")
+        }, 5000)) :
+        removeToast = setTimeout(function () {
+            document.getElementById("toast").classList.remove("reveal")
+        }, 5000)
+    toast.classList.add("reveal"),
+        toast.innerHTML = string
+}
