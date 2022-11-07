@@ -1,6 +1,8 @@
 /*---------- 전역변수 ---------------- */
 let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
+let click_status = 1
+let worldtravel_n_no = 24	//1107 비아 추가 -> 세계여행 갈 토지번호
 
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
@@ -182,7 +184,7 @@ function gameboard() {
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType(' + click_status + ',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -203,7 +205,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType(' + click_status + ',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -226,7 +228,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType(' + click_status + ',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -248,7 +250,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType(' + click_status + ', 2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -269,24 +271,22 @@ function gameboard() {
 }//gameboard end
 
 
+
 // 1106 지웅 추가 모달 클릭 함수
 // 제일 하단에 작성하려고 했으나 이상하게 복사해서 내리면 빨간줄이 쥬루ㅡ르르르르륵 뜹니다...
 // semicolon unexpected 이런거 나오길래 다시 긁어서 출력부 아래로 옮겼습니다.
-// type : 1 = user정보 모달 / 2 = 토지 정보 모달
+// type : 1 = user정보 모달 / 2 = 토지 정보 모달 / 3 = 세계여행 갈 토지 선택
 function click_ModalBtn(type, index) {
-	let userInfo = document.querySelector('.user_info');
-	let nation_info = document.querySelector('.nation_info');
+	let modal_contentsbody = document.querySelector('.modal_contentsbody');
 	let modalbox = document.querySelector('.modalbox');
 	if (type == 1) {
-		nation_info.style.display = 'none';
-		userInfo.style.display = 'block';
-		userInfo.innerHTML = make_user_info(index);
+		modal_contentsbody.innerHTML = make_user_info(index);
 		modalbox.style.background = '#928A97';
 	} else if (type == 2) {
-		nation_info.style.display = 'block';
-		userInfo.style.display = 'none';
-		nation_info.innerHTML = make_nation_info(index);
+		modal_contentsbody.innerHTML = make_nation_info(index);
 		modalbox.style.background = '#FBE8D3';
+	} else if (type == 3) {		//1107 비아 추가
+		worldtravel_n_no = index	//세계여행 갈 토지 번호를 선택한 index로 변경
 	}
 	document.querySelector('.modalinfoBtn').click();
 }
@@ -299,17 +299,19 @@ function make_user_info(index) {
 	} else {
 		win_rate = '전적 없음';
 	}
-	let html = `<div class="modal_top_box">
-					<div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
-					<div class="modal_user_namebox">${player[index].p_nick}</div>
-				</div>
-				<div class="modal_btm_box">
-					<table class="modal_user_data">
-						<tr><td class="modal_tb_left">경기수</td><td class="modal_tb_right">${player_list[index].total}</td></tr>
-						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${player_list[index].wins}회</td></tr>
-						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${win_rate}</td></tr>
-					</table>
-				</div>`
+	let html = `<div class="modal-body user_info">
+               <div class="modal_top_box">
+                  <div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
+                  <div class="modal_user_namebox">${player[index].p_nick}</div>
+               </div>
+               <div class="modal_btm_box">
+                  <table class="modal_user_data">
+                     <tr><td class="modal_tb_left">경기수</td><td class="modal_tb_right">${player_list[index].total}</td></tr>
+                     <tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${player_list[index].wins}회</td></tr>
+                     <tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${win_rate}</td></tr>
+                  </table>
+               </div>
+            </div>`
 	return html;
 }
 
@@ -333,20 +335,33 @@ function make_nation_info(index) {
 		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i><i class="fas fa-hotel"></i>';
 	}
 
-	let html = `<div class="modal_top_box">
-					<div class="modal_nation_imgbox"><img src="${nation_infobox[index].n_img}"></div>
-					<div class="modal_nation_namebox">${nation[index].n_name}</div>
-					<div class="modal_nation_comment">${nation_infobox[index].n_comment}</div>
-				</div>
-				<div class="modal_nation_infobox">
-					<table class="modal_btm_box">
-						<tr><td class="modal_tb_left">소유주</td><td class="modal_tb_right">${owner_name}</td></tr>
-						<tr><td class="modal_tb_left">건물 정보</td><td class="modal_tb_right">${building_list}</td></tr>
-						<tr><td class="modal_tb_left">통행료</td><td class="modal_tb_right">${nation_payment}원</td></tr>
-						<tr><td class="modal_tb_left">토지 가치</td><td class="modal_tb_right">${nation_price}원</td></tr>
-					</table>
-				</div>`;
+	let html = `<div class="modal-body nation_info">
+               <div class="modal_top_box">
+                  <div class="modal_nation_imgbox"><img src="${nation_infobox[index].n_img}"></div>
+                  <div class="modal_nation_namebox">${nation[index].n_name}</div>
+                  <div class="modal_nation_comment">${nation_infobox[index].n_comment}</div>
+               </div>
+               <div class="modal_nation_infobox">
+                  <table class="modal_btm_box">
+                     <tr><td class="modal_tb_left">소유주</td><td class="modal_tb_right">${owner_name}</td></tr>
+                     <tr><td class="modal_tb_left">건물 정보</td><td class="modal_tb_right">${building_list}</td></tr>
+                     <tr><td class="modal_tb_left">통행료</td><td class="modal_tb_right">${nation_payment}원</td></tr>
+                     <tr><td class="modal_tb_left">토지 가치</td><td class="modal_tb_right">${nation_price}원</td></tr>
+                  </table>
+               </div>
+            </div>`;
 	return html;
+}
+
+//20221107 지웅 추가, nation click type 분할
+function check_clickType(clickstatus, mtype, index) {
+	if (clickstatus == 1) {
+		click_ModalBtn(mtype, index);
+	} else if (clickstatus == 2) {
+		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
+		// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
+		click_ModalBtn(3,index)
+	}
 }
 
 
@@ -556,7 +571,7 @@ function landEventCheck(playerTurn) {
 
 		case 5: // 비아 - 세계여행 메소드
 			console.log("세계여행")
-			//goWorldtravel(playerNo)
+			goWorldtravel(playerNo)
 			break;
 	}
 
@@ -683,8 +698,8 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-	let fee = 0
-	if (nation[nationNo].n_level == 0) {//건물 없을때
+	let fee = Math.floor(nation[nationNo].n_payment * (1 + nation[nationNo].n_level)) / 1000 * 1000
+	/*if (nation[nationNo].n_level == 0) {//건물 없을때
 		fee = nation[nationNo].n_payment// 현재 땅의 통행료
 	} else if (nation[nationNo].n_level == 1) {//건물 1단계 일때
 		fee = Math.floor(nation[nationNo].n_payment * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5배 후 만단위까지
@@ -692,7 +707,7 @@ function tollfee(nationNo, playerNo) {
 		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^2 배 후 만단위까지 
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
 		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
-	}
+	}*/
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		log.innerHTML = '통행료 : ' + fee
@@ -834,7 +849,7 @@ function buyNation(nationNo, playerNo) {
 
 
 /*-------------------- 수현 11/4 토지구매 겹치는 부분 메소드 ------------------------------- */
-function buyResult(playerNo, fee, nationNo ,type) {
+function buyResult(playerNo, fee, nationNo, type) {
 	// 수현 11/5 추가
 	// type 1이면 주택까지 함께구매로 건물레벨 상승
 	// 0이면 그냥 토지만 구매
@@ -842,7 +857,7 @@ function buyResult(playerNo, fee, nationNo ,type) {
 	outcome(playerNo, fee) //지출 메소드 요청
 	//토지 소유주 변경
 	nation[nationNo].owner = player[playerNo].p_no
-	if(type==1){nation[nationNo].n_level=1; console.log("주택구매완료")}
+	if (type == 1) { nation[nationNo].n_level = 1; console.log("주택구매완료") }
 	log.innerHTML = '구매완료했습니다.'
 	//yse , no 버튼 없애기
 	document.querySelector(".btnbox").innerHTML = ""
@@ -999,18 +1014,22 @@ function updateNationLevel(nation_index, playerNo) {
 
 //세계여행 메소드
 function goWorldtravel(playerNo) {
-	//1. 이동가능한 나라[자신이 소유한 나라] 목록 출력
-	console.log("== 이동할 수 있는 나라 ==")
-	for (let i = 0; i < nation.length; i++) {
-		if ((nation[i].owner - 1) == playerNo) {
-			//추후에 모달로 변경해야함
-			console.log(nation[i].n_no + '번) ' + nation[i].n_name)
-		}
+	click_status = 2	//세계여행 시작하므로 click_status 값 2로 변경
+	gameboard()			//게임판 다시 출력
+	//1. 로그 변경
+	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
+	
+	//2. 이동할 나라 선택 받기
+	while(worldtravel_n_no == 24){
+		console.log('다른 나라를 선택하세요.')
 	}
-	//2. 이동할 나라 입력 받기
-	log.innerHTML = '세계여행을 떠납시다!'
-	document.querySelector(".btnbox").innerHTML
-		= '<input type="text" class="goWorld" placeholder="이동할 나라 번호 입력"> <button type="button" onclick="checkMyLand(' + playerNo + ')">입력</button>'
+	//플레이어 위치 이동
+	player[playerNo].p_position = worldtravel_n_no
+	//소켓 통신
+	updatePlayerPosition(playerNo, worldtravel_n_no)
+	
+	//세계여행 종료로 click_status 값 다시 1로 변경
+	click_status = 1
 }
 
 //입력받은 땅이 내 땅이 맞는지 확인 메소드
