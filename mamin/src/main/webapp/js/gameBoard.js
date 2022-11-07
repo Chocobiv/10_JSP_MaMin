@@ -2,22 +2,45 @@
 let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 
+let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
+// 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
+	// nation index <-> nation_infobox index끼리 매칭되도록 작성
+let nation_infobox = [ { n_comment : '부자가 되어 돌아오세요!' , n_img : '' },
+					   { n_comment : '온천과 야시장, 야경의 도시에 어서 오세요!' , n_img : '/mamin/img/game/nation/타이베이.JPG' },
+					   { n_comment : '풍부한 유적과 화려한 도심, 예술의 집합지 마닐라에 어서 오세요!' , n_img : '/mamin/img/game/nation/마닐라.JPG'},
+					   { n_comment : '대륙을 호령한 수천 년의 역사가 잠든 이곳, 베이징에 어서 오세요!' , n_img : '/mamin/img/game/nation/베이징.JPG'},
+					   { n_comment : '어떤 행운이 기다리고 있을까요?' , n_img : '' },
+					   { n_comment : '스핑크스가 지키는 거대한 피라미드가 있는 인류 문명의 보고<br>카이로에 어서 오세요!' , n_img : '/mamin/img/game/nation/카이로.jpg'},
+					   { n_comment : '강인한 바이킹과 햄릿, 인어공주의 도시, 코펜하겐에 어서 오세요!' , n_img : '/mamin/img/game/nation/코펜하겐.jpg' },
+					   { n_comment : '유럽과 아시아의 경계<br>역사 속의 명소가 살아 숨 쉬는 이스탄불에 어서 오세요!' , n_img : '/mamin/img/game/nation/이스탄불.jpg' },
+					   { n_comment : '멈춘 게 아니라 잠시 쉬어가는 시간임을!' , n_img : '' },
+					   { n_comment : '지구 최대의 열대우림도 좋지만, 그러기 위해선 도심에서의 휴식도 중요하죠. 남미 최대의 도시 상파울루에 어서 오세요!' , n_img : '/mamin/img/game/nation/상파울루.jpg' },
+					   { n_comment : '첨단 도시와 아름다운 조경<br>웅장한 자연이 공존하는 싱가폴에 어서 오세요!' , n_img : '/mamin/img/game/nation/싱가폴.jpg' },
+					   { n_comment : '인류 문명과 지성의 출발지. 신들의 도시 아테네에 어서 오세요!' , n_img : '/mamin/img/game/nation/아테네.jpg' },
+					   { n_comment : '어떤 행운이 기다리고 있을까요?' , n_img : '' },
+					   { n_comment : '알프스와 요들의 나라<br>상대성 이론의 고향 스위스 베른에 어서 오세요!' , n_img : '/mamin/img/game/nation/베른.JPG' },
+					   { n_comment : 'Ola! 트램을 타고 빨간 지붕 아래를 거닐면 평화나 행복이라는 말과 제법 가까워질 거예요. 리스본에 어서 오세요!' , n_img : '/mamin/img/game/nation/리스본.webp' },
+					   { n_comment : '문화와 예술, 축구와 스페인 왕정이 머무는 에스파냐의 중심.<br>마드리드에 어서 오세요!' , n_img : '/mamin/img/game/nation/마드리드.webp' }, 
+					   { n_comment : '4년마다 열리는 세계인의 축제가, 마블의 민족에선 하루에도 몇 번이고 만나볼 수 있죠!' , n_img : '' },
+					   { n_comment : '오로라와 눈, 나이아가라 폭포의 나라<br>케나다의 수도 오타와에 어서 오세요!' , n_img : '/mamin/img/game/nation/오타와.JPG' },
+					   { n_comment : '캥거루와 광활한 대지, 다양한 문화와 아름다운 해변이 공존하는<br>호주에 어서 오세요!' , n_img : '/mamin/img/game/nation/시드니2.png' },
+					   { n_comment : '휴양으로 유명한 섬은 많지만<br>천국이라고 비유되는 곳은 이곳밖에 없죠. 하와이에 어서 오세요!' , n_img : '/mamin/img/game/nation/하와이1.jpg' },
+					   { n_comment : '어떤 행운이 기다리고 있을까요?' , n_img : '' },
+					   { n_comment : '장벽이 있던 아픔과 강을 따라 일어난 기적부터<br>그 위에 피어난 문화가 겹겹이 쌓여있는<br>어쩌면 우리와 아주 닮아있는 베를린에 어서 오세요!' , n_img : '/mamin/img/game/nation/베를린.webp' },
+					   { n_comment : '문화도 더할 나위 없이 아름답지만, 일단 음식과 맥주가 맛있잖아요. 더 필요한 게 있을까요? 도쿄에 어서 오세요!' , n_img : '/mamin/img/game/nation/도쿄도트.gif' },
+					   { n_comment : '루브르와 베르사유, 몽마르트와 노트르담. 저녁 시간 유람선을 타고 세느강을 따라 흘러가다 보면, 어느새 금빛으로 몸을 휘감은 에펠탑을 만날 수 있지요. 미술과 패션의 도시 파리에 어서 오세요!' , n_img : '/mamin/img/game/nation/파리.JPG'},
+					   { n_comment : '세계여행' , n_img : '' },
+					   { n_comment : '제국의 수도였으면서 가톨릭의 성지 바티칸을 품고 있는<br>유럽 역사의 보고, 로마에 어서 오세요!' , n_img : '/mamin/img/game/nation/로마.JPG' },
+					   { n_comment : '유럽 경제의 중심이자 영국의 중심. 왕가의 버킹엄과 타워가 아름다운 브릿지, 세계 역사가 모여있는 박물관까지! 런던에 어서 오세요!' , n_img : '/mamin/img/game/nation/런던.png' },
+					   { n_comment : 'America-! 여러 영화에서 이민자들이 외치곤 하는 저 말은 보통 자유의 여신상과 함께 나오죠. 세계 경제의 마천루, 뉴욕에 어서 오세요!' , n_img : '/mamin/img/game/nation/뉴욕2.jpg' },
+					   { n_comment : '어떤 행운이 기다리고 있을까요?' , n_img : '' },
+					   { n_comment : '해운대의 부서지는 파도부터 광안리의 찰박이는 물살까지<br>강약강약단짠단짠의 도시. 붓싼에 어서 오세요!' , n_img : '/mamin/img/game/nation/부산.JPG' },
+					   { n_comment : '혼저옵서예~ 구멍숭숭 돌하르방, 이국적인 해변과 산의 준엄한 경치까지 모두 즐길 수 있지요. 음식은 말해 뭐해. 제주에 어서 오세요!' , n_img : '/mamin/img/game/nation/제주1.JPG'},
+					   { n_comment : '대한민국의 중심. 서울에 어서 오세요.' , n_img : '/mamin/img/game/nation/서울.JPG' },
+];
+
 //------------수현 추가 -로그 글출력 부분
 let log = document.querySelector(".game_info")
-
-/* 
-	20221104 지웅 추가
-	
-	room.js와 gameboard.js에서 페이지 전환 전 생성되지 않은 div 혹은 페이지 전환 후 사라진 div를 읽지 못해서
-	하단 js가 실행되지 않는 문제 발생
-	onmessage 분리 test
-	room js에서 처리 완료
-	아래 함수 게임로그 출력용으로 사용예정
-*/
-
-function gameOperate() {
-
-}
 
 
 /*============================== 수현 게임방 플레이어 관련 =========================================== */
@@ -120,32 +143,33 @@ gamePlayer() // 플레이어 정보 출력
 // 수현 게임 보드판 출력 함수
 function gameboard() {
 
-
+// 20221105 지웅 수정
+	// 일반 땅 아닌 곳 숫자 안나오도록 수정
 
 	//시작점
 	//p_location0 == 시작
 	document.querySelector(".b_start").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[0].n_name + '</div>' +
-		'<div class="n_player">' + nation[0].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location0 location"></span>' + // 플레이어 말 출력 위치
 		'</div>'
 
 	//무인도
 	document.querySelector(".b_island").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[8].n_name + '</div>' +
-		'<div class="n_player">' + nation[8].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location8 location"></span>' +
 		'</div>'
 	//올림픽
 	document.querySelector(".b_olympic").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[16].n_name + '</div>' +
-		'<div class="n_player">' + nation[16].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location16 location"></span>' +
 		'</div>'
 	//세계여행
-	document.querySelector(".b_travle").innerHTML = '<div class="g_space">' +
+	document.querySelector(".b_travel").innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[24].n_name + '</div>' +
-		'<div class="n_player">' + nation[24].n_price + '</div>' +
+		'<div class="n_player"></div>' +
 		'<span class="p_location24 location"></span>' +
 		'</div>'
 	//오른쪽 줄 
@@ -154,28 +178,44 @@ function gameboard() {
 		//통행료 천원단위로 나오게 잘라줌
 		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-
-		document.querySelector(".right_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+			//황금열쇠 자리에 gold_key class부여
+		let html = '<div class="g_space" onclick="click_ModalBtn(2, '+ i +')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
+			'<span class="p_location' + i + '  location"></span>' 
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
-
+		if(i==4){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}
+		document.querySelector(".right_row").innerHTML += html;
 	}
 	//윗 줄
 	for (let i = 15; i >= 9; i--) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".top_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space" onclick="click_ModalBtn(2, '+ i +')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==12){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}	
+		document.querySelector(".top_row").innerHTML += html;
 
 	}
 	//왼쪽 줄
@@ -183,32 +223,131 @@ function gameboard() {
 	for (let i = 17; i <= 23; i++) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".left_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space" onclick="click_ModalBtn(2, '+ i +')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
-
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==20){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}	
+		document.querySelector(".left_row").innerHTML += html;
 	}
 	//아랫줄
 	// 아랫줄은 페이지출력순서랑 똑같아서 i++
 	for (let i = 25; i <= 31; i++) {
 		//통행료 천원단위로 나오게 잘라줌
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
-		document.querySelector(".bottom_row").innerHTML
-			+= '<div class="g_space">' +
+		// 20221105 지웅 수정
+			//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
+		let html = '<div class="g_space" onclick="click_ModalBtn(2, '+ i +')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
-			'<span class="p_location' + i + '  location"></span>' + // 플레이어 말 출력 위치
-			'<div class="n_payment">' + n_payment + '</div>' // 통행료 출력 위치
-		'</div>'
+			'<span class="p_location' + i + '  location"></span>'
+			+'<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
+		if(i==28){
+			html = '<div class="g_space gold_key">' +
+		'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
+		'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
+		'<span class="p_location' + i + '  location"></span>' + 
+		'<div class="n_payment"></div></div>'
+		}
+		document.querySelector(".bottom_row").innerHTML += html;
 
 	}
-	playerLocation() // 최초 플레이어 위치 출력
+	playerLocation(); // 최초 플레이어 위치 출력
 
 }//gameboard end
+
+
+// 1106 지웅 추가 모달 클릭 함수
+// 제일 하단에 작성하려고 했으나 이상하게 복사해서 내리면 빨간줄이 쥬루ㅡ르르르르륵 뜹니다...
+// semicolon unexpected 이런거 나오길래 다시 긁어서 출력부 아래로 옮겼습니다.
+	// type : 1 = user정보 모달 / 2 = 토지 정보 모달
+function click_ModalBtn(type, index) {
+	let userInfo = document.querySelector('.user_info');
+	let nation_info = document.querySelector('.nation_info');
+	let modalbox = document.querySelector('.modalbox');
+	if(type==1){
+		nation_info.style.display = 'none';
+		userInfo.style.display = 'block';
+		userInfo.innerHTML = make_user_info(index);
+		modalbox.style.background = '#928A97';
+	}else if(type==2){		
+		nation_info.style.display = 'block';
+		userInfo.style.display = 'none';
+		nation_info.innerHTML = make_nation_info(index);
+		modalbox.style.background = '#FBE8D3';
+	}
+	document.querySelector('.modalinfoBtn').click();
+}
+
+// 1106 지웅 추가 유저 소개 html 구성 후 return
+function make_user_info(index){
+	let win_rate;
+	if(player_list[index].total != 0){
+		win_rate = (Number(player_list[index].wins) / Number(player_list[index].total)) * 100 + '%';
+	}else{
+		win_rate = '전적 없음';
+	}	
+	let html = `<div class="modal_top_box">
+					<div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
+					<div class="modal_user_namebox">${player[index].p_nick}</div>
+				</div>
+				<div class="modal_btm_box">
+					<table class="modal_user_data">
+						<tr><td class="modal_tb_left">경기수</td><td class="modal_tb_right">${player_list[index].total}</td></tr>
+						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${player_list[index].wins}회</td></tr>
+						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${win_rate}</td></tr>
+					</table>
+				</div>`
+	return html;
+}
+
+// 1106 지웅 추가 
+	// 국가 소개 html구성 후 return
+function make_nation_info(index){	
+	let nation_payment = Math.floor(nation[index].n_payment * (1+nation[index].n_level))/1000 * 1000;
+	let nation_price = nation[index].n_price * 1+nation[index].n_level*0.5;
+	let owner_name;
+	if(nation[index].owner != 0){
+		owner_name = player[nation[index].owner-1].p_nick;
+	}else{
+		owner_name = '소유주 없음';
+	}
+	let building_list = '';	
+	if(nation[index].n_level==1){
+		building_list = '<i class="fas fa-home"></i>';
+	}else if(nation[index].n_level==2){
+		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i>';		
+	}else if(nation[index].n_level==3){
+		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i><i class="fas fa-hotel"></i>';
+	}
+	
+	let html = `<div class="modal_top_box">
+					<div class="modal_nation_imgbox"><img src="${nation_infobox[index].n_img}"></div>
+					<div class="modal_nation_namebox">${nation[index].n_name}</div>
+					<div class="modal_nation_comment">${nation_infobox[index].n_comment}</div>
+				</div>
+				<div class="modal_nation_infobox">
+					<table class="modal_btm_box">
+						<tr><td class="modal_tb_left">소유주</td><td class="modal_tb_right">${owner_name}</td></tr>
+						<tr><td class="modal_tb_left">건물 정보</td><td class="modal_tb_right">${building_list}</td></tr>
+						<tr><td class="modal_tb_left">통행료</td><td class="modal_tb_right">${nation_payment}원</td></tr>
+						<tr><td class="modal_tb_left">토지 가치</td><td class="modal_tb_right">${nation_price}원</td></tr>
+					</table>
+				</div>`;	
+	return html;
+}
+
 
 // 게임 참여한 플레이어 정보 가져와서 넣어줘야함
 //닉네임이랑 프로필이미지 출력할 함수
@@ -217,14 +356,17 @@ function gamePlayer() {
 	// 게임에 참가한 플레이어 수만큼 반복문 돌아가게 설정해야되지만 일단 임의로 숫자 집어 넣어놨습니다.
 	for (let i = 1; i <= player.length; i++) {
 
-		document.querySelector(".player" + i + "_info").innerHTML = '<div class="g_m_img">' +
-			'<img width="150px" src="' + player[i - 1].m_img + '">' + // 플레이어 프로필 이미지 출력 위치
-			'</div>' +
-			'<div class="g_intro">' +
-			'<div class="g_m_nick">' + player[i - 1].p_nick + '</div>' + //플레이어 닉네임 출력 위치
-			'<div class="g_money">순자산 : ' + nation_sum + '</div>' + // 플레이어 순자산 출력 위치
-			'<div class="g_cash">현금 : ' + player[i - 1].p_money + '</div>' + // 플레이어 현금 출력 위치
-			'</div>'
+		document.querySelector(".player" + i + "_info").innerHTML = 
+									   `<div class="g_m_img">
+											<img class="ingameProfile" src="${player[i-1].m_img}">										
+										</div>
+										<div class="g_m_info">
+											<div class="g_moneyDisplay">
+												<div class="g_cash">현금 : ${player[i-1].p_money}원 <span class="g_money">(순자산)${nation_sum}원</span> </div>
+												<div class="g_minusMoney"></div>
+											</div>
+											<div class="g_m_nick">${player[i - 1].p_nick}</div>
+										</div>`;
 	}
 }
 
@@ -492,7 +634,7 @@ function levelUp_check(playerNo) {
 				building_name = "호텔";
 			}
 			
-			if (confirm("비용 : " + fee + "\n" + building_name + "을 지으시겠습니까?")) {
+			if (confirm("비용 : " + fee + "<br>" + building_name + "을 지으시겠습니까?")) {
 				let object = {
 					function_name: 'levelUp_land',
 					data: nNo,

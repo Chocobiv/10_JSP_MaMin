@@ -124,7 +124,6 @@ function addPlayer(array){
 		
 		// 지웅 수정
 			//ready 상태 표시 위해 변수 생성 후 innerHTML로 대입
-		console.log(object);
 			
 		let slotHTML = `<td class="r_p_img">
 					<img src="/mamin/img/member/${object.m_img}">

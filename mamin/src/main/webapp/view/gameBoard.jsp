@@ -7,27 +7,47 @@
 <title>Insert title here</title>
 	<link rel="stylesheet" href="/mamin/css/gameBoard.css">
 	<link rel="stylesheet" href="https://unpkg.com/destyle.css@1.0.5/destyle.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 	<!-- 헤더 연결없어서 폰트어썸 , 부트스트랩 따로 추가해줌 - 수현 -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 </head>
 <body>
 
+
+	<!-- Button trigger modal -->
+	<button style="display:none;" type="button" class="modalinfoBtn btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+	</button>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content modalbox">
+	      <div class="modal-header ingame_userInfo">
+	      	<h1 class="modal-title fs-5" id="exampleModalLabel">Information</h1>
+	        <button type="button" class="btn-close m_btn_close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>	      
+	      <div class="modal-body nation_info"></div>
+	      <div class="modal-body user_info"></div>
+	    </div>
+	  </div>
+	</div>
+
+
 	<div class="gameroom"><!-- 게임방 전체 -->
 		<div class="gameboard"><!-- 게임판 -->
 			<div class="g_profile"><!-- 플레이어 정보 -->
-				<div class="player1_info">
+				<div class="player1_info" onclick="click_ModalBtn(1,0)">
 					
 				</div>
-				<div class="player2_info">
+				<div class="player2_info" onclick="click_ModalBtn(1,1)">
 					
 				</div>
-				<div class="player3_info">
+				<div class="player3_info" onclick="click_ModalBtn(1,2)">
 					
 				</div>  
-				<div class="player4_info">
+				<div class="player4_info" onclick="click_ModalBtn(1,3)">
 					
-				</div>
-			
+				</div>			
 			</div>
 			<div class="boardbox"><!-- 게임판 박스 -->
 			
@@ -78,7 +98,7 @@
 				
 				</div>
 				
-				<div class="b_travle"> <!-- 세계여행 -->
+				<div class="b_travel"> <!-- 세계여행 -->
 				
 				</div>
 				<div class="rowline b_row v_row right_row"> <!--  오른쪽 줄 -->
@@ -96,7 +116,7 @@
 	
 	
 	</div>
-
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="/mamin/js/gameBoard.js"></script>
 </body>
 </html>
