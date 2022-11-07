@@ -92,7 +92,7 @@ function onmessage(obj) {
 	}else if(parsing.function_name == 'updatePlayerPosition'){	//비아 추가
 		updatePlayerPosition(parsing.playerNo, parsing.n_no)
 	}else if(parsing.Info_update == 'player'){	// 1105 수현 추가
-		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.cash)
+		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
