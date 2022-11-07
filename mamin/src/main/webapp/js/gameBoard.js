@@ -1035,9 +1035,9 @@ function goWorldtravel(playerNo) {
 	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
 	
 	//2. 이동할 나라 선택 받기
-	while(worldtravel_n_no == 24){
+	//while(worldtravel_n_no == 24){
 		console.log('다른 나라를 선택하세요.')
-	}
+	//}
 	//플레이어 위치 이동
 	player[playerNo].p_position = worldtravel_n_no
 	//소켓 통신
