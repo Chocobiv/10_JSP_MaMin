@@ -3,7 +3,7 @@ let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인
 let playerNo = 0;
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 let click_status = 1
-let worldtravel_n_no = 24	//1107 비아 추가 -> 세계여행 갈 토지번호
+let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
 
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
@@ -82,7 +82,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 10000,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -96,13 +96,13 @@ function setPlayersInfo() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
 	{ n_no: 0, n_name: "출발점", owner: 0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 4, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 5, n_name: "카이로", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 6, n_name: "코펜하겐", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 7, n_name: "이스탄불", owner: 1, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
 	{ n_no: 8, n_name: "무인도", owner: 0, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
 	{ n_no: 9, n_name: "상파울루", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
 	{ n_no: 10, n_name: "싱가폴", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
@@ -120,7 +120,7 @@ let nation = [
 	{ n_no: 22, n_name: "도쿄", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 23, n_name: "파리", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 24, n_name: "세계여행", owner: 0, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 25, n_name: "로마", owner: 2, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 25, n_name: "로마", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
@@ -278,6 +278,7 @@ function check_clickType(click_status, mtype, index){
 	}else if(click_status==2){
 		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
 			// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
+		click_ModalBtn(3, index)
 	}
 }
 
