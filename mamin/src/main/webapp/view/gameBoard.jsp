@@ -17,7 +17,6 @@
 	<!-- Button trigger modal -->
 	<button style="display:none;" type="button" class="modalinfoBtn btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 	</button>
-	
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
@@ -26,8 +25,8 @@
 	      	<h1 class="modal-title fs-5" id="exampleModalLabel">Information</h1>
 	        <button type="button" class="btn-close m_btn_close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>	      
-	      <div class="modal-body nation_info"></div>
-	      <div class="modal-body user_info"></div>
+	      <div class="modal_contentsbody">
+	      </div>
 	    </div>
 	  </div>
 	</div>
@@ -50,7 +49,7 @@
 				</div>			
 			</div>
 			<div class="boardbox"><!-- 게임판 박스 -->
-			
+				<div class="positiontester"><i class="fas fa-ghost player1_icon"></i></div>
 				<div class="b_center"> <!-- 게임판 가운데 부분 -->
 					<!-- 주사위 굴러갈 부분, 게임로고 표시 -->
 					<div class="b_diceContent"><!-- 주사위 -->

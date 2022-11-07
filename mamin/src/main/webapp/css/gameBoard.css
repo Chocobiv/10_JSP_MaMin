@@ -30,6 +30,11 @@ body{
 	background-size: cover;
 }
 
+/*------------좌표 계산 테스터-------------*/
+
+.positiontester{position : absolute; right : 80px; bottom : 80px;}
+
+
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
 .gameboard{	/*보드판 전체*/
 	position: relative;
@@ -139,6 +144,7 @@ body{
 	height: 1093px;
 	color:white;
 	border: 2px solid black;
+	position : relative;
 }
 
 /*---------------- 게임판 가운데 -----------------------*/

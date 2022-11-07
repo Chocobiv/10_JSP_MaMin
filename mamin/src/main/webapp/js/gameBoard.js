@@ -1,6 +1,8 @@
 /*---------- 전역변수 ---------------- */
 let playerTurn = 0; // 플레이어 턴 구분하기 위한 전역 변수 -> 인덱스로 사용하기
+let playerNo = 0;
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
+let click_status = 1;
 
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
@@ -182,7 +184,7 @@ function gameboard() {
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -203,7 +205,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -226,7 +228,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -248,7 +250,7 @@ function gameboard() {
 		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space" onclick="click_ModalBtn(2, ' + i + ')">' +
+		let html = '<div class="g_space" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -268,24 +270,29 @@ function gameboard() {
 
 }//gameboard end
 
+//20221107 지웅 추가, nation click type 분할
+function check_clickType(click_status, mtype, index){
+	if(click_status==1){
+		click_ModalBtn(mtype, index);
+	}else if(click_status==2){
+		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
+			// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
+	}
+}
+
 
 // 1106 지웅 추가 모달 클릭 함수
 // 제일 하단에 작성하려고 했으나 이상하게 복사해서 내리면 빨간줄이 쥬루ㅡ르르르르륵 뜹니다...
 // semicolon unexpected 이런거 나오길래 다시 긁어서 출력부 아래로 옮겼습니다.
 // type : 1 = user정보 모달 / 2 = 토지 정보 모달
 function click_ModalBtn(type, index) {
-	let userInfo = document.querySelector('.user_info');
-	let nation_info = document.querySelector('.nation_info');
+	let modal_contentsbody = document.querySelector('.modal_contentsbody');
 	let modalbox = document.querySelector('.modalbox');
 	if (type == 1) {
-		nation_info.style.display = 'none';
-		userInfo.style.display = 'block';
-		userInfo.innerHTML = make_user_info(index);
+		modal_contentsbody.innerHTML = make_user_info(index);
 		modalbox.style.background = '#928A97';
 	} else if (type == 2) {
-		nation_info.style.display = 'block';
-		userInfo.style.display = 'none';
-		nation_info.innerHTML = make_nation_info(index);
+		modal_contentsbody.innerHTML = make_nation_info(index);
 		modalbox.style.background = '#FBE8D3';
 	}
 	document.querySelector('.modalinfoBtn').click();
@@ -299,16 +306,18 @@ function make_user_info(index) {
 	} else {
 		win_rate = '전적 없음';
 	}
-	let html = `<div class="modal_top_box">
-					<div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
-					<div class="modal_user_namebox">${player[index].p_nick}</div>
-				</div>
-				<div class="modal_btm_box">
-					<table class="modal_user_data">
-						<tr><td class="modal_tb_left">경기수</td><td class="modal_tb_right">${player_list[index].total}</td></tr>
-						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${player_list[index].wins}회</td></tr>
-						<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${win_rate}</td></tr>
-					</table>
+	let html = `<div class="modal-body user_info">
+					<div class="modal_top_box">
+						<div class="modal_user_imgbox"><img src="${player[index].m_img}"></div>
+						<div class="modal_user_namebox">${player[index].p_nick}</div>
+					</div>
+					<div class="modal_btm_box">
+						<table class="modal_user_data">
+							<tr><td class="modal_tb_left">경기수</td><td class="modal_tb_right">${player_list[index].total}</td></tr>
+							<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${player_list[index].wins}회</td></tr>
+							<tr><td class="modal_tb_left">승리</td><td class="modal_tb_right">${win_rate}</td></tr>
+						</table>
+					</div>
 				</div>`
 	return html;
 }
@@ -333,18 +342,20 @@ function make_nation_info(index) {
 		building_list = '<i class="fas fa-home"></i><i class="fas fa-building"></i><i class="fas fa-hotel"></i>';
 	}
 
-	let html = `<div class="modal_top_box">
-					<div class="modal_nation_imgbox"><img src="${nation_infobox[index].n_img}"></div>
-					<div class="modal_nation_namebox">${nation[index].n_name}</div>
-					<div class="modal_nation_comment">${nation_infobox[index].n_comment}</div>
-				</div>
-				<div class="modal_nation_infobox">
-					<table class="modal_btm_box">
-						<tr><td class="modal_tb_left">소유주</td><td class="modal_tb_right">${owner_name}</td></tr>
-						<tr><td class="modal_tb_left">건물 정보</td><td class="modal_tb_right">${building_list}</td></tr>
-						<tr><td class="modal_tb_left">통행료</td><td class="modal_tb_right">${nation_payment}원</td></tr>
-						<tr><td class="modal_tb_left">토지 가치</td><td class="modal_tb_right">${nation_price}원</td></tr>
-					</table>
+	let html = `<div class="modal-body nation_info">
+					<div class="modal_top_box">
+						<div class="modal_nation_imgbox"><img src="${nation_infobox[index].n_img}"></div>
+						<div class="modal_nation_namebox">${nation[index].n_name}</div>
+						<div class="modal_nation_comment">${nation_infobox[index].n_comment}</div>
+					</div>
+					<div class="modal_nation_infobox">
+						<table class="modal_btm_box">
+							<tr><td class="modal_tb_left">소유주</td><td class="modal_tb_right">${owner_name}</td></tr>
+							<tr><td class="modal_tb_left">건물 정보</td><td class="modal_tb_right">${building_list}</td></tr>
+							<tr><td class="modal_tb_left">통행료</td><td class="modal_tb_right">${nation_payment}원</td></tr>
+							<tr><td class="modal_tb_left">토지 가치</td><td class="modal_tb_right">${nation_price}원</td></tr>
+						</table>
+					</div>
 				</div>`;
 	return html;
 }
@@ -427,9 +438,9 @@ function playerLocation() {
 
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
-function rollDice() {
-	console.log(playerTurn);
-	console.log(player);
+function rollDice() {	
+	console.log("turn주사위 던졌다"+playerTurn);
+	console.log("Number 주사위 던졋다!"+playerNo);
 
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		alert('다른 사람의 턴이에요.')
@@ -508,6 +519,15 @@ function setPlayerPosition(dice1, dice2) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function end_turn(){
+	if(playerNo >= player.length){
+		playerNo = 0;
+		console.log('다음턴 시작');
+	}else{
+		playerNo++;
+		console.log('다음턴 시작');
+	}
+}
 
 
 /*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
@@ -515,7 +535,6 @@ function setPlayerPosition(dice1, dice2) {
 function landEventCheck(playerTurn) {
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
 	let nationNo = 0;
-	let playerNo = 0;
 	if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
 		nationNo = player[player.length - 1].p_position
 		playerNo = player.length - 1
@@ -704,8 +723,6 @@ function tollfee(nationNo, playerNo) {
 			log.innerHTML = "현금이 부족해 매각해야합니다."
 			console.log("매각 메소드 실행")
 			printLandList(playerNo, fee, nationNo) // 통행료를 지불해야했던 토지번호도 가지고가야함!!
-
-
 		}
 
 	}
