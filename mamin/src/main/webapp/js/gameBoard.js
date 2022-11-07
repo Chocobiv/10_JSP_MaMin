@@ -271,17 +271,6 @@ function gameboard() {
 
 }//gameboard end
 
-//20221107 지웅 추가, nation click type 분할
-function check_clickType(click_status, mtype, index){
-	if(click_status==1){
-		click_ModalBtn(mtype, index);
-	}else if(click_status==2){
-		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
-			// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
-		click_ModalBtn(3, index)
-	}
-}
-
 
 
 // 1106 지웅 추가 모달 클릭 함수
@@ -366,13 +355,29 @@ function make_nation_info(index) {
 }
 
 //20221107 지웅 추가, nation click type 분할
+//1107 비아 추가
 function check_clickType(clickstatus, mtype, index) {
 	if (clickstatus == 1) {
 		click_ModalBtn(mtype, index);
 	} else if (clickstatus == 2) {
 		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
 		// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
-		click_ModalBtn(3,index)
+		click_ModalBtn(3, index)
+		if (index == 24) {	//세계여행을 선택했을 경우
+			alert('다른 나라를 선택하세요.')
+			return
+		} else {		//세계여행 외의 나라를 선택했을 경우
+			// 세계여행을 떠나는 함수
+			//이동할 나라 선택 받기
+			//플레이어 위치 이동
+			player[playerNo].p_position = worldtravel_n_no
+			//소켓 통신
+			updatePlayerPosition(playerNo, worldtravel_n_no)
+			
+			//세계여행 종료로 click_status 값 다시 1로 변경
+			click_status = 1
+		}
+		
 	}
 }
 
@@ -1028,24 +1033,13 @@ function updateNationLevel(nation_index, playerNo) {
 	setHouse(nation_index, nation[nation_index].n_level, playerNo)	// 게임보드 주택 입력 함수
 }
 
-//세계여행 메소드
+//비아 - 세계여행 메소드
 function goWorldtravel(playerNo) {
 	click_status = 2	//세계여행 시작하므로 click_status 값 2로 변경
 	gameboard()			//게임판 다시 출력
 	//1. 로그 변경
 	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
 	
-	//2. 이동할 나라 선택 받기
-	//while(worldtravel_n_no == 24){
-		console.log('다른 나라를 선택하세요.')
-	//}
-	//플레이어 위치 이동
-	player[playerNo].p_position = worldtravel_n_no
-	//소켓 통신
-	updatePlayerPosition(playerNo, worldtravel_n_no)
-	
-	//세계여행 종료로 click_status 값 다시 1로 변경
-	click_status = 1
 }
 
 //입력받은 땅이 내 땅이 맞는지 확인 메소드
