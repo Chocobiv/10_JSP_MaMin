@@ -42,6 +42,35 @@ let nation_infobox = [{ n_comment: '부자가 되어 돌아오세요!', n_img: '
 { n_comment: '대한민국의 중심. 서울에 어서 오세요.', n_img: '/mamin/img/game/nation/서울.JPG' },
 ];
 
+
+/*================================= 수현 황금열쇠 객체 생성 =================================================== */
+let gold_key=[
+	// type에 뭘 넣기로 했더라... state는 default 0이고 사용됐으면 1주면 되나
+	// 지불하고 받고 이런걸 type으로 나누기로 했던가....
+	{k_no : 0 , k_type : 0, k_name : "정기종합소득세" , k_comment : "소득세를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 1 , k_type : 0 , k_name : "방범비" , k_comment : "방범비를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 2 , k_type : 0 , k_name : "통행권" , k_comment : "다음번에 통행료를 내야하는 경우 한번 패스할 수 있습니다." , k_state : 0},
+	{k_no : 3 , k_type : 0 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0},
+	{k_no : 4 , k_type : 0 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0},
+	{k_no : 5 , k_type : 0 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0},
+	{k_no : 6 , k_type : 0 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 7 , k_type : 0 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0},
+	{k_no : 8 , k_type : 0 , k_name : "기지강탈" , k_comment : "상대방이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0},
+	{k_no : 9 , k_type : 0 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0},
+	{k_no : 10 , k_type : 0, k_name : "정기종합소득세" , k_comment : "소득세를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 11 , k_type : 0 , k_name : "방범비" , k_comment : "방범비를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 12 , k_type : 0 , k_name : "통행권" , k_comment : "다음번에 통행료를 내야하는 경우 한번 패스할 수 있습니다." , k_state : 0},
+	{k_no : 13 , k_type : 0 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0},
+	{k_no : 14 , k_type : 0 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0},
+	{k_no : 15 , k_type : 0 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0},
+	{k_no : 16 , k_type : 0 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 17 , k_type : 0 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0},
+	{k_no : 18 , k_type : 0 , k_name : "기지강탈" , k_comment : "상대방이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0},
+	{k_no : 19 , k_type : 0 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0}
+]
+
+
+
 //------------수현 추가 -로그 글출력 부분
 let log = document.querySelector(".game_info")
 let saleLandCheck = true; // 매각 반복실행위한 변수설정
@@ -579,6 +608,7 @@ function landEventCheck(playerTurn) {
 
 		case 2: // 황금열쇠메소드
 			console.log("황금열쇠");
+			openGoldkey(playerNo)
 			break;
 
 		case 3: // 무인도메소드
@@ -935,13 +965,6 @@ function saleLand(n_no, playerNo, fee, nowNationNo) {
 		},2000)
 		
 	}
-
-
-
-
-
-
-
 }
 
 
@@ -953,6 +976,42 @@ function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변�
 		return true; // 결제할 자산 충분하면 true
 	} else return false; // 결제 금액부족하면 false
 }
+
+
+
+/////////// 수현 11/07 황금열쇠 메소드 ////////////////
+function openGoldkey(playerNo){
+	// 황금열쇠토지에 도착하면
+	// 20개중 랜덤으로 하나 뽑히고
+	// 바로 사용가능한 건 바로바로 보관가능한건 가지고 있다가
+	// 무인도, 통행권무료에 메소드 추가해서 황금열쇠 가지고 있는지 확인해주기
+	console.log("황금열쇠도착")
+	
+	let randKey=null;
+	while(true){// 사용하지 않은 황금열쇠 숫자를 뽑을때까지 반복
+		randKey=Math.floor(Math.random()*19)
+		// 황금열쇠 state가 1이 아닌 애들만 뽑힐 수 있게
+		// 1이면 이미 사용됐음
+		if(gold_key[randKey].k_state!=1){break;}	
+	}
+	// 일단 이거 뽑은걸 플레이어한테 알려주고
+	log.innerHTML=gold_key[randKey].k_name+'<br>'+gold_key[randKey].k_comment
+	// 그 숫자에 해당하는 황금열쇠 객체를 실행시켜야...
+	useGoldkey(playerNo)
+	
+
+
+}
+function useGoldkey(playerNo){
+	console.log("사용시켜야돼...")
+}
+
+
+
+
+
+
+
 
 //////////// 수현 11/05 추가 //////////////
 // 통행료 지불 후 자산 업데이트 소켓 전달!!!
