@@ -683,7 +683,8 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-	let fee = 0
+	let fee =Math.floor(nation[index].n_payment * (1 + nation[index].n_level)) / 1000 * 1000
+	/*
 	if (nation[nationNo].n_level == 0) {//건물 없을때
 		fee = nation[nationNo].n_payment// 현재 땅의 통행료
 	} else if (nation[nationNo].n_level == 1) {//건물 1단계 일때
@@ -693,6 +694,7 @@ function tollfee(nationNo, playerNo) {
 	} else if (nation[nationNo].n_level == 3) {//건물 3단계일때 
 		fee = Math.floor(nation[nationNo].n_payment * 1.5 * 1.5 * 1.5 / 10000) * 10000 //도착한 땅의 통행료에 1.5^3 배 후 만단위까지 
 	}
+	*/
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		log.innerHTML = '통행료 : ' + fee
@@ -884,7 +886,7 @@ function printLandList(playerNo, fee, nowNationNo) {
 function saleLand(n_no, playerNo, fee, nowNationNo) {
 	// 소유주 , 건물단계 리셋
 	// 매각가는 50%
-	log.innerHTML = nation[n_no].n_name + '가 매각됐습니다..'
+	log.innerHTML = nation[n_no].n_name + '가 매각됐습니다.'
 	player[playerNo].p_money += (nation[n_no].n_price / 2)
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
