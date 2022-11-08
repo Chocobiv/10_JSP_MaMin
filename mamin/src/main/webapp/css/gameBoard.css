@@ -5,7 +5,6 @@
 #FBE8D3
 #928A97
 #283C63
-
 */
 
 
@@ -141,6 +140,42 @@ body{
 	border: 2px solid black;
 	position : relative;
 }
+/*-------------------테스터--------------------*/
+.placetester1{
+	position: absolute;
+	right: 40px;
+	bottom: 40px;
+	height: 80px;
+	z-index: 2;
+	transition: all .5s linear;
+}
+.placetester2{
+	position: absolute;
+	right: 0;
+	bottom: 40px;
+	height: 80px;
+	z-index: 2;
+	transition: all .5s linear;
+}
+
+.placetester3{
+	position: absolute;
+	right: 40px;
+	bottom: 0;
+	height: 80px;
+	z-index: 2;
+	transition: all .5s linear;
+}
+
+.placetester4{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 80px;
+	z-index: 2;
+	transition: all .5s linear;
+}
+
 
 /*---------------- 게임판 가운데 -----------------------*/
 .b_center { /*게임판 가운데*/
@@ -415,8 +450,9 @@ body{
 .modal_nation_comment{font-size : 18px; text-align: center;}
 .modal_top_box{margin-bottom: 35px}
 .modal_btm_box{font-size : 25px;}
-.modal_tb_left{ width : 100px; height : 30px; }
+.modal_tb_left{ width : 100px; height : 60px; }
 .modal_tb_right{ width : 300px; height : 30px; padding-left : 50px;}
+.modal_tb_right img{width : 50px; height : 50px;}
 
 
 
@@ -441,16 +477,16 @@ body{
     transition: all .5s linear;
 }
 #player1.down, #player2.down, #player3.down, #player4.down {
-    -moz-transform:rotate(720deg);
-    -webkit-transform:rotate(720deg);
-    transform:rotate(720deg);
+    -moz-transform:rotateY(720deg);
+    -webkit-transform:rotateY(720deg);
+    transform:rotateY(720deg);
 }
 
 /* 지웅 추가 토스트 이벤트*/
 #toast {
-    position: fixed;
-    bottom: 600px;
-    left: 1190px;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
     padding: 15px 20px;
     transform: translate(-50%, 10px);
     border-radius: 30px;

@@ -37,8 +37,6 @@
        </div>
      </div>
    </div>
-   <!-- toast -->
-   <div id="toast"></div>
 
 
    <div class="gameroom">
@@ -54,6 +52,12 @@
          </div>
 
          <div class="boardbox"><!-- 게임판 박스 -->
+         	<!-- toast -->
+   			<div id="toast"></div>
+   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester1">
+   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester2">
+   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester3">
+   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester4">
             <div class="b_center"> <!-- 게임판 가운데 부분 -->
 
                <!-- 주사위 굴러갈 부분, 게임로고 표시 -->
@@ -77,6 +81,7 @@
                </div>
             </div>
             <div class="b_start">
+
                <!-- 출발점 -->
                <!-- 게임칸 박스 생성해야함 -->
                <!--  플레이어 말, 색상, 나라명 , 통행료 표시해야함 -->
