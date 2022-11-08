@@ -596,7 +596,7 @@ function landEventCheck(playerTurn) {
 
 		case 5: // 비아 - 세계여행 메소드
 			console.log("세계여행")
-			goWorldtravel(playerNo)
+			goWorldtravel()
 			break;
 	}
 
@@ -1034,29 +1034,12 @@ function updateNationLevel(nation_index, playerNo) {
 }
 
 //비아 - 세계여행 메소드
-function goWorldtravel(playerNo) {
+function goWorldtravel() {
 	click_status = 2	//세계여행 시작하므로 click_status 값 2로 변경
 	gameboard()			//게임판 다시 출력
 	//1. 로그 변경
 	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
 	
-}
-
-//입력받은 땅이 내 땅이 맞는지 확인 메소드
-function checkMyLand(playerNo) {
-	let n_no = document.querySelector('.goWorld').value
-	if ((nation[n_no].owner - 1) == playerNo) {		//입력받은 땅번호가 내 땅이 맞을 경우
-		player[playerNo].p_position = n_no	//플레이어 위치를 입력받은 땅번호로 수정
-		//세션 통신
-		let object = {
-			function_name: 'updatePlayerPosition',
-			playerNo: playerNo,
-			n_no: n_no
-		}
-
-	} else {	//입력받은 땅번호가 내 땅이 아닐 경우
-		alert('목록에 있는 땅 번호만 입력할 수 있습니다.')	//모달로 수정 필요
-	}
 }
 
 function updatePlayerPosition(playerNo, n_no) {
