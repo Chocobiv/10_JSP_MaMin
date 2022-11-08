@@ -833,7 +833,11 @@ function buyNation(nationNo, playerNo) {
 			document.querySelector(".yes_btn2").addEventListener('click', () => { // 주택 같이 구매
 				fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 				if (!checkMoney(playerNo, fee)) {
-					log.innerHTML = "자산이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
+					log.innerHTML = "건물을 구매할 자산이 부족합니다. 토지만 구매합니다."; document.querySelector(".btnbox").innerHTML = ""
+					setTimeout(()=>{
+						buyResult(playerNo, nation[nationNo].n_price, nationNo, 0) // 토지만 구매
+					},1000)
+					
 					return;
 				}
 				buyResult(playerNo, fee, nationNo, 1) // 이 메소드에서 소유주변경까지 모두 해결
