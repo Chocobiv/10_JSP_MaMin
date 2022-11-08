@@ -210,7 +210,7 @@ function gameboard() {
 	for (let i = 7; i >= 1; i--) {
 		//통행료 천원단위로 나오게 잘라줌
 		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
@@ -232,7 +232,7 @@ function gameboard() {
 	//윗 줄
 	for (let i = 15; i >= 9; i--) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
@@ -255,7 +255,7 @@ function gameboard() {
 	//왼쪽줄은 페이지 출력순서랑 똑같아서 i++
 	for (let i = 17; i <= 23; i++) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
@@ -277,7 +277,7 @@ function gameboard() {
 	// 아랫줄은 페이지출력순서랑 똑같아서 i++
 	for (let i = 25; i <= 31; i++) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
@@ -299,17 +299,6 @@ function gameboard() {
 	playerLocation(); // 최초 플레이어 위치 출력
 
 }//gameboard end
-
-//20221107 지웅 추가, nation click type 분할
-function check_clickType(click_status, mtype, index){
-	if(click_status==1){
-		click_ModalBtn(mtype, index);
-	}else if(click_status==2){
-		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
-			// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
-		click_ModalBtn(3, index)
-	}
-}
 
 
 
@@ -748,10 +737,10 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-	let fee =Math.floor(nation[index].n_payment * (1 + nation[index].n_level)) / 1000 * 1000
+	let fee =Math.floor(nation[nationNo].n_payment * (1 + nation[nationNo].n_level)) / 1000 * 1000
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
-		log.innerHTML = '통행료 : ' + fee
+		log.innerHTML = '통행료 : ' + fee.toLocaleString()+'원'
 		let result = checkMoney(playerNo, fee)
 		if (result) {
 			inoutcome(playerNo, nationNo, fee)
@@ -978,13 +967,14 @@ function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변�
 }
 
 
-
 /////////// 수현 11/07 황금열쇠 메소드 ////////////////
 function openGoldkey(playerNo){
 	// 황금열쇠토지에 도착하면
 	// 20개중 랜덤으로 하나 뽑히고
 	// 바로 사용가능한 건 바로바로 보관가능한건 가지고 있다가
 	// 무인도, 통행권무료에 메소드 추가해서 황금열쇠 가지고 있는지 확인해주기
+	
+	if(document.querySelector(".r_sno").innerHTML!=playerNo+1){return;}	
 	console.log("황금열쇠도착")
 	
 	let randKey=null;
@@ -995,7 +985,7 @@ function openGoldkey(playerNo){
 		if(gold_key[randKey].k_state!=1){break;}	
 	}
 	// 일단 이거 뽑은걸 플레이어한테 알려주고
-	log.innerHTML=gold_key[randKey].k_name+'<br>'+gold_key[randKey].k_comment
+	log.innerHTML=gold_key[randKey].k_name+' 카드 획득 <br>'+gold_key[randKey].k_comment
 	// 그 숫자에 해당하는 황금열쇠 객체를 실행시켜야...
 	useGoldkey(playerNo)
 	
@@ -1073,6 +1063,7 @@ function sendNationPlayer(nationNo, playerNo, n_level) {
 function updateNationInfo(nation_index, p_no, n_level) {
 	nation[nation_index].owner = p_no
 	nation[nation_index].n_level = n_level // 11/5 수현 추가함!!!!!!
+	gameboard() // 1108 수현 추가 게임판 통행료표시 부분 업데이트
 }
 
 //player 현금 업데이트 메소드
