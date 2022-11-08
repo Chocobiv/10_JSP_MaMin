@@ -4,9 +4,12 @@ let playerNo = 0;
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 let click_status = 1
 let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
-let playable = true;
-
-let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
+let diceControl = true;
+// 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
+	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
+	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
+let position_box = [0, 150, 110, 110, 110, 120, 110, 120, 110, 160, 110, 110, 110, 120, 110, 110, 140,
+					0, 150, 110, 110, 110, 120, 110, 120, 110, 160, 110, 110, 110, 120, 110, 110, 140];
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
@@ -168,9 +171,9 @@ let house = '<i class="fas fa-home"></i>' // 1번째 건설 단계
 let building = '<i class="fas fa-building"></i>' // 2번째 건설 단계
 let hotel = '<i class="fas fa-hotel"></i>' // 3번째 건설 단계
 let player1_icon = '<i class="fas fa-ghost player1_icon" id="player1" onclick="animateCharacter(1)"></i>'
-let player2_icon = '<i class="fas fa-ghost player2_icon" id="player2"></i>'
-let player3_icon = '<i class="fas fa-ghost player3_icon" id="player3"></i>'
-let player4_icon = '<i class="fas fa-ghost player4_icon" id="player4"></i>'
+let player2_icon = '<i class="fas fa-ghost player2_icon" id="player2" onclick="animateCharacter(2)"></i>'
+let player3_icon = '<i class="fas fa-ghost player3_icon" id="player3" onclick="animateCharacter(3)"></i>'
+let player4_icon = '<i class="fas fa-ghost player4_icon" id="player4" onclick="animateCharacter(4)"></i>'
 
 
 /*======================== 수현 10/27 보드판 생성 ================================ */
@@ -187,7 +190,7 @@ function gameboard() {
 
 	//시작점
 	//p_location0 == 시작
-	document.querySelector(".b_start").innerHTML = '<div class="g_space">' +
+	document.querySelector('.b_start').innerHTML = '<div class="g_space">' +
 		'<div class="n_name">' + nation[0].n_name + '</div>' +
 		'<div class="n_player"></div>' +
 		'<span class="p_location0 location"></span>' + // 플레이어 말 출력 위치
@@ -513,14 +516,19 @@ function playerLocation() {
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
-
-	console.log("turn주사위 던졌다"+playerTurn);
-	console.log("Number 주사위 던졋다!"+playerNo);
-
+	if(diceControl==false){
+		alert('턴 진행중');
+		return;
+	}
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		alert('다른 사람의 턴이에요.')
 		return;
 	}
+	let statuschange = {
+		function_name : 'turn_change'
+	}
+	send(statuschange);
+	
 	start = true // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 
 	let array1 = []
@@ -541,6 +549,11 @@ function rollDice() {
 	// 	->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
 }
 
+// 턴 체인지
+function turn_change(){
+	diceControl = !diceControl;
+}
+
 // 주사위 굴러가고 다른 메소드들 실행될 수 있게 
 function sleep(sec) {
 	return new Promise(resolve => setTimeout(resolve, sec * 1000));
@@ -557,12 +570,13 @@ async function display_dice(dice1, dice2) {
 // 주사위가 굴러가는 모션 메소드
 function run_dice(dice1, dice2) {
 	log.innerHTML = "	"
+	/*
 	for (let i = 0; i < nation.length; i++) {
 		console.log('nation[' + i + '] 소유주 : ' + nation[i].owner)
 		console.log('nation[' + i + '] 건물레벨 : ' + nation[i].n_level)
 
 	}
-
+	*/
 	return new Promise(function(resolve, reject) {
 		//코드 입력
 		let count = 0 // 10되면 주사위 돌아가는거 멈출 수 있게 변수 선언
@@ -913,6 +927,10 @@ function buyNation(nationNo, playerNo) {
 		document.querySelector(".no_btn").addEventListener('click', () => { // 구매 안하기로 했을경우
 			log.innerHTML = "구매하지 않습니다."
 			document.querySelector(".btnbox").innerHTML = ""
+			let object = {				
+				function_name : 'turn_change'
+			}
+			send(object);
 			return;
 			// *******턴종료 메소드 넣기		
 		})
