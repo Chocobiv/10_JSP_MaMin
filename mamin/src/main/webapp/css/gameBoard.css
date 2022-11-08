@@ -25,178 +25,182 @@
 
 
 body{
-	background-image: url("/mamin/img/game/background/도시_밤.png");
-	background-size: cover;
+   background-image: url("/mamin/img/game/background/도시_밤.png");
+   background-size: cover;
 }
 
 /*------------------- 게임판 플레이어 정보 -----------------------------*/
-.gameboard{	/*보드판 전체*/
-	position: relative;
-	width: 2300px;
-	margin: 0 auto;
-	font-family: "KOTRAHOPE";
-	color : white;
+.gameboard{   /*보드판 전체*/
+   position: relative;
+   width: 2300px;
+   margin: 0 auto;
+   font-family: "KOTRAHOPE";
+   color : white;
 }
 
 .player1_info{ /*플레이어1 정보칸*/
-	border: 4px solid #283C63;
-	position: absolute;
-	border-radius : 20px;
-	top:90px;
-	left:30px;
-	width: 500px;
-	height: 230px;
-	display : flex;
-	justify-content: space-around;
-	align-items: center;
-	background-color: rgba(40,60,99,0.8);
+   border: 4px solid #283C63;
+   position: absolute;
+   border-radius : 20px;
+   top:90px;
+   left:30px;
+   width: 500px;
+   height: 230px;
+   display : flex;
+   justify-content: space-around;
+   align-items: center;
+   background-color: rgba(40,60,99,0.8);
 
 }
 
 .player2_info{ /*플레이어2 정보칸*/
-	border: 4px solid #FBE8D3;
-	position: absolute;
-	border-radius : 20px;
-	top:90px;
-	right:30px;
-	width: 500px;
-	height: 230px;
-	display : flex;
-	justify-content: space-around;
-	align-items: center;
-	background-color: rgba(251,232,211,0.8);
+   border: 4px solid #FBE8D3;
+   position: absolute;
+   border-radius : 20px;
+   top:90px;
+   right:30px;
+   width: 500px;
+   height: 230px;
+   display : flex;
+   justify-content: space-around;
+   align-items: center;
+   background-color: rgba(251,232,211,0.8);
 }
 .player3_info{ /*플레이어3 정보칸*/
-	border: 4px solid #928A97;
-	position: absolute;
-	border-radius : 20px;
-	bottom:90px;
-	left:30px;
-	width: 500px;
-	height: 230px;
-	display : flex;
-	justify-content: space-around;
-	align-items: center;
-	background-color: rgba(146,138,151,0.8);
+   border: 4px solid #928A97;
+   position: absolute;
+   border-radius : 20px;
+   bottom:90px;
+   left:30px;
+   width: 500px;
+   height: 230px;
+   display : flex;
+   justify-content: space-around;
+   align-items: center;
+   background-color: rgba(146,138,151,0.8);
 }
 .player4_info{ /*플레이어4 정보칸*/
-	border: 4px solid #F85F73;
-	position: absolute;
-	border-radius : 20px;
-	bottom:90px;
-	right:30px;
-	width: 500px;
-	height: 230px;
-	display : flex;
-	justify-content: space-around;
-	align-items: center;
-	background-color: rgba(248,95,115,0.8);
+   border: 4px solid #F85F73;
+   position: absolute;
+   border-radius : 20px;
+   bottom:90px;
+   right:30px;
+   width: 500px;
+   height: 230px;
+   display : flex;
+   justify-content: space-around;
+   align-items: center;
+   background-color: rgba(248,95,115,0.8);
 }
 
 .g_m_img img{width:150px;}
 
 .g_m_info{
-	height : 170px;
-	display : flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
+   height : 170px;
+   display : flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-around;
 }
 
 .g_intro{/*플레이어 닉네임, 자산 들어갈 칸*/
-	display: flex;
-	flex-direction:column;
-	justify-content: space-around;
-	text-align: center;
-	height: 160px;
-	font-size: 20px;
+   display: flex;
+   flex-direction:column;
+   justify-content: space-around;
+   text-align: center;
+   height: 160px;
+   font-size: 20px;
 }
 .g_m_nick{ /*닉네임칸*/
-	font-family: "MaplestoryOTFBold";
-	font-size: 40px;
+   font-family: "MaplestoryOTFBold";
+   font-size: 40px;
 }
 
 .g_cash{
-	font-weight: bold;
-	font-size: 30px;
+   font-weight: bold;
+   font-size: 30px;
 }
 
 .g_money{ /*순자산 칸*/
-	font-size : 15px;
+   font-size : 15px;
 }
 
 .g_minusMoney{ color : #0d2e61; text-align: center; font-size: 25px;}
 
 /*---------------- 게임판 박스 -----------------------*/
 .boardbox {
-	display: grid;
-	grid-template-columns: 150px repeat(7, 110px) 140px; /*각각 그리드비율 정하기*/
-	grid-template-rows: 150px repeat(7, 110px) 140px;
-	grid-gap: 2px;	/*그리드간 간격*/
-	margin: 50px auto;
-	width: 1095px;
-	height: 1093px;
-	color:white;
-	border: 2px solid black;
-	position : relative;
+   display: grid;
+   grid-template-columns: 150px repeat(7, 110px) 140px; /*각각 그리드비율 정하기*/
+   grid-template-rows: 150px repeat(7, 110px) 140px;
+   grid-gap: 2px;   /*그리드간 간격*/
+   margin: 50px auto;
+   width: 1095px;
+   height: 1093px;
+   color:white;
+   border: 2px solid black;
+   position : relative;
 }
 /*-------------------테스터--------------------*/
 .placetester1{
-	position: absolute;
-	right: 40px;
-	bottom: 40px;
-	height: 80px;
-	z-index: 2;
-	transition: all .5s linear;
+   position: absolute;
+   right: 40px;
+   bottom: 40px;
+   height: 80px;
+   z-index: 2;
+   transition: all .5s linear;
+   transform : rotateY(180deg);
 }
 .placetester2{
-	position: absolute;
-	right: 0;
-	bottom: 40px;
-	height: 80px;
-	z-index: 2;
-	transition: all .5s linear;
+   position: absolute;
+   right: 0;
+   bottom: 40px;
+   height: 80px;
+   z-index: 2;
+   transition: all .5s linear;
+   transform : rotateY(180deg);
 }
 
 .placetester3{
-	position: absolute;
-	right: 40px;
-	bottom: 0;
-	height: 80px;
-	z-index: 2;
-	transition: all .5s linear;
+   position: absolute;
+   right: 40px;
+   bottom: 0;
+   height: 80px;
+   z-index: 2;
+   transition: all .5s linear;
+   transform : rotateY(180deg);
 }
 
 .placetester4{
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	height: 80px;
-	z-index: 2;
-	transition: all .5s linear;
+   position: absolute;
+   right: 0;
+   bottom: 0;
+   height: 80px;
+   z-index: 2;
+   transition: all .5s linear;
+   transform : rotateY(180deg);
 }
 
 
 /*---------------- 게임판 가운데 -----------------------*/
 .b_center { /*게임판 가운데*/
-	grid-column: 2 / 9;
-	grid-row: 2 / 9;
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	grid-template-rows: repeat(7, 1fr);
-	justify-items: center;
-	align-items: center;
+   grid-column: 2 / 9;
+   grid-row: 2 / 9;
+   display: grid;
+   grid-template-columns: repeat(7, 1fr);
+   grid-template-rows: repeat(7, 1fr);
+   justify-items: center;
+   align-items: center;
 }
 /*게임판 로그  display : none 으로 해놓고 상황따라 보여지게 하고 그러면 될것같음!*/
 .b_log{
-	grid-column: 2/7;
-	grid-row: 6;
-	font-size: 30px;
+   grid-column: 2/7;
+   grid-row: 6;
+   font-size: 30px;
 }
 .btnbox{text-align: center; margin-top: 15px;}
 .Btnyes , .Btnno{
-	padding: 10px;
-	border-radius: 10px; color: white;
+   padding: 10px;
+   border-radius: 10px; color: white;
 }
 .game_info{display:none;}
 .Btnyes {margin-right: 15px; background-color: #928A97;}
@@ -206,19 +210,19 @@ body{
 .rowline {display: grid; grid-gap: 2px;}
 
 .h_row { /*가로 게임칸*/
-	grid-template-columns: repeat(7, 110px);
-	grid-template-rows: 150px;
+   grid-template-columns: repeat(7, 110px);
+   grid-template-rows: 150px;
 }
 
 .v_row {  /*세로 게임칸*/
-	grid-template-columns: 155px;
-	grid-template-rows: repeat(7, 110px);
+   grid-template-columns: 155px;
+   grid-template-rows: repeat(7, 110px);
 }
 
 /*아랫줄*/
 .bottom_row {
-	grid-column: 2 / 9;  	/*grid-column : 시작번호/끝번호*/
-	grid-row: 9/9;    		/*grid-row : 두고 싶은 row 줄 위치*/
+   grid-column: 2 / 9;     /*grid-column : 시작번호/끝번호*/
+   grid-row: 9/9;          /*grid-row : 두고 싶은 row 줄 위치*/
 
 }
 .bottom_row .g_space{ background-color : rgba(238, 238, 238, 0.5) }
@@ -257,7 +261,7 @@ body{
 }
 
 .gold_key{
-	background-image: url("/mamin/img/game/background/key.png");
+   background-image: url("/mamin/img/game/background/key.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position-y: 40px;
@@ -266,42 +270,42 @@ body{
 
 /*칸 공간*/
 .g_space {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	position: relative;
-	transform-origin: center;
-	height: 155px;
-	width: 110px;
-	
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   position: relative;
+   transform-origin: center;
+   height: 155px;
+   width: 110px;
+   
 }
 
 /*------------ 게임 시작칸 ------------------------*/
 .b_start {
-	grid-column: 9/10;
-	grid-row: 9/10;
-	width: 130px;
+   grid-column: 9/10;
+   grid-row: 9/10;
+   width: 130px;
 }
 .b_start .g_space{
-	justify-content: flex-start;
-	width: 155px;
-	height: 155px;
-	background-image: url(/mamin/img/game/background/start픽셀2.png);
+   justify-content: flex-start;
+   width: 155px;
+   height: 155px;
+   background-image: url(/mamin/img/game/background/start픽셀2.png);
     background-position-x: 3px;
     background-position-y: 11px;
 }
 .b_start .n_name{width: 148px;}
 /*--------------- 무인도 --------------------*/
 .b_island{
-	grid-column: 9;
-	grid-row: 1;
+   grid-column: 9;
+   grid-row: 1;
 }
 .b_island .g_space{
-	width: 155px;
-	height: 150px;
-	background-image : url("/mamin/img/game/background/무인도2.png");
-	background-repeat: no-repeat;
-	background-size: 80%;
+   width: 155px;
+   height: 150px;
+   background-image : url("/mamin/img/game/background/무인도2.png");
+   background-repeat: no-repeat;
+   background-size: 80%;
     background-position-y: 32px;
     background-position-x: 14px;
 }
@@ -309,10 +313,10 @@ body{
 /*------------------ 올림픽 -----------------------*/
 .b_olympic{grid-column: 1;grid-row: 1 / 1;}
 .b_olympic .g_space{
-	width: 150px;	height: 150px;
-	background-image: url("/mamin/img/game/background/올림픽로고.png");
-	background-repeat: no-repeat;
-	background-size: 80%;
+   width: 150px;   height: 150px;
+   background-image: url("/mamin/img/game/background/올림픽로고.png");
+   background-repeat: no-repeat;
+   background-size: 80%;
     background-position-y: 35px;
     background-position-x: 16px;
 }
@@ -320,8 +324,8 @@ body{
 /*------------------ 세계여행 -----------------------*/
 .b_travel{grid-column: 1;grid-row:9;}
 .b_travel .g_space{
-	width: 150px;	height: 155px;
-	background-image: url("/mamin/img/game/background/비행기.png");
+   width: 150px;   height: 155px;
+   background-image: url("/mamin/img/game/background/비행기.png");
     background-repeat: no-repeat;
     background-size: 80%;
     background-position-y: 58px;
@@ -331,15 +335,15 @@ body{
 
 /*-------------------- 게임칸 정보 관련 -------------------------*/
 .b_house{/*게임판 건물 아이콘*/
-	text-align: center; font-size: 20px;
+   text-align: center; font-size: 20px;
 }
 .b_house i{
-	padding:0 6px; margin:0px;
-	font-size: 20px;
+   padding:0 6px; margin:0px;
+   font-size: 20px;
 }
 .location i{ /*게임판 플레이어 아이콘*/
-	padding:0 6px;
-	font-size: 25px;
+   padding:0 6px;
+   font-size: 25px;
 }
 /*플레이어 아이콘 - 색깔은 임의 지정함 나중에 회의하고 바꿀예정!*/
 .player1_icon{color: #8BBCCC; font-size : 20px;}
@@ -351,11 +355,11 @@ body{
 
 /*나라명 출력 위치*/
 .n_name{
-	color: white;
-	font-size:20px;
-	text-align: center;
-	padding: 5px;
-	width: 105px;
+   color: white;
+   font-size:20px;
+   text-align: center;
+   padding: 5px;
+   width: 105px;
 }
 /*각 칸의 경계선과 나라명에 색깔 넣기*/
 .right_row .g_space{border: 3px solid #f28414;}
@@ -374,25 +378,25 @@ body{
 .b_travel .g_space ,
 .b_olympic .g_space ,
 .b_island .g_space{
-	border: 3px solid #283C63;
+   border: 3px solid #283C63;
 }
 .b_start .n_name ,
 .b_travel .n_name , 
 .b_olympic .n_name ,  
 .b_island  .n_name{
-	background-color: #283C63;
+   background-color: #283C63;
 }
 
 /* 통행료 출력 위치 */
 .n_payment{
-	font-size: 20px;
-	text-align: center;
+   font-size: 20px;
+   text-align: center;
 }
 
 /*주사위 출력 부분*/
 .b_diceContent{
   grid-column: 4;
-  grid-row: 3;	
+  grid-row: 3;   
   display: flex;
 }
 .b_diceContent img{width: 150px; height: 150px;}
@@ -445,7 +449,7 @@ body{
 .modalbox{ font-family: 'MaplestoryOTFBold'; display : flex; flex-direction: column; justify-content: center; align-items: center;}
 .modal_user_imgbox, .modal_nation_imgbox{ display : flex; justify-content: center; align-items: center;}
 .modal_user_namebox, .modal_nation_namebox{ display : flex; justify-content: center; align-items: center;
-					font-size : 45px; font-family: 'MaplestoryOTFBold';}
+               font-size : 45px; font-family: 'MaplestoryOTFBold';}
 .modal_nation_imgbox img{width : 400px;}
 .modal_nation_comment{font-size : 18px; text-align: center;}
 .modal_top_box{margin-bottom: 35px}
@@ -454,16 +458,6 @@ body{
 .modal_tb_right{ width : 300px; height : 30px; padding-left : 50px;}
 .modal_tb_right img{width : 50px; height : 50px;}
 
-
-
-
-
-
-/* 비아 추가 - 건물 아이콘 */
-#icon_house0::before { color: #8BBCCC; }
-#icon_house1::before { color: #42855B; }
-#icon_house2::before { color: #87A2FB; }
-#icon_house3::before { color: #C689C6; }
 
 /* 지웅 추가 - 플레이어 아이콘 이벤트 */
 /* #player1{  transition: all 1s linear; } */

@@ -99,13 +99,11 @@ function onmessage(obj) {
 		change_color(parsing.param, parsing.param2);
 	}else if(parsing.function_name=="isBankrupt"){//1108장군 추가
 		stopPlaying(parsing.data)
-		
+	}else if(parsing.function_name=='updatePlayerPosition'){
+		updatePlayerPosition(parsing.playerNo, parsing.n_no);
+	}else if(parsing.function_name=='get_wage'){
+		get_wage(parsing.playerTurn);
 	}
-	/*
-	if(document.querySelector('.stateGame').innerHTML != ''){
-		
-	}
-	*/	
 }
 function send(object) {
 	websocket.send(JSON.stringify(object));
@@ -260,19 +258,7 @@ function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을�
 				setTimeout(function(){location.href="index.jsp"},3000)
 			}
 		})
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
 
 
 	
