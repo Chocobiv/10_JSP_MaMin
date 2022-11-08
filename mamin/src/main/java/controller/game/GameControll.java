@@ -40,17 +40,31 @@ public class GameControll extends HttpServlet {
     //11/06 장군 플레이어 게임중 나갔을때 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String m_nickout= (request.getParameter("m_nickOut"));//나간 플레이어 닉네임
-		String playerarray = request.getParameter("playerArray");//게임에 참가했던 플레이어정보 
-		JSONParser parser = new JSONParser();
-		JSONArray arr;
-		try {
-			arr = (JSONArray) parser.parse(playerarray);//플레이어정보 JSONArray로 형변환 한 후에 JSONArray에 대입
-			 RoomDao.getInstance().invalidgameover(m_nickout,arr);
-		} catch (ParseException e) {
+		String type = request.getParameter("type");
+		if(type.equals("invalidGameover")) {
+			String m_nickout= (request.getParameter("m_nickOut"));//나간 플레이어 닉네임
+			String playerarray = request.getParameter("playerArray");//게임에 참가했던 플레이어정보 
+			JSONParser parser = new JSONParser();
+			JSONArray arr;
+			try {
+				arr = (JSONArray) parser.parse(playerarray);//플레이어정보 JSONArray로 형변환 한 후에 JSONArray에 대입
+				 RoomDao.getInstance().invalidgameover(m_nickout,arr);
+			} catch (ParseException e) {
+				
+				e.printStackTrace();
+			}
+		}else if(type.equals("bankrupt")){//1108 장군 플레이어 파산했을때
+			int bankruptM_no = Integer.parseInt( request.getParameter("bankruptM_no"));
+			int m_no = Integer.parseInt(String.valueOf(request.getSession().getAttribute("m_no")) );
+			boolean result;
+			if(bankruptM_no==m_no) {// 파산한 플레이어 m_no랑 현재 m_no랑 같으면 true반환
+				result = true;
+			}else {result = false;}//아니면 false반환
+			response.getWriter().print(result);
 			
-			e.printStackTrace();
+		
 		}
+		
 		
 		
 		

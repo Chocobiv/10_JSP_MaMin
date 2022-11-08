@@ -5,8 +5,9 @@ let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변�
 let click_status = 1
 let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
 let playable = true;
-
+let diceControl = true;//1108 장군 턴제어용 변수
 let position_box = []; // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
+let thisRanking = [];
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
@@ -513,32 +514,42 @@ function playerLocation() {
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
-
-	console.log("turn주사위 던졌다"+playerTurn);
-	console.log("Number 주사위 던졋다!"+playerNo);
-
-	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
-		alert('다른 사람의 턴이에요.')
-		return;
-	}
-	start = true // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
-
-	let array1 = []
-	let array2 = []
-	for (let i = 0; i < 10; i++) {
-		array1.push(dice1 = Math.floor((Math.random() * 6) + 1))
-		array2.push(dice1 = Math.floor((Math.random() * 6) + 1))
-	}
-	let object = {
-		function_name: `display_dice`,
-		data1: array1,
-		data2: array2
-	}
-	send(object)
-
-	// let dice1= Math.floor((Math.random()*6)+1);
-	// let dice2= Math.floor((Math.random()*6)+1);
-	// 	->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
+   console.log(playerTurn);
+   console.log(player);
+  
+   if(diceControl==false){//11.8 장군 추가
+      alert('턴 진행중');
+      return;
+   }
+   if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
+      alert('다른 사람의 턴이에요.')
+      return;
+   }
+   let statuschange = {//11.8 장군 추가
+      function_name : 'turn_change'
+   }
+   send(statuschange);
+   start = true; // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
+   
+   let array1 = []
+   let array2 = []
+   for (let i = 0; i < 10; i++) {
+      array1.push(dice1 = Math.floor((Math.random() * 6) + 1))
+      array2.push(dice1 = Math.floor((Math.random() * 6) + 1))
+   }
+   let object = {
+      function_name: `display_dice`,
+      data1: array1,
+      data2: array2,
+      
+   }
+   
+	
+   send(object)
+ 	
+   // let dice1= Math.floor((Math.random()*6)+1);
+   // let dice2= Math.floor((Math.random()*6)+1);
+   //    ->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
 }
 
 // 주사위 굴러가고 다른 메소드들 실행될 수 있게 
@@ -1183,3 +1194,66 @@ function toast(string) {
     toast.classList.add("reveal"),
         toast.innerHTML = string
 }
+
+function turn_change(){//11/08 지웅 추가
+   diceControl = !diceControl;
+}
+/////////////파산 판단 함수1108 장군/////////////////////
+function isBankrupt(playerNo){
+	if(calculateMoney(playerNo)<=0){//순자산이 0보다 작으면
+		alert("파산했습니다") 
+		thisRanking.push(player[playerNo])//순위판단용 배열 에 push
+		let object ={
+			function_name:"isBankrupt",
+			 data: player[playerNo].m_no
+			
+		}
+		send(object);
+	}
+	
+	return;
+}
+
+function stopPlaying(m_no){// 1108 장군 파산한 플레이어 게임 진행 못하게 
+	let bankruptM_no = m_no;
+	$.ajax({
+		url:"/mamin/game/GameControll",
+		data:{
+			"type":"bankrupt",
+			"bankruptM_no" : bankruptM_no
+		},
+		success:function(re){
+			if(re=="true"){//파산한 플레이어가 자신이면
+				document.querySelector(".diceBtn").style.diplay="none";//주사위버튼 안보이게 하기
+			}
+			
+		}
+	})
+	
+}
+
+
+//게임종료(정상적) 판단 장군 
+function gameover(){
+	
+	if(thisRanking.length==player.length-1){//파산하지않은 플레이어가 1명일때
+		thisRanking.push(player[playerTurn])//thisRanking 배열에 푸쉬후(순위판단용)
+		alert("게임이 종료되었습니다");
+		
+		
+	}
+	
+}		
+//1108 장군 턴종료
+function end_turn(){//턴종료 해야되는 부분에 넣어주세요
+  let object = {            
+            function_name : 'turn_change'
+         }
+         send(object);
+}
+
+
+
+
+
+

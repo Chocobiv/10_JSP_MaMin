@@ -78,8 +78,10 @@ function onmessage(obj) {
 		
 	}else if(parsing.type =="message"){// 채팅 메세지 받을때
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
-	}else if(parsing.function_name=='display_dice'){	// 1102 지웅 추가
-		display_dice(parsing.data1, parsing.data2);
+	}else if(parsing.function_name=='turn_change'){  //1108 장군 추가  
+      turn_change();      
+	}else if(parsing.function_name=='display_dice'){   // 1102 지웅 추가
+      display_dice(parsing.data1, parsing.data2);
 	}else if(parsing.function_name == "levelUp_land"){	// 1103 지웅 추가 //1104 비아 수정
 		levelUp_land(parsing.data, parsing.data2, parsing.data3);
 	}else if(parsing.object_name == 'nation'){			// 1104 비아 추가
@@ -95,6 +97,9 @@ function onmessage(obj) {
 		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
 	}else if(parsing.function_name=='change_color'){
 		change_color(parsing.param, parsing.param2);
+	}else if(parsing.function_name=="isBankrupt"){//1108장군 추가
+		stopPlaying(parsing.data)
+		
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){
@@ -245,6 +250,7 @@ function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을�
 			url:"/mamin/game/GameControll",
 			traditional : true,
 			data:{
+				"type":invalidGameover,
 				"m_nickOut":m_nickOut,
 				"playerArray":playerArray
 			},
@@ -257,10 +263,6 @@ function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을�
 	
 	
 }
-
-
-
-
 
 
 
