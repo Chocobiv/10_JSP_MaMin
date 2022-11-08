@@ -48,6 +48,35 @@ let nation_infobox = [{ n_comment: '부자가 되어 돌아오세요!', n_img: '
 { n_comment: '대한민국의 중심. 서울에 어서 오세요.', n_img: '/mamin/img/game/nation/서울.JPG' },
 ];
 
+
+/*================================= 수현 황금열쇠 객체 생성 =================================================== */
+let gold_key=[
+	// type에 뭘 넣기로 했더라... state는 default 0이고 사용됐으면 1주면 되나
+	// 지불하고 받고 이런걸 type으로 나누기로 했던가....
+	{k_no : 0 , k_type : 0, k_name : "정기종합소득세" , k_comment : "소득세를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 1 , k_type : 0 , k_name : "방범비" , k_comment : "방범비를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 2 , k_type : 0 , k_name : "통행권" , k_comment : "다음번에 통행료를 내야하는 경우 한번 패스할 수 있습니다." , k_state : 0},
+	{k_no : 3 , k_type : 0 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0},
+	{k_no : 4 , k_type : 0 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0},
+	{k_no : 5 , k_type : 0 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0},
+	{k_no : 6 , k_type : 0 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 7 , k_type : 0 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0},
+	{k_no : 8 , k_type : 0 , k_name : "기지강탈" , k_comment : "상대방이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0},
+	{k_no : 9 , k_type : 0 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0},
+	{k_no : 10 , k_type : 0, k_name : "정기종합소득세" , k_comment : "소득세를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 11 , k_type : 0 , k_name : "방범비" , k_comment : "방범비를 내야합니다. 구매한 토지 1개당 3만원씩 지불해주세요" , k_state : 0},
+	{k_no : 12 , k_type : 0 , k_name : "통행권" , k_comment : "다음번에 통행료를 내야하는 경우 한번 패스할 수 있습니다." , k_state : 0},
+	{k_no : 13 , k_type : 0 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0},
+	{k_no : 14 , k_type : 0 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0},
+	{k_no : 15 , k_type : 0 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0},
+	{k_no : 16 , k_type : 0 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 17 , k_type : 0 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0},
+	{k_no : 18 , k_type : 0 , k_name : "기지강탈" , k_comment : "상대방이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0},
+	{k_no : 19 , k_type : 0 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0}
+]
+
+
+
 //------------수현 추가 -로그 글출력 부분
 let log = document.querySelector(".game_info")
 let saleLandCheck = true; // 매각 반복실행위한 변수설정
@@ -187,7 +216,7 @@ function gameboard() {
 	for (let i = 7; i >= 1; i--) {
 		//통행료 천원단위로 나오게 잘라줌
 		// 밑에도 다쓰여서 나중에 이런거 더 있으면 모아서 함수로 만들어서 사용하는게 편할듯...
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
@@ -209,7 +238,7 @@ function gameboard() {
 	//윗 줄
 	for (let i = 15; i >= 9; i--) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
@@ -232,7 +261,7 @@ function gameboard() {
 	//왼쪽줄은 페이지 출력순서랑 똑같아서 i++
 	for (let i = 17; i <= 23; i++) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
@@ -254,7 +283,7 @@ function gameboard() {
 	// 아랫줄은 페이지출력순서랑 똑같아서 i++
 	for (let i = 25; i <= 31; i++) {
 		//통행료 천원단위로 나오게 잘라줌
-		let n_payment = (nation[i].n_payment / 10000) + " 만 원";
+		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
@@ -276,6 +305,7 @@ function gameboard() {
 	playerLocation(); // 최초 플레이어 위치 출력
 
 }//gameboard end
+
 
 // 1106 지웅 추가 모달 클릭 함수
 // 제일 하단에 작성하려고 했으나 이상하게 복사해서 내리면 빨간줄이 쥬루ㅡ르르르르륵 뜹니다...
@@ -391,8 +421,9 @@ function check_clickType(clickstatus, mtype, index) {
 			return
 		} else {		//세계여행 외의 나라를 선택했을 경우
 			// 세계여행을 떠나는 함수
-			//이동할 나라 선택 받기
-			//플레이어 위치 이동
+				//플레이어 위치 이동
+				
+				
 			//[주의]playerNo 없음 ****************************
 			//player[playerNo].p_position = worldtravel_n_no
 			//소켓 통신
@@ -600,6 +631,7 @@ function landEventCheck(playerTurn) {
 			console.log("황금열쇠");
 			//1107 지웅 추가
 			toast('<h3 class="toast_title">어떤 행운이 기다리고 있을까요?</h3><img width="300px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
+			openGoldkey(playerNo)	//수현추가
 			break;
 
 		case 3: // 무인도메소드
@@ -621,7 +653,7 @@ function landEventCheck(playerTurn) {
 				// send로 모두에게 보여줘야 할까요?
 			let toastString = '<h3 class="toast_title">여행이다!</h3><img width="300px;" src="/mamin/img/game/toast/여행토스트.JPG">';
 			toast(toastString);			
-			goWorldtravel()
+			//goWorldtravel()		//error
 
 			break;
 	}
@@ -744,10 +776,10 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-	let fee =Math.floor(nation[index].n_payment * (1 + nation[index].n_level)) / 1000 * 1000
+	let fee =Math.floor(nation[nationNo].n_payment * (1 + nation[nationNo].n_level)) / 1000 * 1000
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
-		log.innerHTML = '통행료 : ' + fee
+		log.innerHTML = '통행료 : ' + fee.toLocaleString()+'원'
 		let result = checkMoney(playerNo, fee)
 		if (result) {
 			inoutcome(playerNo, nationNo, fee)
@@ -840,7 +872,11 @@ function buyNation(nationNo, playerNo) {
 			document.querySelector(".yes_btn2").addEventListener('click', () => { // 주택 같이 구매
 				fee = (nation[nationNo].n_price + (nation[nationNo].n_price / 2));
 				if (!checkMoney(playerNo, fee)) {
-					log.innerHTML = "자산이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
+					log.innerHTML = "건물을 구매할 자산이 부족합니다. 토지만 구매합니다."; document.querySelector(".btnbox").innerHTML = ""
+					setTimeout(()=>{
+						buyResult(playerNo, nation[nationNo].n_price, nationNo, 0) // 토지만 구매
+					},1000)
+					
 					return;
 				}
 				buyResult(playerNo, fee, nationNo, 1) // 이 메소드에서 소유주변경까지 모두 해결
@@ -961,13 +997,6 @@ function saleLand(n_no, playerNo, fee, nowNationNo) {
 		},2000)
 		
 	}
-
-
-
-
-
-
-
 }
 
 
@@ -979,6 +1008,43 @@ function checkMoney(playerNo, fee) { // 플레이어랑 지불해야할 돈 변�
 		return true; // 결제할 자산 충분하면 true
 	} else return false; // 결제 금액부족하면 false
 }
+
+
+/////////// 수현 11/07 황금열쇠 메소드 ////////////////
+function openGoldkey(playerNo){
+	// 황금열쇠토지에 도착하면
+	// 20개중 랜덤으로 하나 뽑히고
+	// 바로 사용가능한 건 바로바로 보관가능한건 가지고 있다가
+	// 무인도, 통행권무료에 메소드 추가해서 황금열쇠 가지고 있는지 확인해주기
+	
+	if(document.querySelector(".r_sno").innerHTML!=playerNo+1){return;}	
+	console.log("황금열쇠도착")
+	
+	let randKey=null;
+	while(true){// 사용하지 않은 황금열쇠 숫자를 뽑을때까지 반복
+		randKey=Math.floor(Math.random()*19)
+		// 황금열쇠 state가 1이 아닌 애들만 뽑힐 수 있게
+		// 1이면 이미 사용됐음
+		if(gold_key[randKey].k_state!=1){break;}	
+	}
+	// 일단 이거 뽑은걸 플레이어한테 알려주고
+	log.innerHTML=gold_key[randKey].k_name+' 카드 획득 <br>'+gold_key[randKey].k_comment
+	// 그 숫자에 해당하는 황금열쇠 객체를 실행시켜야...
+	useGoldkey(playerNo)
+	
+
+
+}
+function useGoldkey(playerNo){
+	console.log("사용시켜야돼...")
+}
+
+
+
+
+
+
+
 
 //////////// 수현 11/05 추가 //////////////
 // 통행료 지불 후 자산 업데이트 소켓 전달!!!
