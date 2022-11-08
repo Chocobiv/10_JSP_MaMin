@@ -183,7 +183,7 @@ playerLocation(); // 최초 플레이어 위치 출력
 
 // 수현 게임 보드판 출력 함수
 function gameboard() {
-	//[주의]!!!!!!! 비아 테스트중
+	//[주의]!!!!!!! 비아 - 수정
 	document.querySelector(".b_start").innerHTML = ''
 	document.querySelector(".b_island").innerHTML = ''
 	document.querySelector(".b_olympic").innerHTML = ''
@@ -459,7 +459,6 @@ function check_clickType(clickstatus, mtype, index) {
 			}
 			send(object)
 		}
-		console.log('check_clickType 메소드 안')
 		//세계여행 종료로 click_status 값 다시 1로 변경
 		click_status = 1
 		
@@ -590,7 +589,6 @@ function run_dice(dice1, dice2) {
 	for (let i = 0; i < nation.length; i++) {
 		console.log('nation[' + i + '] 소유주 : ' + nation[i].owner)
 		console.log('nation[' + i + '] 건물레벨 : ' + nation[i].n_level)
-
 	}
 
 	return new Promise(function(resolve, reject) {
@@ -608,18 +606,10 @@ function run_dice(dice1, dice2) {
 	})
 }
 
-// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-let test = 0
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) {
-		//player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
-		// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if(test % 2 == 0)
-			player[playerTurn].p_position += (12 + 12);	// 위치에 주사위 수 더하기
-		else
-			player[playerTurn].p_position += (dice1[9] + dice2[9])
-		test++
+		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
 			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -781,7 +771,6 @@ function levelUp_check(playerNo) {
 
 function levelUp_land(nNo, fee, playerNo) {
 	//비아 수정
-	console.log('levelUp_land 함수 in!! ' + nNo + ' ' + fee + ' ' + playerNo)
 	// 객체 조작 -> 출력 분리
 	nation[nNo].n_level++;
 	player[playerNo].p_money -= fee;
@@ -917,19 +906,6 @@ function buyNation(nationNo, playerNo) {
 					return;
 				}
 				buyResult(playerNo, fee, nationNo, 1) // 이 메소드에서 소유주변경까지 모두 해결
-				// 비아추가 - 건물 지을건지 또 물어보지 않고 바로 소켓 전달 [JS는 오버로딩 불가]
-				/*
-				let object = {
-					function_name: 'updateNationLevel',
-					n_index: nationNo,
-					p_index: playerNo
-				}
-				send(object)
-				*/
-
-				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
-				//sendNationPlayer(nationNo, playerNo)
-
 
 
 				// 비아추가 - nation(소유주) / player(현금,자산) 소켓 전달
@@ -1185,8 +1161,6 @@ function goWorldtravel() {
 }
 
 function updatePlayerPosition(playerNo, n_no) {
-	console.log('updatePlayerPosition안!! playerNo:'+playerNo)
-	console.log('updatePlayerPosition안!! n_no:'+n_no)
 	player[playerNo].p_position = n_no
 	//플레이어 위치 다시 로드
 	playerLocation()
