@@ -4,7 +4,6 @@ let playerNo = 0;
 let start = false; // 맨 처음일때와 아닐때 구분해주기 위한 변수선언!
 let click_status = 1
 let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
-let diceControl = true;
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
@@ -516,18 +515,10 @@ function playerLocation() {
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
-	if(diceControl==false){
-		alert('턴 진행중');
-		return;
-	}
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		alert('다른 사람의 턴이에요.')
 		return;
 	}
-	let statuschange = {
-		function_name : 'turn_change'
-	}
-	send(statuschange);
 	
 	start = true // 주사위돌리기 시작하면 게임 시작했다는 거 알리기 위한 변수
 
@@ -547,11 +538,6 @@ function rollDice() {
 	// let dice1= Math.floor((Math.random()*6)+1);
 	// let dice2= Math.floor((Math.random()*6)+1);
 	// 	->  모든 플레이어 주사위 display같게 하기 위해 주사위의 모든 값을 배열에 저장
-}
-
-// 턴 체인지
-function turn_change(){
-	diceControl = !diceControl;
 }
 
 // 주사위 굴러가고 다른 메소드들 실행될 수 있게 
@@ -927,10 +913,6 @@ function buyNation(nationNo, playerNo) {
 		document.querySelector(".no_btn").addEventListener('click', () => { // 구매 안하기로 했을경우
 			log.innerHTML = "구매하지 않습니다."
 			document.querySelector(".btnbox").innerHTML = ""
-			let object = {				
-				function_name : 'turn_change'
-			}
-			send(object);
 			return;
 			// *******턴종료 메소드 넣기		
 		})
