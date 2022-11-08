@@ -95,6 +95,10 @@ function onmessage(obj) {
 		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
 	}else if(parsing.function_name=='change_color'){
 		change_color(parsing.param, parsing.param2);
+	}else if(parsing.function_name=='updatePlayerPosition'){
+		updatePlayerPosition(parsing.playerNo, parsing.n_no);
+	}else if(parsing.function_name=='get_wage'){
+		get_wage(parsing.playerTurn);
 	}
 	/*
 	if(document.querySelector('.stateGame').innerHTML != ''){

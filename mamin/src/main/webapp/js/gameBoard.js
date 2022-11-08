@@ -177,11 +177,22 @@ let player4_icon = '<i class="fas fa-ghost player4_icon" id="player4"></i>'
 
 gameboard() // 보드판 출력
 gamePlayer() // 플레이어 정보 출력
+playerLocation(); // 최초 플레이어 위치 출력
+
 // 플레이어 위치 출력
 
 // 수현 게임 보드판 출력 함수
 function gameboard() {
-
+	//[주의]!!!!!!! 비아 테스트중
+	document.querySelector(".b_start").innerHTML = ''
+	document.querySelector(".b_island").innerHTML = ''
+	document.querySelector(".b_olympic").innerHTML = ''
+	document.querySelector(".b_travel").innerHTML = ''
+	document.querySelector(".right_row").innerHTML  = ''
+	document.querySelector(".top_row").innerHTML = ''
+	document.querySelector(".left_row").innerHTML = ''
+	document.querySelector(".bottom_row").innerHTML = ''
+	
 	// 20221105 지웅 수정
 	// 일반 땅 아닌 곳 숫자 안나오도록 수정
 
@@ -302,7 +313,7 @@ function gameboard() {
 		document.querySelector(".bottom_row").innerHTML += html;
 
 	}
-	playerLocation(); // 최초 플레이어 위치 출력
+	
 
 }//gameboard end
 
@@ -317,13 +328,15 @@ function click_ModalBtn(type, index) {
 	if (type == 1) {
 		modal_contentsbody.innerHTML = make_user_info(index);
 		modalbox.style.background = '#928A97';
+		document.querySelector('.modalinfoBtn').click();		//비아 위치 수정
 	} else if (type == 2) {
 		modal_contentsbody.innerHTML = make_nation_info(index);
 		modalbox.style.background = '#FBE8D3';
+		document.querySelector('.modalinfoBtn').click();		//비아 위치 수정
 	} else if (type == 3) {		//1107 비아 추가
 		worldtravel_n_no = index	//세계여행 갈 토지 번호를 선택한 index로 변경
+		console.log('click_ModalBtn 메소드 안')
 	}
-	document.querySelector('.modalinfoBtn').click();
 }
 
 // 1106 지웅 추가 유저 소개 html 구성 후 return
@@ -408,7 +421,7 @@ function make_nation_info(index) {
 }
 
 //20221107 지웅 추가, nation click type 분할
-//1107 비아 추가
+//1107 비아 추가 - 세계여행
 function check_clickType(clickstatus, mtype, index) {
 	if (clickstatus == 1) {
 		click_ModalBtn(mtype, index);
@@ -416,22 +429,39 @@ function check_clickType(clickstatus, mtype, index) {
 		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
 		// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
 		click_ModalBtn(3, index)
-		if (index == 24) {	//세계여행을 선택했을 경우
+		/*if (worldtravel_n_no == 24) {	//세계여행을 선택했을 경우
 			alert('다른 나라를 선택하세요.')
 			return
-		} else {		//세계여행 외의 나라를 선택했을 경우
-			// 세계여행을 떠나는 함수
-				//플레이어 위치 이동
-				
-				
-			//[주의]playerNo 없음 ****************************
-			//player[playerNo].p_position = worldtravel_n_no
-			//소켓 통신
-			//updatePlayerPosition(playerNo, worldtravel_n_no)
+		} else {		//세계여행 외의 나라를 선택했을 경우*/
+		
+		
+		// 세계여행을 떠나는 함수
 			
-			//세계여행 종료로 click_status 값 다시 1로 변경
-			click_status = 1
+		//플레이어 위치 이동
+		player[playerNo].p_position = worldtravel_n_no
+		//소켓 통신
+		let object = {
+			function_name: 'updatePlayerPosition',
+			playerNo: playerNo,
+			n_no: worldtravel_n_no
 		}
+		send(object)
+		
+		//월급 지급
+		//1~23 사이의 숫자로 이동 -> 월급 지급o
+		//25~31 사이의 숫자로 이동-> 월급 지급x
+		if(worldtravel_n_no>=1 && worldtravel_n_no<=23){
+			//get_wage(player[playerNo].p_no-1)
+			//소켓 통신
+			let object = {
+				function_name: 'get_wage',
+				playerTurn: player[playerNo].p_no-1
+			}
+			send(object)
+		}
+		console.log('check_clickType 메소드 안')
+		//세계여행 종료로 click_status 값 다시 1로 변경
+		click_status = 1
 		
 	}
 }
@@ -578,10 +608,18 @@ function run_dice(dice1, dice2) {
 	})
 }
 
+// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+let test = 0
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) {
-		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		//player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(test % 2 == 0)
+			player[playerTurn].p_position += (12 + 12);	// 위치에 주사위 수 더하기
+		else
+			player[playerTurn].p_position += (dice1[9] + dice2[9])
+		test++
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
 			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -653,7 +691,7 @@ function landEventCheck(playerTurn) {
 				// send로 모두에게 보여줘야 할까요?
 			let toastString = '<h3 class="toast_title">여행이다!</h3><img width="300px;" src="/mamin/img/game/toast/여행토스트.JPG">';
 			toast(toastString);			
-			//goWorldtravel()		//error
+			goWorldtravel()
 
 			break;
 	}
@@ -756,7 +794,6 @@ function levelUp_land(nNo, fee, playerNo) {
 // 1104 비아 이관 - 각 플레이어 별로 색 다르게 지정
 function setHouse(nNo, land_level, playerNo) {
 	console.log('!!!setHouse!!!')
-	console.log("sethouse" + nation[nNo].n_level)
 
 	// 특정 조건에서만 발생하므로 이미지만 삽입
 	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
@@ -1128,6 +1165,7 @@ function updateNationInfo(nation_index, p_no, n_level) {
 //player 현금 업데이트 메소드
 function updatePlayerInfo(player_index, cash) {
 	player[player_index].p_money = cash
+	console.log('player['+player_index+'].p_money) '+player[player_index].p_money)
 	gamePlayer() // 플레이어 정보출력 갱신
 }
 
@@ -1147,6 +1185,8 @@ function goWorldtravel() {
 }
 
 function updatePlayerPosition(playerNo, n_no) {
+	console.log('updatePlayerPosition안!! playerNo:'+playerNo)
+	console.log('updatePlayerPosition안!! n_no:'+n_no)
 	player[playerNo].p_position = n_no
 	//플레이어 위치 다시 로드
 	playerLocation()
