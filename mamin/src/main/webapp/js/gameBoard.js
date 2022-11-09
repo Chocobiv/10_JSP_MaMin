@@ -484,8 +484,8 @@ function gamePlayer() {
 				</div>
 				<div class="g_m_info">
 					<div class="g_moneyDisplay">
+						<div class="g_cal_rank${i}" id="g_cal_rank${i}">1등</div>
 						<div class="g_cash">현금 : ${player[i - 1].p_money}원 </div> <span class="g_money">(순자산)${nation_sum}원</span>
-						<div class="g_cal_rank${i}">7등</div>
 					</div>
 					<div class="g_m_nick">${player[i - 1].p_nick}</div>
 				</div>`;
@@ -1492,21 +1492,24 @@ function holdOlympic(n_no){
 function calculateRank(){
 	let arr = []
 	let moneyResult
-	let numplayerNO = -1
-	
-	for(let i=1; i<=player.length; i++){
-		let j = calculateMoney(i)
-		arr[i] = { money:j, index:i }
+	let numplayerNO = []
+	let idx = 0
+	for(let i=0; i<player.length; i++){
+		let j = calculateMoney(i+1)
+		arr[i] = { money:j, index:(i+1) }
 	}
 	
 	//순자산 오름차순 정렬
-	moneyResult = arr.sort(function (a,b){
-		return a.money - b.money
-	})
-	numplayerNO = moneyResult[moneyResult.length-2].index
-	console.log(numplayerNO)
+	moneyResult = arr.sort(function (a,b){ return a.money - b.money })
+	for(let i=1; i<=moneyResult.length; i++){
+		numplayerNO[idx] = moneyResult[moneyResult.length-i].index
+		idx++
+	}
+	idx = 0 
 	for(let i=1; i<=player.length; i++){
-		document.querySelector('.g_cal_rank'+playerNO) = i+'등'
+		let className = '.g_cal_rank'+numplayerNO[idx]
+		document.querySelector(className).innerHTML = i+'등'
+		idx++
 	}
 }
 
