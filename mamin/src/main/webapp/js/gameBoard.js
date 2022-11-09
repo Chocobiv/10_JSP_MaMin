@@ -125,7 +125,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 1000,
+			p_money: 100000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -623,7 +623,7 @@ function run_dice(dice1, dice2) {
 
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve, reject) { 
 		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
@@ -667,6 +667,7 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 1:  // 월급메소드
+			
 			get_wage(playerTurn); // 수현추가 - 황금열쇠 출발지 이동시 사용 -> 소켓 또 해줘야되는건가...
 			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 			end_turn()
@@ -703,6 +704,7 @@ function landEventCheck(playerTurn) {
 
 			break;
 	}
+	return;
 }
 
 
@@ -894,7 +896,7 @@ function buyNation(nationNo, playerNo) {
 				log.innerHTML = "현금이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
 				setTimeout(() => {
 					end_turn()		//턴종료
-				}, 2000)
+				}, 1500)
 				return
 			}
 			// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
@@ -910,7 +912,7 @@ function buyNation(nationNo, playerNo) {
 					setTimeout(()=>{
 						buyResult(playerNo, nation[nationNo].n_price, nationNo, 0) // 토지만 구매
 						sendNationPlayer(nationNo, playerNo, 0) // 토지만 구매하면 n_level 0 으로 넘기기
-					},2000)
+					},1500)
 					
 					end_turn()
 					return
@@ -943,7 +945,7 @@ function buyNation(nationNo, playerNo) {
 			
 			setTimeout(() => {
 				end_turn()
-			}, 2000)
+			}, 1500)
 		})
 
 	}
@@ -1048,6 +1050,8 @@ function openGoldkey(playerNo){
 	// 무인도, 통행권무료에 메소드 추가해서 황금열쇠 가지고 있는지 확인해주기
 	
 	if(document.querySelector(".r_sno").innerHTML!=playerNo+1){return;}	
+	
+	
 	console.log("황금열쇠도착")
 	
 	let randKey=null;
@@ -1072,75 +1076,102 @@ function openGoldkey(playerNo){
 	
 	
 	toast('<h3 class="toast_title">'+gold_key[randKey].k_name+'카드 획득<br>'+gold_key[randKey].k_comment+'</h3><img width="300px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
-			
-	
-	useGoldkey(playerNo, randKey)
-	// 황금열쇠 k_state , owner소켓 전달
-	object={ 
+	object={  // k_state 변경
 			function_name: 'goldKeyUpdate',
 			k_index : randKey,
 			playerNo: playerNo,
 	}
-	send(object)
+	send(object)		
 	
+	useGoldkey(playerNo, randKey)
+	console.log(randKey+"randKey")
+	// 황금열쇠 k_state , owner소켓 전달
 	end_turn()
 }
 
 /////////// 수현 11/08 황금열쇠 사용 메소드 ////////////////
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
-	console.log("사용시켜야돼...")
+	let object=null;
+	console.log("방범비")
+	goldKeyGTax(playerNo, 20000)
+	object = {
+		object_name: 'player',
+		index: playerNo,
+		cash: player[playerNo].p_money
+	}
+	send(object)
+	/*
 	switch(randKey){
-		case 0 : case 10 :
+		case 0 : case 10 : // OK
+			console.log("정기종합소득세")
 			goldKeyGTax(playerNo , 40000)
-			break;
-		case 1 : case 11 : 
-			goldKeyGTax(playerNo, 20000)
-			break;
-		case 2 : case 12 :
-			console.log("통행권 ...")
-			
-		case 3 : case 13 : // 뒤로 2칸 이동
-			player[playerNo].p_position-=2
-			goldKeyMove(playerNo, player[playerNo].p_position)
-			
-		case 4 : case 14 : // 출발지로 이동
-			player[playerNo].p_position=0 // 위치 출발지로 변경
-			goldKeyMove(playerNo, player[playerNo].p_position)
-			
-		case 5 : case 15 : 
-			// 복권당첨
-			income(playerNo, 200000)
-			let object={
+			object = {
 				object_name: 'player',
 				index: playerNo,
 				cash: player[playerNo].p_money
 			}
 			send(object)
-		case 6 : case 16 ://생일축하
-			console.log("생일축하...")	
-			// 와 어렵다...
-		case 7 : case 17 :	// 해외유학 돈 차감
-			console.log("해외유학...")
-			outcome(playerNo, 100000)
+			break;
+		case 1 : case 11 : 
+			
+			break;
+		case 2 : case 12 :
+			console.log("통행권 ...")
+			break;
+		case 3 : case 13 : // 뒤로 2칸 이동
+			console.log("뒤로 2칸 이동")
+			player[playerNo].p_position-=2
+			goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
+			break;
+		case 4 : case 14 : // 출발지로 이동
+			console.log("출발지로 이동")
+			goldKeyWage()
+			break;
+		case 5 : case 15 : 
+			// 복권당첨
+			console.log("복권당첨")
+			income(playerNo, 200000)
 			object={
 				object_name: 'player',
 				index: playerNo,
 				cash: player[playerNo].p_money
 			}
 			send(object)
+			break;
+		case 6 : case 16 ://생일축하
+			console.log("생일축하...")	
+			// 와 어렵다...
+			break;
+		case 7 : case 17 :	// 해외유학 돈 차감
+			console.log("해외유학...")
+			if(checkMoney){
+				outcome(playerNo, 100000)
+			}else{// 돈 부족하면 매각	
+				log.innerHTML="현금이 부족합니다."
+				setTimeout(()=>{printLandList(playerNo, fee, 2)},2000)
 		
+			}
+			object={
+				object_name: 'player',
+				index: playerNo,
+				cash: player[playerNo].p_money
+			}
+			send(object)
+			break;
 		case 8 : case 18 :
+			console.log("기지강탈")
 			goldKeySteal()
+			break;
 		case 9 : case 19 :
 			console.log("무인도탈출권..")	
 			// 소유만 할 수 있게
 			gold_key[randKey].k_owner=playerNo;
-			
+			break;
 		
 	}
 		
-
+	*/
 		// 플레이어 위치 업데이트 소켓
 		// 플레이어 자산 업데이트 소켓
 		// 플레이어 소유 토지 업데이트 소켓
@@ -1148,6 +1179,32 @@ function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 }
 
 
+/////////// 수현 11/09 황금열쇠 출발지 메소드 ////////////////
+async function goldKeyWage(){
+	player[playerNo].p_position=0 // 위치 출발지로 변경
+	await goldKeyWageUpdate()
+	await goldKeyWageUpdate2()
+}
+
+function goldKeyWageUpdate(){
+	return new Promise(function(resolve, reject){
+		goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
+		resolve()
+	})
+	
+}
+function goldKeyWageUpdate2(){
+	return new Promise(function(resolve, reject){
+		object={
+			object_name: 'player',
+			index: playerNo,
+			cash: player[playerNo].p_money
+		}
+		send(object)
+		resolve()
+	})
+	
+}
 /////////// 수현 11/08 황금열쇠 무인도 탈출권 메소드 ////////////////
 function goldKeyEscape(){
 	//그냥 무인도 들어갈때 확인해서 waiting 안늘려주면 되는건가
@@ -1161,22 +1218,32 @@ function goldKeyEscape(){
 /////////// 수현 11/08 황금열쇠 기지강탈 메소드 ////////////////
 function goldKeySteal(){
 	let rand=null;
-	while(true){
-		rand=Math.floor(Math.random()*player.length-1)
-		 // 현재플레이어랑 랜덤수가 같지 않으면 탈출!
-		if(rand==playerNo){break;}
+	let playerList=[]
+	for(let i=0; i<player.length; i++){
+		if(player[i].p_no!=player[playerNo].p_no){
+			playerList.push(i)
+		}
 	}
 	
-	let html=player[rand].p_nick+"님이 소유한 땅 1개를 골라주세요"
-	let sadPlayer=player[rand].p_nick // 땅 뺏긴 플레이어
+	rand=Math.floor(Math.random()*(playerList.length-1)) // 
+	
+	
+	// playerList[rand] -> 이게 player에 인덱스
+	// 
+	let sadPlayer=playerList[rand]
+	console.log("뽑힌 인덱스 : "+sadPlayer)
+	let html=player[sadPlayer].p_nick+"님이 소유한 땅 1개를 골라주세요"
+	sadPlayerName=player[sadPlayer].p_nick // 땅 뺏긴 플레이어
 	let landList=[]
 	for(let i=0; i<nation.length;i++){
-		if(nation[i].owner==rand+1){landList.push(i)}
+		if(nation[i].owner==sadPlayer+1){landList.push(i)}
+		
 	}
-	 
-	if(landList.length<1){log.innerHTM="안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에"}
+	console.log(landList + " 뺏길 사람이 가지고 있는 땅") 
+	if(landList.length<1){log.innerHTM="안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에"} 
 	landList.forEach(l=>{
-		html+='<div onclick="goldKeyStealUse('+l.n_no+','+sadPlayer+')">'+l.n_name+'</div>'
+		
+		html+='<div onclick="goldKeyStealUse('+nation[l].n_no+','+sadPlayerName+')">'+nation[l].n_no+'</div>'
 	})
 	log.innerHTML=html	
 		
@@ -1184,14 +1251,14 @@ function goldKeySteal(){
 }
 
 //////// 황금열쇠에서 선택한 땅 매각 되고 소켓 전달까지 ////////
-function goldKeyStealUse(sadPlayer,n_no){
+function goldKeyStealUse(n_no , sadPlayerName){
 	let nationName=nation[n_no].n_name
 	nation[n_no].owner=0;
 	nation[n_no].n_level=0;
 	let object={
 		function_name : 'goldKeyStealUpdate',
 		nation_index : n_no,
-		message : player[playerNo].p_nick + "님이 " + sadPlayer+"님의 "+nationName+" 땅을 무효화 시켰습니다."
+		message : player[playerNo].p_nick + "님이 " + sadPlayerName+"님의 "+nationName+" 땅을 무효화 시켰습니다."
 	}
 	send(object)
 }
@@ -1207,7 +1274,7 @@ function goldKeyStealUpdate(nation_index,message ){
 /////////// 수현 11/08 황금열쇠 위치이동 메소드 ////////////////
 function goldKeyMove(playerNo, position){
 	player[playerNo].p_position=position
-	// 소켓 통신
+	// 위치이동 소켓 통신
 	let object={
 		function_name : 'updatePlayerPosition',
 		playerNo : playerNo,
@@ -1215,7 +1282,7 @@ function goldKeyMove(playerNo, position){
 	}
 	send(object)
 }
-/////////// 수현 11/08 황금열쇠 지출 메소드 ////////////////
+/////////// 수현 11/08 황금열쇠 토지대비 지출 메소드 ////////////////
 function goldKeyGTax(playerNo ,muitiple){
 	// 돈 지출해야하는 황금열쇠 메소드
 	// 정기종합소득세, 방범비
@@ -1227,27 +1294,23 @@ function goldKeyGTax(playerNo ,muitiple){
 	console.log("플레이어 보유 토지 개수 : "+haveList.length)
 	console.log("플레이어 지출전  : "+player[playerNo].p_money)
 	fee=haveList.length * muitiple
-	console.log("방범비 : "+fee)
+	console.log("지출 : "+fee)
 	if(checkMoney(playerNo, fee)){
 		log.innerHTML=fee+"원 지불 완료됐습니다."
-		setTimeout(()=>{outcome(playerNo, fee)},1000)
+		outcome(playerNo, fee)
 	}else{// 돈 부족하면 매각	
 		log.innerHTML="현금이 부족합니다."
 		setTimeout(()=>{printLandList(playerNo, fee, 2)},2000)
 	}
 	
 	console.log("플레이어 지출후  : "+player[playerNo].p_money)
-	let object = {
-		object_name: 'player',
-		index: playerNo,
-		cash: player[playerNo].p_money
-	}
-	send(object)
+	
 }
 
 
 /////////// 수현 11/08 황금열쇠 업데이트 소켓 전달 ////////////////
 function goldKeyUpdate(k_index, playerNo){
+	console.log(k_index +"k_index")
 	gold_key[k_index].k_state=1;
 	gold_key[k_index].k_owner=playerNo
 	
@@ -1338,6 +1401,7 @@ function updatePlayerInfo(player_index, cash) {
 	player[player_index].p_money = cash
 	console.log('player['+player_index+'].p_money) '+player[player_index].p_money)
 	gamePlayer() // 플레이어 정보출력 갱신
+	console.log("출발지 소켓!!! : " +player[player_index].p_money)
 }
 
 //nation 건물 단계 업데이트 메소드 - 처음 토지 구매할 때 건물도 같이 구매할 경우
