@@ -125,7 +125,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 1000,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -894,7 +894,7 @@ function buyNation(nationNo, playerNo) {
 				log.innerHTML = "현금이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
 				setTimeout(() => {
 					end_turn()		//턴종료
-				}, 2000)
+				}, 1000)
 				return
 			}
 			// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
@@ -910,7 +910,7 @@ function buyNation(nationNo, playerNo) {
 					setTimeout(()=>{
 						buyResult(playerNo, nation[nationNo].n_price, nationNo, 0) // 토지만 구매
 						sendNationPlayer(nationNo, playerNo, 0) // 토지만 구매하면 n_level 0 으로 넘기기
-					},2000)
+					},1000)
 					
 					end_turn()
 					return
@@ -943,7 +943,7 @@ function buyNation(nationNo, playerNo) {
 			
 			setTimeout(() => {
 				end_turn()
-			}, 2000)
+			}, 1000)
 		})
 
 	}
