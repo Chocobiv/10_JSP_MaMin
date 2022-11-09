@@ -7,6 +7,7 @@ let worldtravel_n_no = -1	//1107 비아 추가 -> 세계여행 갈 토지번호
 let playable = true;
 let diceControl = true;//1108 장군 턴제어용 변수
 let thisRanking = [];
+let olympic_n_no = -1		//1109 비아 추가 -> 올림픽 개최 중인 나라 번호
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
@@ -125,7 +126,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 0,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -487,7 +488,7 @@ function gamePlayer() {
 				<div class="g_m_info">
 					<div class="g_moneyDisplay">
 						<div class="g_cash">현금 : ${player[i - 1].p_money}원 <span class="g_money">(순자산)${nation_sum}원</span> </div>
-						<div class="g_minusMoney"></div>
+						<div class="g_cal_rank${i}">7등</div>
 					</div>
 					<div class="g_m_nick">${player[i - 1].p_nick}</div>
 				</div>`;
@@ -622,10 +623,20 @@ function run_dice(dice1, dice2) {
 	})
 }
 
+// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//let test = 0
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) {
 		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		
+		// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//if(test % 2 == 0)
+		//	player[playerTurn].p_position += (16);
+		//else
+		//	player[playerTurn].p_position += (dice1[9] + dice2[9])
+		//test++	
+			
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
 			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -689,6 +700,9 @@ function landEventCheck(playerTurn) {
 			console.log("올림픽");
 			//1107 지웅 추가
 			toast('<h3 class="toast_title">세계의 축제가 열리면 누군가는 부자가 될걸요?</h3><img width="300px;" src="/mamin/img/game/toast/올림픽토스트.jpg">');
+			
+			arriveOlympic(playerNo)	//비아추가 1109
+			
 			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 			end_turn()
 			break;
@@ -706,6 +720,7 @@ function landEventCheck(playerTurn) {
 
 			break;
 	}
+	return		//꼭 필요! [11/09] 추가
 }
 
 
@@ -832,12 +847,17 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
-	// 1108 수현 추가!!!!!! -- 매각을 황금열쇠때도 사용하기 위해서 전역변수로 선
+	// 1108 수현 추가!!!!!! -- 매각을 황금열쇠때도 사용하기 위해서 전역변수로 선언
 	nowNationNo=nationNo
 	
 	let fee =Math.floor(nation[nationNo].n_payment * (1 + nation[nationNo].n_level)) / 1000 * 1000
+	console.log('통행료 올림픽 계산 전) '+fee)
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
+		//1109 비아 추가 - 만약에 올림픽 개최지면 통행료 2배
+		if(olympic_n_no == nation[nationNo].n_no){
+			fee *= 2
+		}
 		log.innerHTML = '통행료 : ' + fee.toLocaleString()+'원'
 		let result = checkMoney(playerNo, fee)
 		if (result) {
@@ -897,7 +917,7 @@ function buyNation(nationNo, playerNo) {
 				log.innerHTML = "현금이 부족합니다."; document.querySelector(".btnbox").innerHTML = ""
 				setTimeout(() => {
 					end_turn()		//턴종료
-				}, 2000)
+				}, 1000)
 				return
 			}
 			// 땅구매 버튼 누르면 땅만 살지 건물까지 살지 물어보기
@@ -913,7 +933,7 @@ function buyNation(nationNo, playerNo) {
 					setTimeout(()=>{
 						buyResult(playerNo, nation[nationNo].n_price, nationNo, 0) // 토지만 구매
 						sendNationPlayer(nationNo, playerNo, 0) // 토지만 구매하면 n_level 0 으로 넘기기
-					},2000)
+					},1000)
 					
 					end_turn()
 					return
@@ -946,7 +966,7 @@ function buyNation(nationNo, playerNo) {
 			
 			setTimeout(() => {
 				end_turn()
-			}, 2000)
+			}, 1000)
 		})
 
 	}
@@ -1358,10 +1378,67 @@ function goWorldtravel() {
 	
 }
 
+//플레이어 위치 업데이트 메소드
 function updatePlayerPosition(playerNo, n_no) {
 	player[playerNo].p_position = n_no
 	//플레이어 위치 다시 로드
 	playerLocation()
+}
+
+//비아 - 올림픽에 도착하자마자 실행되는 메소드
+function arriveOlympic(playerNo) {
+	let html = ''
+	//1. 플레이어가 가지고 있는 토지 목록 로그에 띄워주기
+	for(let i = 0; i < nation.length; i++){
+		if(nation[i].owner == (playerNo + 1)){
+			//2. 플레이어가 로그에 띄워진 토지 목록 중 하나를 선택하면 onclick으로 함수 실행
+			html += '<div onclick="sendOlympic(' + nation[i].n_no + ')">' + nation[i].n_name + '</div>'
+		}
+	}
+	if(html != '')
+		log.innerHTML = html		//로그에 띄우기
+	else{
+		log.innerHTML = '<div>이런! 소유한 나라가 없습니다.</div>'
+		end_turn()		//턴종료가 안됨...ㅠㅠㅠ
+	}
+}
+
+//비아 - 올림픽 소켓 통신 메소드
+function sendOlympic(n_no){
+	console.log("선택된 나라번호) "+n_no)
+	let object = {
+		function_name: 'holdOlympic',
+		n_no: n_no
+	}
+	send(object)
+}
+
+function holdOlympic(n_no){
+	olympic_n_no = n_no		//전역변수에 플레이어가 올림픽 개최지로 선택한 땅 번호를 대입
+	log.innerHTML = '<div> '+nation[n_no].n_name+'에 올림픽이 개최됩니다! </div>'
+	end_turn()		//턴종료가 안됨...ㅠㅠㅠ
+	console.log('diceControl)'+diceControl)
+}
+
+function calculateRank(){
+	let arr = []
+	let moneyResult
+	let numplayerNO = -1
+	
+	for(let i=1; i<=player.length; i++){
+		let j = calculateMoney(i)
+		arr[i] = { money:j, index:i }
+	}
+	
+	//arr.money.sort()		//순자산 오름차순 정렬
+	//순자산 오름차순 정렬
+	moneyResult = arr.sort(function (a,b){
+		return a.money - b.money
+	})
+	numplayerNO = moneyResult[moneyResult.length-2].index
+	console.log(numplayerNO)
+	document.querySelector('.g_cal_rank'+playerNO) = i+'등'
+	
 }
 
 /////////////////////////////////////////////////////////////////
@@ -1456,6 +1533,11 @@ function end_turn() {//턴종료 해야되는 부분에 넣어주세요
 	
 	send(object);
 	
+	//비아 추가 1109 - 실시간 순위 계산
+	//object = {
+	//	function_name: 'calculateRank'
+	//}
+	//send(object);
 }
 
 
