@@ -71,6 +71,7 @@ function onmessage(obj) {
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 들어왔습니다.</div>`
 	}else if(parsing.type =="close"){//플레이어 퇴장
 		if(document.querySelector('.stateGame').innerHTML=="0"){// 11/06 장군 추가 게임 진행중이 아닐때
+			
 			document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}님이 나갔습니다.</div>`
 		}else{// 11/06 장군 추가 게임 진행중일 때 퇴장시
 			invalidGameover(parsing.m_nick);
@@ -252,7 +253,6 @@ function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을�
 			url:"/mamin/game/GameControll",
 			traditional : true,
 			data:{
-				"type":invalidGameover,
 				"m_nickOut":m_nickOut,
 				"playerArray":playerArray
 			},
@@ -262,7 +262,16 @@ function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을�
 				setTimeout(function(){location.href="index.jsp"},3000)
 			}
 		})
+	
+	
 }
+
+
+
+
+
+
+
 
 
 	

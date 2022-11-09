@@ -150,15 +150,19 @@ public class RoomSocket {
 	// 지웅 20221030 js에서 send()함수로 서버 접근 시 서버 접속 중인 인원들에게 줄 정보를 js의 OnMessage로 전송
 	@OnMessage
 	public void OnMessage( Session session, String object ) throws IOException{
-		
+		System.out.println(object);
 		if(object.equals("\"getPlayersInfo\"")) {
 			getPlayerInfo();
 			return;
 		}else if(object.contains("\"roomdata\":\"ready")) {
 			setready(object);
 		}
-		for(Session s : clients.keySet()) {
-			s.getBasicRemote().sendText(object);
-		}
+		
+		synchronized (session) {
+			for(Session s : clients.keySet()) {
+				s.getBasicRemote().sendText(object);
+			}
+			
+		} 
 	}
 }
