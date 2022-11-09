@@ -107,6 +107,10 @@ function onmessage(obj) {
 		goldKeyUpdate(parsing.randKey, parsing.playerNo);
 	}else if(parsing.function_name=='goldKeyStealUpdate'){ // 1108 수현 추가
 		goldKeyUpdate(parsing.nation_index, parsing.message);
+	}else if(parsing.function_name=='holdOlympic'){ // 1108 수현 추가
+		holdOlympic(parsing.n_no);
+	}else if(parsing.function_name=='calculateRank'){ // 1108 수현 추가
+		calculateRank();
 	}
 }
 function send(object) {
@@ -244,24 +248,24 @@ function duplicated(){
 }
 	
 
-function invalidGameover(m_nick){// 11/06 장군 게임중 한명이 나갔을때 실행 함수
-		let m_nickOut = m_nick; //나간 플레이어의 닉네임
-		let playerArray = JSON.stringify(player_list)//플레이어리스트 JSON문자열로 반환
-		
-		$.ajax({
-			url:"/mamin/game/GameControll",
-			traditional : true,
-			data:{
-				"type":invalidGameover,
-				"m_nickOut":m_nickOut,
-				"playerArray":playerArray
-			},
-			success:function(re){
-					
+function invalidGameover(m_nick) {// 11/06 장군 게임중 한명이 나갔을때 실행 함수
+	let m_nickOut = m_nick; //나간 플레이어의 닉네임
+	let playerArray = JSON.stringify(player_list)//플레이어리스트 JSON문자열로 반환
+
+	$.ajax({
+		url: "/mamin/game/GameControll",
+		traditional: true,
+		data: {
+			"type": invalidGameover,
+			"m_nickOut": m_nickOut,
+			"playerArray": playerArray
+		},
+		success: function(re) {
+
 			alert("게임중 나간 플레이어가 있어 승리로 기록됩니다.(3초후 홈으로 이동)")
-				setTimeout(function(){location.href="index.jsp"},3000)
-			}
-		})
+			setTimeout(function() { location.href = "index.jsp" }, 3000)
+		}
+	})
 }
 
 
