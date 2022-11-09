@@ -126,7 +126,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 500000,
+			p_money: 0,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -1326,7 +1326,7 @@ function goldKeyTax(playerNo ,muitiple){
 	console.log("플레이어 지출후  : "+player[playerNo].p_money)
 	
 
-
+}
 
 /////////// 수현 11/08 황금열쇠 업데이트 소켓 전달 ////////////////
 function goldKeyUpdate(k_index, playerNo){
@@ -1496,7 +1496,7 @@ function calculateRank(){
 	moneyResult = arr.sort(function (a,b){
 		return a.money - b.money
 	})
-	numplayerNO = moneyResult[moneyResult.length-2].index
+	numplayerNO = moneyResult[moneyResult.length-2].index;
 	//console.log(numplayerNO)
 	document.querySelector('.g_cal_rank'+playerNO) = i+'등'
 	
@@ -1539,26 +1539,28 @@ function turn_change(){//11/08 지웅 추가
    console.log("턴체인지함수 바뀐 diceControl:"+diceControl)
 }
 /////////////파산 판단 함수1108 장군/////////////////////
-function isBankrupt(playerNo){
-	console.log(player[playerNo])
-	if(calculateMoney(playerNo)<=0){//순자산이 0보다 작으면
+function isBankrupt(playerNo,fee){
+	
+	if(calculateMoney(playerNo+1)-fee<=0){//순자산이 fee보다 작으면
 		alert("파산했습니다") 
-		thisRanking.push(player[playerNo])//순위판단용 배열 에 push
-		console.log(thisRanking)
+		
 		let object ={
 			function_name:"isBankrupt",
-			 data: player[playerNo].m_no
+			 data1: player[playerNo].m_no,
+			 data2:playerNo//1109 장군 추가
 			
 		}
-		console.log(object)
+		
 		send(object);
 	}
 	end_turn()		//턴종료
 	gameover()
 }
 
-function stopPlaying(m_no){// 1108 장군 파산한 플레이어 게임 진행 못하게 
+function stopPlaying(m_no,playerNo){// 1108 장군 파산한 플레이어 게임 진행 못하게 
 	let bankruptM_no = m_no;
+	thisRanking.push(player[playerNo])//순위판단용 배열 에 push
+	console.log(thisRanking)
 	$.ajax({
 		url:"/mamin/game/GameControll",
 		type:"POST",
@@ -1567,8 +1569,11 @@ function stopPlaying(m_no){// 1108 장군 파산한 플레이어 게임 진행 �
 			"bankruptM_no" : bankruptM_no
 		},
 		success:function(re){
+			console.log(re)
 			if(re=="true"){//파산한 플레이어가 자신이면
-				document.querySelector(".diceBtn").style.diplay="none";//주사위버튼 안보이게 하기
+				document.querySelector(".diceBtn").style.display="none";//주사위버튼 안보이게 하기
+			}else{
+				alert(player[playerNo].p_nick+"님이 파산했습니다. ")
 			}
 			
 		}

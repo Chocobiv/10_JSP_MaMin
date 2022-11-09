@@ -99,7 +99,7 @@ function onmessage(obj) {
 	}else if(parsing.function_name=='change_color'){
 		change_color(parsing.param, parsing.param2);
 	}else if(parsing.function_name=="isBankrupt"){//1108장군 추가
-		stopPlaying(parsing.data)
+		stopPlaying(parsing.data1,parsing.data2)//1109 장군 수정
 	}else if(parsing.function_name=='updatePlayerPosition'){
 		updatePlayerPosition(parsing.playerNo, parsing.n_no);
 	}else if(parsing.function_name=='get_wage'){

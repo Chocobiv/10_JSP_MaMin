@@ -60,8 +60,8 @@ public class GameControll extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int bankruptM_no = Integer.parseInt( request.getParameter("bankruptM_no"));
-		int m_no = Integer.parseInt(String.valueOf(request.getSession().getAttribute("m_no")) );
+		int bankruptM_no = Integer.parseInt( request.getParameter("bankruptM_no"));System.out.println(bankruptM_no);
+		int m_no = Integer.parseInt(String.valueOf(request.getSession().getAttribute("m_no")) );System.out.println(m_no);
 		boolean result;
 		if(bankruptM_no==m_no) {// 파산한 플레이어 m_no랑 현재 m_no랑 같으면 true반환
 			result = true;
