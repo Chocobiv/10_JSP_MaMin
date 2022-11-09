@@ -103,6 +103,10 @@ function onmessage(obj) {
 		updatePlayerPosition(parsing.playerNo, parsing.n_no);
 	}else if(parsing.function_name=='get_wage'){
 		get_wage(parsing.playerTurn);
+	}else if(parsing.function_name=='goldKeyUpdate'){ // 1108 수현 추가
+		goldKeyUpdate(parsing.randKey, parsing.playerNo);
+	}else if(parsing.function_name=='goldKeyStealUpdate'){ // 1108 수현 추가
+		goldKeyUpdate(parsing.nation_index, parsing.message);
 	}
 }
 function send(object) {
