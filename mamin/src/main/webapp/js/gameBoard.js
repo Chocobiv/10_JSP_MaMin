@@ -125,7 +125,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 100000,
+			p_money: 10000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -139,10 +139,10 @@ function setPlayersInfo() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
 	{ n_no: 0, n_name: "출발점", owner: 0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 2, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 4, n_name: "황금열쇠", owner: 2, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
 	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
 	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
 	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
@@ -624,7 +624,8 @@ function run_dice(dice1, dice2) {
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) { 
-		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		//player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		player[playerTurn].p_position =4;
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
 			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -856,9 +857,10 @@ function tollfee(nationNo, playerNo) {
 function inoutcome(playerNo, nationNo, fee) { // 11/04 장군 
 
 	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
+	console.log(nationNo +"inoutcome nationNo")
 	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
 	income(ownerindex, fee)//통행료만큼 땅주인 지급
-	
+	console.log(ownerindex +"inoutcome ownerindex")
 	
 	playerMoneyUpdate(playerNo, ownerindex) // 1107 수현 추가 -- 통행료 지불 자산 업데이트
 	//gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
@@ -994,9 +996,12 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 	})
 	log.innerHTML = html
 }
-
 /*--------------- 수현 토지매각 실행 ----------------- */
 function saleLand(n_no, playerNo, fee, type) {
+	alert("ff")
+	console.log(n_no + " : saleLand n_no")
+	console.log(type + " : saleLand type")
+	
 	// 소유주 , 건물단계 리셋
 	// 매각가는 50%
 	log.innerHTML = nation[n_no].n_name + '가 매각됐습니다.'
@@ -1094,7 +1099,7 @@ function openGoldkey(playerNo){
 function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 	let object=null;
 	console.log("방범비")
-	goldKeyGTax(playerNo, 20000)
+	goldKeyTax(playerNo, 20000)
 	object = {
 		object_name: 'player',
 		index: playerNo,
@@ -1105,7 +1110,7 @@ function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 	switch(randKey){
 		case 0 : case 10 : // OK
 			console.log("정기종합소득세")
-			goldKeyGTax(playerNo , 40000)
+			goldKeyTax(playerNo , 40000)
 			object = {
 				object_name: 'player',
 				index: playerNo,
@@ -1283,7 +1288,7 @@ function goldKeyMove(playerNo, position){
 	send(object)
 }
 /////////// 수현 11/08 황금열쇠 토지대비 지출 메소드 ////////////////
-function goldKeyGTax(playerNo ,muitiple){
+function goldKeyTax(playerNo ,muitiple){
 	// 돈 지출해야하는 황금열쇠 메소드
 	// 정기종합소득세, 방범비
 	// 플레이어가 보유한 토지 개수 가져오기
