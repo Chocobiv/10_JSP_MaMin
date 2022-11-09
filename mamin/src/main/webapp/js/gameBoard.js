@@ -18,7 +18,7 @@ let nowNationNo=null; // 1108 수현추가 매각 시 현재위치 기억하기 
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
-let playerColor =['#eeeeee', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
+let playerColor =['rgba(238, 238, 238, 0.5)', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
 
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
 // nation index <-> nation_infobox index끼리 매칭되도록 작성
@@ -240,7 +240,7 @@ function gameboard() {
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -261,7 +261,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -284,7 +284,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -306,7 +306,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -431,10 +431,10 @@ function make_nation_info(index) {
 
 //20221107 지웅 추가, nation click type 분할
 //1107 비아 추가 - 세계여행
-function check_clickType(clickstatus, mtype, index) {
-	if (clickstatus == 1) {
+function check_clickType(mtype, index) {
+	if (click_status == 1) {
 		click_ModalBtn(mtype, index);
-	} else if (clickstatus == 2) {
+	} else if (click_status == 2) {
 		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
 		// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
 		click_ModalBtn(3, index)
@@ -468,9 +468,6 @@ function check_clickType(clickstatus, mtype, index) {
 			}
 			send(object)
 		}
-		//세계여행 종료로 click_status 값 다시 1로 변경
-		click_status = 1
-		
 	}
 }
 
@@ -487,7 +484,7 @@ function gamePlayer() {
 				</div>
 				<div class="g_m_info">
 					<div class="g_moneyDisplay">
-						<div class="g_cash">현금 : ${player[i - 1].p_money}원 <span class="g_money">(순자산)${nation_sum}원</span> </div>
+						<div class="g_cash">현금 : ${player[i - 1].p_money}원 </div> <span class="g_money">(순자산)${nation_sum}원</span>
 						<div class="g_cal_rank${i}">7등</div>
 					</div>
 					<div class="g_m_nick">${player[i - 1].p_nick}</div>
@@ -623,11 +620,20 @@ function run_dice(dice1, dice2) {
 	})
 }
 
-
+// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+let test = 0
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) { 
 		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+		// [주의]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//if(test % 2 == 0)
+		//	player[playerTurn].p_position += (16);
+		//else
+		//	player[playerTurn].p_position += (5)
+		//test++
+		
+		
 		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 		if (player[playerTurn].p_position > 31) {
 			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
@@ -766,42 +772,43 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 // 체커
 // 11/05 수현 컨펌 -> 로그로 수정
 function levelUp_check(playerNo) {
-	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
+   let nNo = player[playerNo].p_position;   // 플레이어 위치 = 조작하는 곳의 좌표
 
-	let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
-	fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭	
+   let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);   // 건물 값
+   fee = Math.floor(fee / 1000) * 1000;   // 1000단위 절삭   
 
-	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
-		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
-			let building_name = null
-			if (nation[nNo].n_level == 0) { building_name = "주택"; }
-			else if (nation[nNo].n_level == 1) { building_name = "빌딩"; }
-			else if (nation[nNo].n_level == 2) { building_name = "호텔"; }
-		
-			log.innerHTML = building_name+'으로 업그레이드 하시겠습니까?<br> 비용 : '+ fee.toLocaleString()
-			document.querySelector(".btnbox").innerHTML
-				= '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
+   if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
+      if (checkMoney(playerNo, fee)) {   // 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
+         let building_name = null
+         if (nation[nNo].n_level == 0) { building_name = "주택"; }
+         else if (nation[nNo].n_level == 1) { building_name = "빌딩"; }
+         else if (nation[nNo].n_level == 2) { building_name = "호텔"; }
+      
+         log.innerHTML = building_name+'으로 업그레이드 하시겠습니까?<br> 비용 : '+ fee.toLocaleString()
+         document.querySelector(".btnbox").innerHTML
+            = '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 
-			// 버튼 이벤트
-			document.querySelector(".yes_btn").addEventListener('click', () => {
-				let object = {
-					function_name: 'levelUp_land',
-					data: nNo,
-					data2: fee,
-					data3: playerNo
-				}
-				log.innerHTML = "업그레이드 완료했습니다."
-				document.querySelector(".btnbox").innerHTML = ""
-				send(object);	// 실행할 함수 객체화 해서 서버로 전송
-				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
-			})
-			document.querySelector(".no_btn").addEventListener('click', () => {
-				log.innerHTML = "업그레이드하지 않습니다."
-				document.querySelector(".btnbox").innerHTML = ""
-				return;
-			})
-		} else { log.innerHTML = "건물 업그레이드 할 비용이 없습니다." }
-	}
+         // 버튼 이벤트
+         document.querySelector(".yes_btn").addEventListener('click', () => {
+            let object = {
+               function_name: 'levelUp_land',
+               data: nNo,
+               data2: fee,
+               data3: playerNo
+            }
+            log.innerHTML = "업그레이드 완료했습니다."
+            document.querySelector(".btnbox").innerHTML = ""
+            send(object);   // 실행할 함수 객체화 해서 서버로 전송
+            gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
+         })
+         document.querySelector(".no_btn").addEventListener('click', () => {
+            log.innerHTML = "업그레이드하지 않습니다."
+            document.querySelector(".btnbox").innerHTML = ""
+            end_turn();
+            return;
+         })
+      } else { log.innerHTML = "건물 업그레이드 할 비용이 없습니다." }
+   }
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
@@ -1324,7 +1331,7 @@ function goldKeyTax(playerNo ,muitiple){
 	}
 	
 	console.log("플레이어 지출후  : "+player[playerNo].p_money)
-	
+}	
 
 
 
@@ -1444,6 +1451,7 @@ function updatePlayerPosition(playerNo, n_no) {
 	player[playerNo].p_position = n_no
 	//플레이어 위치 다시 로드
 	playerLocation()
+	click_status = 1;
 }
 
 //비아 - 올림픽에 도착하자마자 실행되는 메소드
@@ -1477,7 +1485,7 @@ function sendOlympic(n_no){
 function holdOlympic(n_no){
 	olympic_n_no = n_no		//전역변수에 플레이어가 올림픽 개최지로 선택한 땅 번호를 대입
 	log.innerHTML = '<div> '+nation[n_no].n_name+'에 올림픽이 개최됩니다! </div>'
-	end_turn()		//턴종료가 안됨...ㅠㅠㅠ
+	//end_turn()		//턴종료가 안됨...ㅠㅠㅠ
 	console.log('diceControl)'+diceControl)
 }
 
@@ -1491,15 +1499,15 @@ function calculateRank(){
 		arr[i] = { money:j, index:i }
 	}
 	
-	//arr.money.sort()		//순자산 오름차순 정렬
 	//순자산 오름차순 정렬
 	moneyResult = arr.sort(function (a,b){
 		return a.money - b.money
 	})
 	numplayerNO = moneyResult[moneyResult.length-2].index
-	//console.log(numplayerNO)
-	document.querySelector('.g_cal_rank'+playerNO) = i+'등'
-	
+	console.log(numplayerNO)
+	for(let i=1; i<=player.length; i++){
+		document.querySelector('.g_cal_rank'+playerNO) = i+'등'
+	}
 }
 
 /////////////////////////////////////////////////////////////////
@@ -1538,42 +1546,47 @@ function turn_change(){//11/08 지웅 추가
    diceControl = !diceControl;
    console.log("턴체인지함수 바뀐 diceControl:"+diceControl)
 }
+
 /////////////파산 판단 함수1108 장군/////////////////////
-function isBankrupt(playerNo){
-	console.log(player[playerNo])
-	if(calculateMoney(playerNo)<=0){//순자산이 0보다 작으면
-		alert("파산했습니다") 
-		thisRanking.push(player[playerNo])//순위판단용 배열 에 push
-		console.log(thisRanking)
-		let object ={
-			function_name:"isBankrupt",
-			 data: player[playerNo].m_no
-			
-		}
-		console.log(object)
-		send(object);
-	}
-	end_turn()		//턴종료
-	gameover()
+function isBankrupt(playerNo,fee){
+   console.log(player[playerNo])
+   if(calculateMoney(playerNo)-fee<=0){//순자산이 fee보다 작으면
+      alert("파산했습니다") 
+      
+      let object ={
+         function_name:"isBankrupt",
+          data1: player[playerNo].m_no,
+          data2:playerNo//1109 장군 추가
+         
+      }
+      
+      send(object);
+   }
+   end_turn()      //턴종료
+   gameover()
 }
 
-function stopPlaying(m_no){// 1108 장군 파산한 플레이어 게임 진행 못하게 
-	let bankruptM_no = m_no;
-	$.ajax({
-		url:"/mamin/game/GameControll",
-		type:"POST",
-		data:{
-			
-			"bankruptM_no" : bankruptM_no
-		},
-		success:function(re){
-			if(re=="true"){//파산한 플레이어가 자신이면
-				document.querySelector(".diceBtn").style.diplay="none";//주사위버튼 안보이게 하기
-			}
-			
-		}
-	})
-	
+function stopPlaying(m_no,playerNo){// 1108 장군 파산한 플레이어 게임 진행 못하게 
+   let bankruptM_no = m_no;
+   thisRanking.push(player[playerNo])//순위판단용 배열 에 push
+   console.log(thisRanking)
+   $.ajax({
+      url:"/mamin/game/GameControll",
+      type:"POST",
+      data:{
+         
+         "bankruptM_no" : bankruptM_no
+      },
+      success:function(re){
+         if(re=="true"){//파산한 플레이어가 자신이면
+            document.querySelector(".diceBtn").style.display="none";//주사위버튼 안보이게 하기
+         }else{
+            alert(player[playerNo].m_nick+"님이 파산했습니다. ")
+         }
+         
+      }
+   })
+   
 }
 
 
@@ -1588,6 +1601,7 @@ function gameover(){
 }		
 //1108 장군 턴종료
 function end_turn() {//턴종료 해야되는 부분에 넣어주세요
+	console.log('end_turn() 메소드 안!!!')
 	let object = {
 		function_name: 'turn_change'
 	}
@@ -1595,10 +1609,10 @@ function end_turn() {//턴종료 해야되는 부분에 넣어주세요
 	send(object);
 	
 	//비아 추가 1109 - 실시간 순위 계산
-	//object = {
-	//	function_name: 'calculateRank'
-	//}
-	//send(object);
+	object = {
+		function_name: 'calculateRank'
+	}
+	send(object);
 }
 
 
