@@ -54,10 +54,6 @@
          <div class="boardbox"><!-- 게임판 박스 -->
          	<!-- toast -->
    			<div id="toast"></div>
-   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester1">
-   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester2">
-   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester3">
-   			<img src="/mamin/img/game/character/어몽어스레드.gif" class="placetester4">
             <div class="b_center"> <!-- 게임판 가운데 부분 -->
 
                <!-- 주사위 굴러갈 부분, 게임로고 표시 -->

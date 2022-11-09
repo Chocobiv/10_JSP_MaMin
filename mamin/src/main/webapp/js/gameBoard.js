@@ -18,7 +18,7 @@ let nowNationNo=null; // 1108 수현추가 매각 시 현재위치 기억하기 
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
-let playerColor =['#eeeeee', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
+let playerColor =['rgba(238, 238, 238, 0.5)', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
 
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
 // nation index <-> nation_infobox index끼리 매칭되도록 작성
@@ -240,7 +240,7 @@ function gameboard() {
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
 		//황금열쇠 자리에 gold_key class부여
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -261,7 +261,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -284,7 +284,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+',2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -306,7 +306,7 @@ function gameboard() {
 		let n_payment = (Math.floor(nation[i].n_payment * (1 + nation[i].n_level)) / 1000 * 1000 / 10000) + " 만 원";
 		// 20221105 지웅 수정
 		//황금열쇠 하단 가격정보 빼기 위해 변수에 담은 후 if문으로 제어
-		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType('+click_status+', 2, ' + i + ')">' +
+		let html = '<div class="g_space ncolor'+i+'" onclick="check_clickType(2, ' + i + ')">' +
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
@@ -431,10 +431,10 @@ function make_nation_info(index) {
 
 //20221107 지웅 추가, nation click type 분할
 //1107 비아 추가 - 세계여행
-function check_clickType(clickstatus, mtype, index) {
-	if (clickstatus == 1) {
+function check_clickType(mtype, index) {
+	if (click_status == 1) {
 		click_ModalBtn(mtype, index);
-	} else if (clickstatus == 2) {
+	} else if (click_status == 2) {
 		//세계여행 매서드, 제일 앞 click_status는 세계여행 실행할 때 2로 넣어주시고 끝나면 다시 1로 돌려주세요.
 		// mtype은 임의로 지정해서 의미없는 값, index에 나라 좌표 index 들어가면 될 거 같습니다.
 		click_ModalBtn(3, index)
@@ -442,13 +442,12 @@ function check_clickType(clickstatus, mtype, index) {
 			alert('다른 나라를 선택하세요.')
 			return
 		} else {		//세계여행 외의 나라를 선택했을 경우*/
-		
-		
 		// 세계여행을 떠나는 함수
 			
 		//플레이어 위치 이동
 		player[playerNo].p_position = worldtravel_n_no
 		//소켓 통신
+		
 		let object = {
 			function_name: 'updatePlayerPosition',
 			playerNo: playerNo,
@@ -468,9 +467,7 @@ function check_clickType(clickstatus, mtype, index) {
 			}
 			send(object)
 		}
-		//세계여행 종료로 click_status 값 다시 1로 변경
-		click_status = 1
-		
+		// 세계여행 종료 후 click_status 변경 updatePlayerPosition 안으로 이동		
 	}
 }
 
@@ -694,7 +691,7 @@ function landEventCheck(playerTurn) {
 		case 4: // 올림픽메소드
 			console.log("올림픽");
 			//1107 지웅 추가
-			toast('<h3 class="toast_title">세계의 축제가 열리면 누군가는 부자가 될걸요?</h3><img width="300px;" src="/mamin/img/game/toast/올림픽토스트.jpg">');
+			toast('<h3 class="toast_title">축제가 열리면 누군가는 부자가 될걸요?</h3><img width="500px;" src="/mamin/img/game/toast/올림픽토스트.jpg">');
 			
 			arriveOlympic(playerNo)	//비아추가 1109
 			
@@ -798,9 +795,13 @@ function levelUp_check(playerNo) {
 			document.querySelector(".no_btn").addEventListener('click', () => {
 				log.innerHTML = "업그레이드하지 않습니다."
 				document.querySelector(".btnbox").innerHTML = ""
+				end_turn();	// 1109 지웅 추가
 				return;
 			})
-		} else { log.innerHTML = "건물 업그레이드 할 비용이 없습니다." }
+		} else { 
+			log.innerHTML = "건물 업그레이드 할 비용이 없습니다.";
+			end_turn(); 
+		}
 	}
 }
 // 1103 지웅 onMessage 통해서 모든 플레이어 실행
@@ -1000,7 +1001,11 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 		}
 	}
 	//*****  파산메소드 넣어야함!!!
-	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!"; isBankrupt(playerNo); }
+	if (Landlist.length < 1) {
+		console.log("매각할 토지없음");
+		log.innerHTML = "매각할 땅이 없습니다. 파산!!";
+		// isBankrupt(playerNo);
+	}
 
 	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
@@ -1095,7 +1100,7 @@ function openGoldkey(playerNo){
 	}
 	
 	
-	toast('<h3 class="toast_title">'+gold_key[randKey].k_name+'카드 획득<br>'+gold_key[randKey].k_comment+'</h3><img width="300px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
+	toast('<h3 class="toast_title">'+gold_key[randKey].k_name+'카드 획득<br>'+gold_key[randKey].k_comment+'</h3><img width="500px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
 	object={  // k_state 변경
 			function_name: 'goldKeyUpdate',
 			k_index : randKey,
@@ -1324,7 +1329,7 @@ function goldKeyTax(playerNo ,muitiple){
 	}
 	
 	console.log("플레이어 지출후  : "+player[playerNo].p_money)
-	
+}
 
 
 
@@ -1433,10 +1438,7 @@ function updateNationLevel(nation_index, playerNo) {
 //비아 - 세계여행 메소드
 function goWorldtravel() {
 	click_status = 2	//세계여행 시작하므로 click_status 값 2로 변경
-	gameboard()			//게임판 다시 출력
-	//1. 로그 변경
-	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
-	
+	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'	
 }
 
 //플레이어 위치 업데이트 메소드
@@ -1444,6 +1446,9 @@ function updatePlayerPosition(playerNo, n_no) {
 	player[playerNo].p_position = n_no
 	//플레이어 위치 다시 로드
 	playerLocation()
+	//세계여행 종료로 click_status 값 다시 1로 변경
+		// 20221109 지웅 옮김 
+	click_status = 1
 }
 
 //비아 - 올림픽에 도착하자마자 실행되는 메소드
