@@ -126,6 +126,7 @@ body{
 	font-size: 20px;
 }
 
+/* 비아 실시간 순위 칸 - css안먹힘 */
 #g_cal_rank1{ font-size: 35px; }
 #g_cal_rank2{ font-size: 35px; }
 #g_cal_rank3{ font-size: 35px; }
