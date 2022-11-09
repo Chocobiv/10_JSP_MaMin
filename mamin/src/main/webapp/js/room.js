@@ -105,7 +105,7 @@ function onmessage(obj) {
 	}else if(parsing.function_name=='get_wage'){
 		get_wage(parsing.playerTurn);
 	}else if(parsing.function_name=='goldKeyUpdate'){ // 1108 수현 추가
-		goldKeyUpdate(parsing.randKey, parsing.playerNo);
+		goldKeyUpdate(parsing.k_index, parsing.playerNo);
 	}else if(parsing.function_name=='goldKeyStealUpdate'){ // 1108 수현 추가
 		goldKeyStealUpdate(parsing.nation_index, parsing.message);
 	}else if(parsing.function_name=='holdOlympic'){ // 1108 수현 추가
