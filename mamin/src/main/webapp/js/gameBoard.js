@@ -126,7 +126,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 0,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -480,7 +480,7 @@ function gamePlayer() {
 				<div class="g_m_info">
 					<div class="g_moneyDisplay">
 						<div class="g_cal_rank${i}" id="g_cal_rank${i}">1등</div>
-						<div class="g_cash">현금 : ${player[i - 1].p_money}원 </div> <span class="g_money">(순자산)${nation_sum}원</span>
+						<div class="g_cash">현금 : ${player[i - 1].p_money}원 </div> <span class="g_money">(순자산)${nation_sum.toLocaleString()}원</span>
 					</div>
 					<div class="g_m_nick">${player[i - 1].p_nick}</div>
 				</div>`;
