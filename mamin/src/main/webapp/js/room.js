@@ -112,6 +112,8 @@ function onmessage(obj) {
 		holdOlympic(parsing.n_no);
 	}else if(parsing.function_name=='calculateRank'){ // 1109 비아 추가
 		calculateRank();
+	}else if(parsing.object_name=='gold_key'){ // 1110 수현 추가
+		goldKeyremoveOwner(parsing.index);
 	}
 }
 function send(object) {

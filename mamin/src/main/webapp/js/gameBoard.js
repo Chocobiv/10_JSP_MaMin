@@ -244,14 +244,14 @@ function gameboard() {
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
-			+ '<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			+ '<div class="n_payment' + i + ' n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 		//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
 		if (i == 4) {
 			html = '<div class="g_space gold_key">' +
 				'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 				'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 				'<span class="p_location' + i + '  location"></span>' +
-				'<div class="n_payment"></div></div>'
+				'<div class="n_payment' + i + ' n_payment"></div></div>'
 		}
 		document.querySelector(".right_row").innerHTML += html;
 	}
@@ -265,14 +265,14 @@ function gameboard() {
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
-			+ '<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			+ '<div class="n_payment' + i + ' n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 		//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
 		if (i == 12) {
 			html = '<div class="g_space gold_key">' +
 				'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 				'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 				'<span class="p_location' + i + '  location"></span>' +
-				'<div class="n_payment"></div></div>'
+				'<div class="n_payment' + i + ' n_payment"></div></div>'
 		}
 		document.querySelector(".top_row").innerHTML += html;
 
@@ -288,14 +288,14 @@ function gameboard() {
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
-			+ '<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			+ '<div class="n_payment' + i + ' n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 		//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
 		if (i == 20) {
 			html = '<div class="g_space gold_key">' +
 				'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 				'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 				'<span class="p_location' + i + '  location"></span>' +
-				'<div class="n_payment"></div></div>'
+				'<div class="n_payment' + i + ' n_payment"></div></div>'
 		}
 		document.querySelector(".left_row").innerHTML += html;
 	}
@@ -310,14 +310,14 @@ function gameboard() {
 			'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 			'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 			'<span class="p_location' + i + '  location"></span>'
-			+ '<div class="n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
+			+ '<div class="n_payment' + i + ' n_payment">' + n_payment + '</div></div>' // 통행료 출력 위치 // 플레이어 말 출력 위치
 		//플레이어 말 출력 부분 클래스 i 넣어서 다 다르게 만들어줌
 		if (i == 28) {
 			html = '<div class="g_space gold_key">' +
 				'<div class="n_name">' + nation[i].n_name + '</div>' + // 나라명 출력 위치
 				'<div class="b_house b_house' + i + '"></div>' + // 건물 출력 위치
 				'<span class="p_location' + i + '  location"></span>' +
-				'<div class="n_payment"></div></div>'
+				'<div class="n_payment' + i + ' n_payment"></div></div>'
 		}
 		document.querySelector(".bottom_row").innerHTML += html;
 	}
@@ -379,6 +379,8 @@ function make_user_info(index) {
 // 국가 소개 html구성 후 return
 function make_nation_info(index) {
 	let nation_payment = Math.floor(nation[index].n_payment * (Math.pow(1.5, nation[index].n_level))) / 1000 * 1000;
+	if(olympic_n_no==index){nation_payment *2} // 올림픽 진행시 통행료 2배 출력
+	
 	let nation_price = (nation[index].n_price * 1);
 	if (nation[index].n_level == 1) {
 		nation_price += nation[index].n_price * 0.5;
@@ -422,6 +424,7 @@ function make_nation_info(index) {
 						</table>
 					</div>
 				</div>`;
+	document.querySelector(".n_payment").innerHTML=nation_payment
 	return html;
 }
 
@@ -730,6 +733,7 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 			//건물 업그레이드
 			// 11/5 수현 추가!!!!!!!! 이미 건물레벨이 최상이면 메소드 실행안되고 턴종료되게!!!
 			if (nation[nationNo].n_level == 3) {
+				log.innerHTML =""
 				log.innerHTML = "더 이상 건물을 업그레이드할 수 없습니다."
 				setTimeout(() => {
 					end_turn()		//턴종료
@@ -816,7 +820,7 @@ function levelUp_land(nNo, fee, playerNo) {
 // 1104 비아 이관 - 각 플레이어 별로 색 다르게 지정
 function setHouse(nNo, land_level, playerNo) {
 	console.log('!!!setHouse!!!')
-
+	document.querySelector(".n_payment"+nNo+"").innerHTML=(Math.floor(nation[nNo].n_payment * Math.pow(1.5, nation[nNo].n_level)) / 1000 * 1000 / 10000) + " 만 원"
 	// 특정 조건에서만 발생하므로 이미지만 삽입
 	if (land_level == 0) {	// 땅 매각하거나 어떤 이벤트로 땅이 초기화되는 경우
 		document.querySelector('.b_house' + nNo).innerHTML = ''
@@ -839,20 +843,31 @@ function tollfee(nationNo, playerNo) {
 	nowNationNo = nationNo
 
 	let fee = Math.floor(nation[nationNo].n_payment * (1 + nation[nationNo].n_level)) / 1000 * 1000
+	let index=null; // 황금열쇠 통행료면제권 담기위한 변수
 	console.log('통행료 올림픽 계산 전) ' + fee)
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		//1109 비아 추가 - 만약에 올림픽 개최지면 통행료 2배
-		if (olympic_n_no == nation[nationNo].n_no) {
-			fee *= 2
-		}
+		if (olympic_n_no == nation[nationNo].n_no) {fee *= 2}
 		log.innerHTML = '통행료 : ' + fee.toLocaleString() + '원'
+		if(gold_key[2].k_owner==playerNo){index=2}	// 1110 수현 추가!!! 황금열쇠 통행료면제권 관련!!!
+		else if(gold_key[12].k_owner==playerNo){index=12}
+		if(index!=null){ 
+			// 통행료 면제시켜주고 이거 오너 없애줘야돼
+			log.innerHTML="황금열쇠 통행료면제권을 사용합니다"
+			let object={
+				object_name : "gold_key",
+				index : index
+			}
+			send(object)
+			setTimeout(()=>{end_turn()},1000)
+			return;
+		}
 		let result = checkMoney(playerNo, fee)
 		if (result) {
 			inoutcome(playerNo, nationNo, fee)
 		} else {
 			log.innerHTML = "현금이 부족해 매각해야합니다."
-			console.log("매각 메소드 실행")
 			printLandList(playerNo, fee, 1) // 통행료를 지불해야했던 토지번호도 가지고가야함!!
 		}
 
@@ -993,8 +1008,8 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 			Landlist.push(nation[i])
 		}
 	}
-	//*****  파산메소드 넣어야함!!!												// 파산메소드 해결되면 return 대신 넣어주세요!
-	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!"; return; } // isBankrupt(playerNo);
+	log.innerHTML=""									
+	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo); return; } 
 
 	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
@@ -1008,9 +1023,6 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 }
 /*--------------- 수현 토지매각 실행 ----------------- */
 function saleLand(n_no, playerNo, fee, type) {
-	alert("ff")
-	console.log(n_no + " : saleLand n_no")
-	console.log(type + " : type 두번째")
 
 	// 소유주 , 건물단계 리셋
 	// 매각가는 50%
@@ -1101,7 +1113,6 @@ function openGoldkey(playerNo) {
 	send(object)
 
 	useGoldkey(playerNo, randKey)
-	console.log(randKey + "randKey")
 	// 황금열쇠 k_state , owner소켓 전달
 	end_turn()
 }
@@ -1110,18 +1121,8 @@ function openGoldkey(playerNo) {
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 	let object = null;
-	console.log("방범비")
-	goldKeyTax(playerNo, 50000)
-	object = {
-		object_name: 'player',
-		index: playerNo,
-		cash: player[playerNo].p_money
-	}
-	send(object)
-
-	/*
 	switch(randKey){
-		case 0 : case 10 : // OK
+		case 0 : case 10 :
 			console.log("정기종합소득세")
 			goldKeyTax(playerNo , 40000)
 			object = {
@@ -1132,11 +1133,16 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			send(object)
 			break;
 		case 1 : case 11 : 
-			
+			console.log("방범비")
+			goldKeyTax(playerNo, 20000)
+			object = {
+				object_name: 'player',
+				index: playerNo,
+				cash: player[playerNo].p_money
+			}
+			send(object)
 			break;
-		case 2 : case 12 :
-			console.log("통행권 ...")
-			break;
+		//통행권은 tollfee에서 같이 확인!
 		case 3 : case 13 : // 뒤로 2칸 이동
 			console.log("뒤로 2칸 이동")
 			player[playerNo].p_position-=2
@@ -1159,7 +1165,7 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			break;
 		case 6 : case 16 ://생일축하
 			console.log("생일축하...")	
-			// 와 어렵다...
+			goldKeyBirth()
 			break;
 		case 7 : case 17 :	// 해외유학 돈 차감
 			console.log("해외유학...")
@@ -1189,12 +1195,54 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 		
 	}
 		
-	*/
 	// 플레이어 위치 업데이트 소켓
 	// 플레이어 자산 업데이트 소켓
 	// 플레이어 소유 토지 업데이트 소켓
 
 }
+
+/////////// 수현 11/10 황금열쇠 생일축하 메소드 ////////////////
+function goldKeyBirth(){
+	//모든 플레이어한테 받아와야돼 돈 없으면 그냥 패스
+	let playerList = [] // 본인을 제외한 플레이어리스트
+	for (let i = 0; i < player.length; i++) {
+		if (player[i].p_no != player[playerNo].p_no) { // 본인이 아니고
+			if(player[i].p_money>=100000){ // 십만원 이상이 있으면
+				player[i].p_money-=100000;
+				player[playerNo].p_money+=100000
+				playerList.push(i)
+			}
+		}
+	}
+	
+	if(playerList.length<1){log.innerHTML="안타깝지만 지금 다들 돈이 부족하네요 다음 기회에..."}
+	
+	for(let i=0; i<playerList.length; i++){
+		let	object = {
+			Info_update: 'player',
+			giveIndex: player[playerList[i]].p_no-1, 
+			takeIndex: playerNo,
+			give: player[playerList[i]].p_money,	// 주는 사람 잔액
+			take: player[playerNo].p_money // 받는 사람 잔액
+	
+		}
+	send(object)
+	}
+	
+}
+
+/////////// 수현 11/10 황금열쇠 생일축하 소켓 ////////////////
+function goldKeyBirthSocket(){
+	
+}
+/////////// 수현 11/10 황금열쇠 통행료 면제권 메소드 ////////////////
+function goldKeyremoveOwner(gold_key_index){ // 면제권 사용하면 주인없음으로 바꿔주기
+	gold_key[gold_key_index].k_owner=0;
+	gold_key[gold_key_index].k_state=0; 
+	// state 변경할지 말지 안정했는데 state 0 아닌거 하나도 없으면 무한반복오류 생길까봐 일단 여기에라도 넣어놓음!
+}
+
+
 
 
 /////////// 수현 11/09 황금열쇠 출발지 메소드 ////////////////
@@ -1258,25 +1306,28 @@ function goldKeySteal() {
 
 	}
 	console.log(landList + " 뺏길 사람이 가지고 있는 땅")
-	if (landList.length < 1) { log.innerHTM = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" }
+	if (landList.length < 1) { log.innerHTM = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" ; return;}
 	landList.forEach(l => {
 
-		html += '<div onclick="goldKeyStealUse(' + nation[l].n_no + ',' + sadPlayerName + ')">' + nation[l].n_no + '</div>'
+		html += '<div onclick="goldKeyStealUse(' + nation[l].n_no + ',' + nation[l].owner + ')">' + nation[l].n_name + '</div>'
+		console.log(sadPlayerName +"뺏긴사람")
 	})
 	log.innerHTML = html
-
+	
 
 }
 
 //////// 황금열쇠에서 선택한 땅 매각 되고 소켓 전달까지 ////////
 function goldKeyStealUse(n_no, sadPlayerName) {
 	let nationName = nation[n_no].n_name
+	let msg=player[playerNo].p_nick+'님이 '+player[sadPlayerName-1].p_nick+'님의 '+nationName+'땅을 무효화 시켰습니다.'
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
 	let object = {
 		function_name: 'goldKeyStealUpdate',
 		nation_index: n_no,
-		message: player[playerNo].p_nick + "님이 " + sadPlayerName + "님의 " + nationName + " 땅을 무효화 시켰습니다."
+		message:msg
+		
 	}
 	send(object)
 }
@@ -1286,6 +1337,9 @@ function goldKeyStealUpdate(nation_index, message) {
 	nation[nation_index].owner = 0
 	nation[nation_index].n_level = 0
 	log.innerHTML = message
+	setHouse(nation_index, 0, playerNo) // 건물 없애기
+	change_color(0, nation_index)
+	
 }
 
 
@@ -1456,7 +1510,6 @@ function arriveOlympic(playerNo) {
 		log.innerHTML = html		//로그에 띄우기
 	else {
 		log.innerHTML = '<div>이런! 소유한 나라가 없습니다.</div>'
-		end_turn()		//턴종료가 안됨...ㅠㅠㅠ
 	}
 }
 
