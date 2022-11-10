@@ -118,6 +118,8 @@ function onmessage(obj) {
 		calculateRank();
 	}else if(parsing.function_name=='setP_waiting'){ // 1110 비아 추가
 		setP_waiting(parsing.playerNo, parsing.value)
+	}else if(parsing.object_name=='gold_key'){ // 1110 수현 추가
+		goldKeyremoveOwner(parsing.index);
 	}
 }
 function send(object) {
