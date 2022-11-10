@@ -495,7 +495,7 @@ function gamePlayer() {
 
 ///////////////////// 비아 - 순자산 계산 메소드[11/04] /////////////////////
 function calculateMoney(i) {
-	let nation_sum = player[i - 1].p_money			//순자산 저장 변수
+	let nation_sum = player[i-1].p_money			//순자산 저장 변수
 	for (let j = 0; j < nation.length; j++) {
 		if (nation[j].owner == i) {
 			nation_sum += nation[j].n_price
@@ -763,19 +763,20 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 // 체커
 // 11/05 수현 컨펌 -> 로그로 수정
 function levelUp_check(playerNo) {
-	let nNo = player[playerNo].p_position;	// 플레이어 위치 = 조작하는 곳의 좌표
+	let nNo = player[playerNo].p_position;   // 플레이어 위치 = 조작하는 곳의 좌표
 
-	let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);	// 건물 값
-	fee = Math.floor(fee / 1000) * 1000;	// 1000단위 절삭	
+	let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);   // 건물 값
+	fee = Math.floor(fee / 1000) * 1000;   // 1000단위 절삭   
+
 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
-		if (checkMoney(playerNo, fee)) {	// 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
+		if (checkMoney(playerNo, fee)) {   // 플레이어의 소유 재산이 건물 개발 비용보다 많은 경우
 			let building_name = null
 			if (nation[nNo].n_level == 0) { building_name = "주택"; }
 			else if (nation[nNo].n_level == 1) { building_name = "빌딩"; }
 			else if (nation[nNo].n_level == 2) { building_name = "호텔"; }
-		
-			log.innerHTML = building_name+'으로 업그레이드 하시겠습니까?<br> 비용 : '+ fee.toLocaleString()
+
+			log.innerHTML = building_name + '으로 업그레이드 하시겠습니까?<br> 비용 : ' + fee.toLocaleString()
 			document.querySelector(".btnbox").innerHTML
 				= '<button class="yes_btn Btnyes">YES</button><button class="no_btn Btnno">NO</button>'
 
@@ -789,22 +790,21 @@ function levelUp_check(playerNo) {
 				}
 				log.innerHTML = "업그레이드 완료했습니다."
 				document.querySelector(".btnbox").innerHTML = ""
-				send(object);	// 실행할 함수 객체화 해서 서버로 전송
+				send(object);   // 실행할 함수 객체화 해서 서버로 전송
 				gamePlayer() // 수현추가 - 플레이어 정보출력 갱신
 			})
 			document.querySelector(".no_btn").addEventListener('click', () => {
 				log.innerHTML = "업그레이드하지 않습니다."
 				document.querySelector(".btnbox").innerHTML = ""
-				end_turn();	// 1109 지웅 추가
+				end_turn();
 				return;
 			})
-		} else { 
-			log.innerHTML = "건물 업그레이드 할 비용이 없습니다.";
-			end_turn(); 
+		} else {
+			log.innerHTML = "건물 업그레이드 할 비용이 없습니다."
+			end_turn()
 		}
 	}
 }
-// 1103 지웅 onMessage 통해서 모든 플레이어 실행
 
 function levelUp_land(nNo, fee, playerNo) {
 	//비아 수정
@@ -812,10 +812,16 @@ function levelUp_land(nNo, fee, playerNo) {
 	nation[nNo].n_level++;
 	player[playerNo].p_money -= fee;
 	gamePlayer() // 1105 수현 추가
-	setHouse(nNo, nation[nNo].n_level, playerNo); // 게임보드 주택 입력 함수	
+	setHouse(nNo, nation[nNo].n_level, playerNo);
+	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {//11/10장군 추가
+		return
+	}
+
 	setTimeout(() => {
 		end_turn()
 	}, 2000)
+	// 게임보드 주택 입력 함수   
+
 	return;
 }
 
@@ -902,6 +908,7 @@ function outcome(playerNo, fee) {///플레이어인덱스,fee 지출 액수
 
 /*---------------- 수현  11/03 토지구매 ------------------------- */
 function buyNation(nationNo, playerNo) {
+	const log = document.querySelector(".game_info");
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		let fee = 0; // 결제할 금액 넣어주려고 사용
 		log.innerHTML = '' + nation[nationNo].n_name + '을(를) 구매하시겠습니까?<br>가격 : ' + nation[nationNo].n_price.toLocaleString() + '원'
@@ -1000,12 +1007,8 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 			Landlist.push(nation[i])
 		}
 	}
-	//*****  파산메소드 넣어야함!!!
-	if (Landlist.length < 1) {
-		console.log("매각할 토지없음");
-		log.innerHTML = "매각할 땅이 없습니다. 파산!!";
-		// isBankrupt(playerNo);
-	}
+	//*****  파산메소드 넣어야함!!!												// 파산메소드 해결되면 return 대신 넣어주세요!
+	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  return;} // isBankrupt(playerNo);
 
 	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
@@ -1015,12 +1018,13 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 
 	})
 	log.innerHTML = html
+	console.log(type+" : type 첫번쨰")
 }
 /*--------------- 수현 토지매각 실행 ----------------- */
 function saleLand(n_no, playerNo, fee, type) {
 	alert("ff")
 	console.log(n_no + " : saleLand n_no")
-	console.log(type + " : saleLand type")
+	console.log(type + " : type 두번째")
 	
 	// 소유주 , 건물단계 리셋
 	// 매각가는 50%
@@ -1039,9 +1043,11 @@ function saleLand(n_no, playerNo, fee, type) {
 		console.log(fee + "금액 부족")
 		//매각해도 자산이 부족하면
 		log.innerHTML = "아직 비용을 지불할 수 없습니다."
-		setTimeout(()=>{
-			printLandList(playerNo, fee,1)
-		}, 2000)
+		if(type==1){
+			setTimeout(()=>{printLandList(playerNo, fee,1)}, 2000)	
+		}else if(type==2){
+			setTimeout(()=>{printLandList(playerNo, fee,2)}, 2000)	
+		}
 		return;
 	} else {// 금액이 맞으면 // 통행료지불 재진행
 		if(type==1){
@@ -1119,13 +1125,14 @@ function openGoldkey(playerNo){
 function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 	let object=null;
 	console.log("방범비")
-	goldKeyTax(playerNo, 20000)
+	goldKeyTax(playerNo, 50000)
 	object = {
 		object_name: 'player',
 		index: playerNo,
 		cash: player[playerNo].p_money
 	}
 	send(object)
+			
 	/*
 	switch(randKey){
 		case 0 : case 10 : // OK
@@ -1170,7 +1177,7 @@ function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 			break;
 		case 7 : case 17 :	// 해외유학 돈 차감
 			console.log("해외유학...")
-			if(checkMoney){
+			if(checkMoney(playerNo,100000)){
 				outcome(playerNo, 100000)
 			}else{// 돈 부족하면 매각	
 				log.innerHTML="현금이 부족합니다."
@@ -1329,7 +1336,6 @@ function goldKeyTax(playerNo ,muitiple){
 	}
 	
 	console.log("플레이어 지출후  : "+player[playerNo].p_money)
-}
 
 }
 
@@ -1545,21 +1551,21 @@ function turn_change(){//11/08 지웅 추가
 }
 /////////////파산 판단 함수1108 장군/////////////////////
 function isBankrupt(playerNo,fee){
-	
-	if(calculateMoney(playerNo+1)-fee<=0){//순자산이 fee보다 작으면
-		alert("파산했습니다") 
-		
-		let object ={
-			function_name:"isBankrupt",
-			 data1: player[playerNo].m_no,
-			 data2:playerNo//1109 장군 추가
-			
-		}
-		
-		send(object);
-	}
-	end_turn()		//턴종료
-	gameover()
+   console.log(player[playerNo])
+   if(calculateMoney(playerNo+1)-fee<=0){//순자산이 fee보다 작으면
+      alert("파산했습니다") 
+      
+      let object ={
+         function_name:"isBankrupt",
+          data1: player[playerNo].m_no,
+          data2:playerNo//1109 장군 추가
+         
+      }
+      
+      send(object);
+   }
+   end_turn()      //턴종료
+   gameover()
 }
 
 function stopPlaying(m_no,playerNo){// 1108 장군 파산한 플레이어 게임 진행 못하게 
@@ -1598,19 +1604,21 @@ function gameover(){
 }		
 //1108 장군 턴종료
 function end_turn() {//턴종료 해야되는 부분에 넣어주세요
-	let object = {
-		function_name: 'turn_change'
-	}
-	
-	send(object);
-	
-	//비아 추가 1109 - 실시간 순위 계산
-	//object = {
-	//	function_name: 'calculateRank'
-	//}
-	//send(object);
+   if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {//11/10장군 추가
+      return
+   }
+   let object = {
+      function_name: 'turn_change'
+   }
+   
+   send(object);
+   
+   //비아 추가 1109 - 실시간 순위 계산
+   //object = {
+   //   function_name: 'calculateRank'
+   //}
+   //send(object);
 }
-
 
 
 
