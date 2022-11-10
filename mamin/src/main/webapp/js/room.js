@@ -36,7 +36,7 @@ let m_id = document.querySelector('.H_idbox').innerHTML;
 // 화면 공유를 위한 소캣 생성 [ 채팅 소켓과 사실상 동일할 수 있음 ]
 let websocket = null;
 if (m_id !== 'null') {
-	websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
+	websocket = new WebSocket('ws://192.168.17.147:8080/mamin/room/RoomSocket/' + m_id);
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
 	websocket.onclose = (e) => { onclose(e) };
