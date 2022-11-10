@@ -126,7 +126,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 5000,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`
 		}
 		player.push(object);
@@ -1117,9 +1117,14 @@ function openGoldkey(playerNo){
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 	let object=null;
-	console.log("뒤로 2칸 이동")
-	player[playerNo].p_position-=2
-	goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
+	console.log("방범비")
+	goldKeyTax(playerNo, 50000)
+	object = {
+		object_name: 'player',
+		index: playerNo,
+		cash: player[playerNo].p_money
+	}
+	send(object)
 			
 	/*
 	switch(randKey){
@@ -1134,19 +1139,15 @@ function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 			send(object)
 			break;
 		case 1 : case 11 : 
-			console.log("방범비")
-			goldKeyTax(playerNo, 50000)
-			object = {
-				object_name: 'player',
-				index: playerNo,
-				cash: player[playerNo].p_money
-			}
-			send(object)
+			
 			break;
 		case 2 : case 12 :
 			console.log("통행권 ...")
 			break;
 		case 3 : case 13 : // 뒤로 2칸 이동
+			console.log("뒤로 2칸 이동")
+			player[playerNo].p_position-=2
+			goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
 			break;
 		case 4 : case 14 : // 출발지로 이동
 			console.log("출발지로 이동")
@@ -1169,7 +1170,7 @@ function useGoldkey(playerNo, randKey){ // randKey 황금열쇠 인덱스
 			break;
 		case 7 : case 17 :	// 해외유학 돈 차감
 			console.log("해외유학...")
-			if(checkMoney){
+			if(checkMoney(playerNo,100000)){
 				outcome(playerNo, 100000)
 			}else{// 돈 부족하면 매각	
 				log.innerHTML="현금이 부족합니다."
