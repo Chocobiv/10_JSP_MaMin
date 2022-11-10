@@ -58,6 +58,7 @@
          <div class="boardbox"><!-- 게임판 박스 -->
          	<!-- toast -->
    			<div id="toast"></div>
+   			<div id="toastTurn"></div>
    			<div id="toastalert"></div>
             <div class="b_center"> <!-- 게임판 가운데 부분 -->
 

@@ -22,8 +22,8 @@
 	<header>
 		<div class="hd_box">
 			<div class="h_logo">
-				<a href=""><img src="/mamin/img/main/비행기.png"></a>
-				<h3><a href="">마블의 민족</a></h3>
+				<a href="/mamin/view/index.jsp"><img src="/mamin/img/main/비행기.png"></a>
+				<h3><a href="/mamin/view/index.jsp">마블의 민족</a></h3>
 			</div>
 			<div class="h_menu">
 			<% if(loginID==null){ %>
@@ -40,8 +40,6 @@
 			<% } %>
 				<ul class="h_menu_btm">
 					<li><a href="/mamin/view/index.jsp">홈</a></li>
-					<li><a href="">게임설명</a></li>
-					<li><a href="">랭킹</a></li>
 					<li><a href="/mamin/view/list.jsp">커뮤니티</a></li>
 				</ul>
 			</div>
