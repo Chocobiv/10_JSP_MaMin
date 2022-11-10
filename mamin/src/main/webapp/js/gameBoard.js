@@ -9,6 +9,8 @@ let diceControl = true;//1108 장군 턴제어용 변수
 let thisRanking = [];
 let olympic_n_no = -1		//1109 비아 추가 -> 올림픽 개최 중인 나라 번호
 let movable = true			//1110 비아 추가 -> 플레이어가 이동가능한지 판단하는 변수
+let toastsync = false;
+
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
@@ -127,7 +129,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 10000,
+			p_money: 500000,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`,
 			p_state:true// 11/10 장군 파산 판단용 키 추가 
 			
@@ -142,38 +144,38 @@ function setPlayersInfo() {
 // owner : 0 n_type: 0 n_level :0 기본
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
-	{ n_no: 0, n_name: "출발점", owner:1, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 4, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 5, n_name: "카이로", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 6, n_name: "코펜하겐", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 7, n_name: "이스탄불", owner: 1, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
-	{ n_no: 8, n_name: "무인도", owner: 1, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 9, n_name: "상파울루", owner: 1, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 10, n_name: "싱가폴", owner: 1, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 11, n_name: "아테네", owner: 1, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
-	{ n_no: 12, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 13, n_name: "베른", owner: 1, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
-	{ n_no: 14, n_name: "리스본", owner: 1, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
-	{ n_no: 15, n_name: "마드리드", owner: 1, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
-	{ n_no: 16, n_name: "올림픽", owner: 1, n_type: 4, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 17, n_name: "오타와 ", owner: 1, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
-	{ n_no: 18, n_name: "시드니", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 19, n_name: "하와이", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 20, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 21, n_name: "베를린", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 22, n_name: "도쿄", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 23, n_name: "파리", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 24, n_name: "세계여행", owner: 1, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 25, n_name: "로마", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 26, n_name: "런던", owner: 1, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
-	{ n_no: 27, n_name: "뉴욕", owner: 1, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
-	{ n_no: 28, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 29, n_name: "부산", owner: 1, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
-	{ n_no: 30, n_name: "제주도", owner: 1, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
-	{ n_no: 31, n_name: "서울", owner: 1, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
+	{ n_no: 0, n_name: "출발점", owner:0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
+	{ n_no: 8, n_name: "무인도", owner: 0, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 9, n_name: "상파울루", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 10, n_name: "싱가폴", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 11, n_name: "아테네", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 12, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 13, n_name: "베른", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 14, n_name: "리스본", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 15, n_name: "마드리드", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 16, n_name: "올림픽", owner: 0, n_type: 4, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 17, n_name: "오타와 ", owner: 0, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
+	{ n_no: 18, n_name: "시드니", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 19, n_name: "하와이", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 20, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 21, n_name: "베를린", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 22, n_name: "도쿄", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 23, n_name: "파리", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 24, n_name: "세계여행", owner: 0, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 25, n_name: "로마", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 29, n_name: "부산", owner: 0, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
+	{ n_no: 30, n_name: "제주도", owner: 0, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
+	{ n_no: 31, n_name: "서울", owner: 0, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
 ]
 
 let house = '<i class="fas fa-home"></i>' // 1번째 건설 단계
@@ -684,8 +686,6 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 1:  // 월급메소드
-
-			get_wage(playerTurn); // 수현추가 - 황금열쇠 출발지 이동시 사용 -> 소켓 또 해줘야되는건가...
 			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 			end_turn()
 			break;
@@ -695,6 +695,7 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 3: // 무인도메소드
+		/*
 			if(movable){
 				console.log("무인도");
 				// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
@@ -704,6 +705,7 @@ function landEventCheck(playerTurn) {
 				sendDesertedIsland(playerNo)
 				log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
 			}
+		*/
 			end_turn()
 			break;
 
@@ -738,7 +740,7 @@ function landEventCheck(playerTurn) {
 function get_wage(playerTurn) {
 	player[playerTurn].p_money += 200000;
 	gamePlayer() // 플레이어 정보출력 갱신
-	toast('<h3 class="toast_title">월급...이었던 것</h3><image width="300px;" src="/mamin/img/game/toast/월급토스트2.JPG">');
+	toast2('<h3 class="toast_title">월급...이었던 것</h3><image width="300px;" src="/mamin/img/game/toast/월급토스트2.JPG">');
 }
 
 
@@ -1099,6 +1101,16 @@ function openGoldkey(playerNo) {
 		// 황금열쇠 state가 1이 아닌 애들만 뽑힐 수 있게
 		// 1이면 이미 사용됐음
 		if (gold_key[randKey].k_state != 1) { break; }
+		
+		//20221110 지웅 추가
+			// 무한루프 방지 코드
+		let countingcards = 0;
+		for(let i = 0 ; i<gold_key.length ; i++){
+			if(gold_key[i].k_state==1){
+				countingcards++;
+			}
+		}
+		if(countingcards==20){break;}
 		// state가 전부 1이면 어떻게하지
 	}
 
@@ -1112,8 +1124,9 @@ function openGoldkey(playerNo) {
 		
 	}
 
-
+	console.log('황금열쇠 토스트 시작');
 	toast('<h3 class="toast_title">' + gold_key[randKey].k_name + '카드 획득<br>' + gold_key[randKey].k_comment + '</h3><img width="500px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
+	console.log('황금열쇠 토스트 끝');
 	object = {  // k_state 변경
 		function_name: 'goldKeyUpdate',
 		k_index: randKey,
@@ -1130,6 +1143,9 @@ function openGoldkey(playerNo) {
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 	let object = null;
+
+	goldKeyWage(playerNo)
+/*
 	switch(randKey){
 		case 0 : case 10 :
 			console.log("정기종합소득세")
@@ -1159,7 +1175,7 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			break;
 		case 4 : case 14 : // 출발지로 이동
 			console.log("출발지로 이동")
-			goldKeyWage()
+			goldKeyWage(playerNo)
 			break;
 		case 5 : case 15 : 
 			// 복권당첨
@@ -1203,7 +1219,7 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			break;
 		
 	}
-		
+	*/
 	// 플레이어 위치 업데이트 소켓
 	// 플레이어 자산 업데이트 소켓
 	// 플레이어 소유 토지 업데이트 소켓
@@ -1272,9 +1288,8 @@ function goldKeyWageUpdate() {
 function goldKeyWageUpdate2() {
 	return new Promise(function(resolve, reject) {
 		object = {
-			object_name: 'player',
-			index: playerNo,
-			cash: player[playerNo].p_money
+			function_name: 'get_wage',
+			playerTurn: playerNo
 		}
 		send(object)
 		resolve()
@@ -1601,18 +1616,33 @@ function change_color(pNo, nNo) {
 // 20221107 지웅 추가
 // 토스트 이벤트
 let removeToast;
-function toast(string) {
+function toast(str) {
 	const toast = document.getElementById("toast");
-
 	toast.classList.contains("reveal") ?
 		(clearTimeout(removeToast), removeToast = setTimeout(function() {
 			document.getElementById("toast").classList.remove("reveal")
-		}, 5000)) :
+		}, 3000)) :
 		removeToast = setTimeout(function() {
 			document.getElementById("toast").classList.remove("reveal")
-		}, 5000)
+		}, 3000)
 	toast.classList.add("reveal"),
-		toast.innerHTML = string
+		toast.innerHTML = str	
+}
+
+// 1110 지웅 추가. 월급용 토스트(유저 옆에 출력)
+let removeWageToast;
+function toast2(str) {
+	const toastwage = document.getElementById("toastwage"+(playerTurn+1));	
+	
+	toastwage.classList.contains("reveal") ?
+		(clearTimeout(removeWageToast), removeWageToast = setTimeout(function() {
+			document.getElementById("toastwage"+(playerTurn+1)).classList.remove("reveal")
+		}, 3000)) :
+		removeWageToast = setTimeout(function() {
+			document.getElementById("toastwage"+(playerTurn+1)).classList.remove("reveal")
+		}, 3000)
+	toastwage.classList.add("reveal"),
+		toastwage.innerHTML = str	
 }
 
 function turn_change() {//11/08 지웅 추가
