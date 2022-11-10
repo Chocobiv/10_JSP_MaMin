@@ -121,9 +121,16 @@ body{
    font-size: 30px;
 }
 
-.g_money{ /*순자산 칸*/
-   font-size : 15px;
+.g_money { /*순자산 칸*/
+	font-weight: bold;
+	font-size: 20px;
 }
+
+/* 비아 실시간 순위 칸 */
+#g_cal_rank1{ font-size: 35px; }
+#g_cal_rank2{ font-size: 35px; }
+#g_cal_rank3{ font-size: 35px; }
+#g_cal_rank4{ font-size: 35px; }
 
 .g_minusMoney{ color : #0d2e61; text-align: center; font-size: 25px;}
 
