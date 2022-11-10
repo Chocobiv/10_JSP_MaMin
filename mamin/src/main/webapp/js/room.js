@@ -82,7 +82,10 @@ function onmessage(obj) {
 		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
 	}else if(parsing.function_name=='turn_change'){  //1108 장군 추가  
       turn_change();      
-	}else if(parsing.function_name=='display_dice'){   // 1102 지웅 추가
+	}else if(parsing.function_name=='turn_off'){
+		turn_off();
+	}
+	else if(parsing.function_name=='display_dice'){   // 1102 지웅 추가
       display_dice(parsing.data1, parsing.data2);
 	}else if(parsing.function_name == "levelUp_land"){	// 1103 지웅 추가 //1104 비아 수정
 		levelUp_land(parsing.data, parsing.data2, parsing.data3);
