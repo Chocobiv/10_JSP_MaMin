@@ -8,6 +8,7 @@ let playable = true;
 let diceControl = true;//1108 장군 턴제어용 변수
 let thisRanking = [];
 let olympic_n_no = -1		//1109 비아 추가 -> 올림픽 개최 중인 나라 번호
+let movable = true			//1110 비아 추가 -> 플레이어가 이동가능한지 판단하는 변수
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
@@ -481,12 +482,13 @@ function gamePlayer() {
 				</div>
 				<div class="g_m_info">
 					<div class="g_moneyDisplay">
-						<div class="g_cal_rank${i}" id="g_cal_rank${i}">1등</div>
+						<div class="g_cal_rank${i}" id="g_cal_rank${i}">집계중..</div>
 						<div class="g_cash">현금 : ${player[i - 1].p_money}원 </div> <span class="g_money">(순자산)${nation_sum.toLocaleString()}원</span>
 					</div>
 					<div class="g_m_nick">${player[i - 1].p_nick}</div>
 				</div>`;
 	}
+	
 }
 
 
@@ -588,10 +590,10 @@ function sleep(sec) {
 //////////////////////////////////// 비아 - 주사위 비동기로 수정함!!!! /////////////////////////////////////
 async function display_dice(dice1, dice2) {
 	playable = false;
-	await run_dice(dice1, dice2)
-	await setPlayerPosition(dice1, dice2)
+	await run_dice(dice1, dice2)			//주사위가 굴러가는 모션
+	await setPlayerPosition(dice1, dice2)	//플레이어 포지션 업데이트
 	await sleep(1);
-	playerLocation(playerTurn)
+	playerLocation(playerTurn)				//플레이어 위치 출력
 }
 
 // 주사위가 굴러가는 모션 메소드
@@ -615,29 +617,46 @@ function run_dice(dice1, dice2) {
 // 플레이어 포지션 업데이트 메소드
 function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) {
-		player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
-		// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
-		if (player[playerTurn].p_position > 31) {
-			player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
-			// 지웅 추가 
-			get_wage(playerTurn);
+
+		//비아 - 1110 무인도 수정
+		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
+			//여기에 황금열쇠[무인도탈출권] 소유하고 있는지 체크 필요!
+			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
+				movable = false		//이동 불가능하도록 false값 대입
+				//플레이어의 p_waiting-- 소켓통신
+				sendFailEscapeDesertedIsland(playerTurn)
+				//end_turn()	//턴종료하면 게임을 나가버림...
+				//reject()  턴종료가 안됨
+				//resolve()					//이동해버림
+
+			} else {		//주사위 2개가 같은 숫자이면
+				sendEscapeDesertedIsland(playerTurn)
+			}
+		} else movable = true
+		if (movable) {
+			player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
+			// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
+			if (player[playerTurn].p_position > 31) {
+				player[playerTurn].p_position -= 31 // 한바퀴 돌면 -31
+				// 지웅 추가 
+				get_wage(playerTurn);
+			}
 		}
 		if (++playerTurn == player.length) { playerTurn = 0 }
-			let p_state =player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
-	
-			console.log(p_state)
-			console.log(playerTurn);
-			console.log(player);
-			if(!p_state){
+		let p_state = player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
+		if (!p_state) {
 			playerTurn++;
 			end_turn();
-			
-
-	}
+		}
 		resolve()
 	})
 
 }
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -683,10 +702,15 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 3: // 무인도메소드
-			console.log("무인도");
-			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
-			//1107 지웅 추가
-			toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
+			if(movable){
+				console.log("무인도");
+				// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
+				//1107 지웅 추가
+				toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
+				// 비아 - 1110 추가
+				sendDesertedIsland(playerNo)
+				log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
+			}
 			end_turn()
 			break;
 
@@ -970,7 +994,7 @@ function buyNation(nationNo, playerNo) {
 
 			setTimeout(() => {
 				end_turn()
-			}, 1500)
+			}, 1000)
 		})
 
 	}
@@ -1022,7 +1046,6 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 }
 /*--------------- 수현 토지매각 실행 ----------------- */
 function saleLand(n_no, playerNo, fee, type) {
-	
 	console.log(n_no + " : saleLand n_no")
 	console.log(type + " : type 두번째")
 
@@ -1461,7 +1484,7 @@ function arriveOlympic(playerNo) {
 	let html = ''
 	//1. 플레이어가 가지고 있는 토지 목록 로그에 띄워주기
 	for (let i = 0; i < nation.length; i++) {
-		if (nation[i].owner == (playerNo + 1)) {
+		if (nation[i].owner == (playerNo + 1) && nation[i].n_no != olympic_n_no) {
 			//2. 플레이어가 로그에 띄워진 토지 목록 중 하나를 선택하면 onclick으로 함수 실행
 			html += '<div onclick="sendOlympic(' + nation[i].n_no + ')">' + nation[i].n_name + '</div>'
 		}
@@ -1470,7 +1493,6 @@ function arriveOlympic(playerNo) {
 		log.innerHTML = html		//로그에 띄우기
 	else {
 		log.innerHTML = '<div>이런! 소유한 나라가 없습니다.</div>'
-			//턴종료가 안됨...ㅠㅠㅠ
 	}
 }
 
@@ -1487,32 +1509,59 @@ function sendOlympic(n_no) {
 function holdOlympic(n_no) {
 	olympic_n_no = n_no		//전역변수에 플레이어가 올림픽 개최지로 선택한 땅 번호를 대입
 	log.innerHTML = '<div> ' + nation[n_no].n_name + '에 올림픽이 개최됩니다! </div>'
-	//end_turn()		//턴종료가 안됨...ㅠㅠㅠ
-	console.log('diceControl)' + diceControl)
+}
+
+//비아 - 플레이어의 p_waiting 업데이트 메소드
+function setP_waiting(playerNo, value) {
+	console.log("지금 플레이어의 남은 턴) "+player[playerNo].p_waiting)
+	player[playerNo].p_waiting = value
+	console.log("지금 플레이어의 무인도 남은 턴) "+player[playerNo].p_waiting)
+}
+
+//비아 - 무인도 도착 시 소켓 통신 메소드
+function sendDesertedIsland(playerNo) {
+	let object = {
+		function_name: 'setP_waiting',
+		playerNo: playerNo,
+		value: 2
+	}
+	send(object)
+}
+
+//비아 - 무인도 탈출 실패 시 소켓 통신 메소드
+function sendFailEscapeDesertedIsland(playerNo) {
+	let object = {
+		function_name: 'setP_waiting',
+		playerNo: playerNo,
+		value: 1
+	}
+	send(object)
+}
+
+//비아 - 무인도 탈출 시 소켓 통신 메소드
+function sendEscapeDesertedIsland(playerNo) {
+	let object = {
+		function_name: 'setP_waiting',
+		playerNo: playerNo,
+		value: 0
+	}
+	send(object)
 }
 
 function calculateRank() {
-	let arr = []
-	let moneyResult
-	let numplayerNO = []
-	let idx = 0
-	for (let i = 0; i < player.length; i++) {
-		let j = calculateMoney(i + 1)
-		arr[i] = { money: j, index: (i + 1) }
-	}
-
-	//순자산 오름차순 정렬
-	moneyResult = arr.sort(function(a, b) { return a.money - b.money })
-	for (let i = 1; i <= moneyResult.length; i++) {
-		numplayerNO[idx] = moneyResult[moneyResult.length - i].index
-		idx++
-	}
-	idx = 0
-	for (let i = 1; i <= player.length; i++) {
-		let className = '.g_cal_rank' + numplayerNO[idx]
-		document.querySelector(className).innerHTML = i + '등'
-		idx++
-	}
+   let propertylist = [];
+   for (let i = 0; i < player.length; i++) {
+      let property = calculateMoney(i + 1)
+      if(propertylist.indexOf(property)<0){
+         propertylist.push(property);
+      }
+   }   
+   //순자산 내림차순 정렬
+   propertylist = propertylist.sort(function(a, b) { return b-a });
+   console.log(propertylist)
+   for (let i = 1; i <= player.length; i++) {
+      document.querySelector('.g_cal_rank'+i).innerHTML = (propertylist.indexOf(calculateMoney(i))+1) + '등'
+   }
 }
 
 /////////////////////////////////////////////////////////////////
