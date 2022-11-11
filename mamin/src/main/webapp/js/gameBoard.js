@@ -1768,4 +1768,8 @@ function end_turn() {//턴종료 해야되는 부분에 넣어주세요
 
 
 
+// 비아 - 새로고침 방지 JS
+$(window).on('beforeunload', function() {
+return '게임 중 새로고침 시 게임에서 나가집니다.';
+});
 

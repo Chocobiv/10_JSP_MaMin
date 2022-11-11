@@ -37,7 +37,7 @@ let m_id = document.querySelector('.H_idbox').innerHTML;
 let websocket = null;
 if (m_id !== 'null') {
 	//websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
-	websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
+	websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
 	websocket.onclose = (e) => { onclose(e) };
@@ -292,8 +292,8 @@ function invalidGameover(m_nick) {// 11/06 장군 게임중 한명이 나갔을�
 
 
 
+// 비아 - 새로고침 방지 JS
+$(window).on('beforeunload', function() {
+return '게임 중 새로고침 시 게임에서 나가집니다.';
+});
 
-
-
-	
-	
