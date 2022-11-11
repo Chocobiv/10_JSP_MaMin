@@ -30,7 +30,7 @@ public class RoomSocket {
 		// 대기방->게임화면으로 넘어가면 기존 session값이 유지되지 않을 가능성이 높으니 vector로 분리해준다.
 	static Vector<MemberDto> players =  new Vector<>();
 	//20221110 지웅 추가
-	boolean statusGame = false;
+	boolean statusGame = false;		//게임 시작 상태 저장 변수
 	// 지웅 20221031 23:50 추가
 		// 유저 수 4명 이상일 시 room->index.jsp로 내보내기
 	public void UserOverflow(Session session) throws IOException {
