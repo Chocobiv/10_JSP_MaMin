@@ -594,6 +594,7 @@ function rollDice() {
 		return;
 	}
 	let statuschange = {//11.8 장군 추가
+		
 		function_name: 'turn_off'
 	}
 	send(statuschange);
@@ -671,14 +672,18 @@ function setPlayerPosition(dice1, dice2) {
 		}
 		if (++playerTurn == player.length) { playerTurn = 0 }
 		let p_state = player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
+		let count = 0;
 		while (!p_state) {
 			playerTurn++//11/10 장군 수정
-			
+			count++
 			if(playerTurn == player.length) { playerTurn = 0 }
 			p_state = player[playerTurn].p_state;
-				
+						
 		}
-		end_turn();	
+		if(count>0){
+			end_turn();
+		}
+		
 		resolve()
 	})
 }
@@ -1740,7 +1745,9 @@ function turn_change() {//11/08 지웅 추가
 }
 
 function turn_off(){
+	console.log("턴오프 실행")
 	diceControl = false;
+	console.log(diceControl)
 }
 
 /////////////파산 판단 함수1108 장군/////////////////////
@@ -1836,6 +1843,7 @@ function gameover() {
 
 //1108 장군 턴종료
 function end_turn() {//턴종료 해야되는 부분에 넣어주세요
+	console.log("엔드턴실행");
 	console.log(playerTurn+1+"번 플레이어로부터 턴종료 실행")
 	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {//11/10장군 추가
 		return
