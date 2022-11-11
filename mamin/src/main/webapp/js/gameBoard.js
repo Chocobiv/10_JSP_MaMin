@@ -583,6 +583,7 @@ function playerLocation() {
 
 function rollDice() {
 	console.log("시작플레이어 웨이팅턴"+player[playerTurn].p_waiting);
+	console.log(diceControl);
 	if (diceControl == false) {//11.8 장군 추가
 		toastalert('턴 진행중');
 		return;
@@ -671,14 +672,16 @@ function setPlayerPosition(dice1, dice2) {
 		}
 		if (++playerTurn == player.length) { playerTurn = 0 }
 		let p_state = player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
+		let count=0;
 		while (!p_state) {
-			playerTurn++//11/10 장군 수정
-			
+			playerTurn++//11/10 장군 수정			
 			if(playerTurn == player.length) { playerTurn = 0 }
 			p_state = player[playerTurn].p_state;
-				
+			count++;				
 		}
-		end_turn();	
+		if(count>=1){
+			end_turn();
+		}			
 		resolve()
 	})
 }
@@ -1836,6 +1839,7 @@ function gameover() {
 
 //1108 장군 턴종료
 function end_turn() {//턴종료 해야되는 부분에 넣어주세요
+	alert('test')
 	console.log(playerTurn+1+"번 플레이어로부터 턴종료 실행")
 	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {//11/10장군 추가
 		return
