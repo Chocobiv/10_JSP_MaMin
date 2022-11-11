@@ -123,6 +123,8 @@ function onmessage(obj) {
 		goldKeyremoveOwner(parsing.gold_key_index);
 	}else if(parsing.function_name=='keyOwnerChange'){
 		keyOwnerChange(parsing.k_index)
+	}else if(parsing.function_name="endgame"){
+		endgame()
 	}
 }
 function send(object) {
