@@ -562,7 +562,7 @@ function playerLocation() {
 
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
-let test = false;
+
 function rollDice() {
 	console.log("시작플레이어 웨이팅턴"+player[playerTurn].p_waiting);
 	if (diceControl == false) {//11.8 장군 추가
@@ -586,13 +586,6 @@ function rollDice() {
 		array1.push(dice1 = Math.floor((Math.random() * 6) + 1))
 		array2.push(dice1 = Math.floor((Math.random() * 6) + 1))
 	}
-	
-	if(!test){
-		array1[9]=3;
-		array2[9]=5;
-		test = true;
-	}
-	
 	let object = {
 		function_name: `display_dice`,
 		data1: array1,

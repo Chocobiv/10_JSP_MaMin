@@ -152,15 +152,13 @@ public class RoomSocket {
 		if(object.equals("\"getPlayersInfo\"")) {
 			getPlayerInfo();
 			return;
-		}else if(object.contains("\"roomdata\":\"ready")) {
+		}else if(object.contains("\"roomdata\":\"ready")) {	// parser 배우기 전 작성 -> 스트링에 특정 데이터 포함된 경우
 			setready(object);
-		}
-		
+		}		
 		synchronized (session) {
 			for(Session s : clients.keySet()) {
-				s.getBasicRemote().sendText(object);
-			}
-			
+				s.getBasicRemote().sendText(object);	// 문자열 받아서 모두에게 전송
+			}			
 		} 
 	}
 }
