@@ -9,6 +9,8 @@ let diceControl = true;//1108 장군 턴제어용 변수
 let thisRanking = [];
 let olympic_n_no = -1		//1109 비아 추가 -> 올림픽 개최 중인 나라 번호
 let movable = true			//1110 비아 추가 -> 플레이어가 이동가능한지 판단하는 변수
+let toastsync = false;
+
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
@@ -488,7 +490,7 @@ function gamePlayer() {
 						<div class="g_cal_rank${i}" id="g_cal_rank${i}">집계중..</div>
 						<div class="g_cash">현금 : ${player[i - 1].p_money.toLocaleString()}원 </div> <span class="g_money">(순자산)${nation_sum.toLocaleString()}원</span>
 					</div>
-					<div class="g_m_nick">${player[i - 1].p_nick}</div>
+					<div class="g_m_nick g_m_nick${i}">${player[i - 1].p_nick}</div>
 				</div>`;
 	}
 	
@@ -498,9 +500,20 @@ function gamePlayer() {
 ///////////////////// 비아 - 순자산 계산 메소드[11/04] /////////////////////
 function calculateMoney(i) {
 	let nation_sum = player[i - 1].p_money			//순자산 저장 변수
+	
 	for (let j = 0; j < nation.length; j++) {
 		if (nation[j].owner == i) {
-			nation_sum += nation[j].n_price
+			let buildingsValue;
+			if(nation[j].n_level==0){
+				buildingsValue = 0;
+			}else if(nation[j].n_level==1){
+				buildingsValue = 0.5;
+			}else if(nation[j].n_level==2){
+				buildingsValue = 1.5;
+			}else if(nation[j].n_level==3){
+				buildingsValue = 3;
+			}
+			nation_sum += nation[j].n_price*(1+buildingsValue);
 		}
 	}
 	return nation_sum
@@ -551,12 +564,12 @@ function playerLocation() {
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 function rollDice() {
 	if (diceControl == false) {//11.8 장군 추가
-		alert('턴 진행중');
+		toastalert('턴 진행중');
 		return;
 	}
 
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
-		alert('다른 사람의 턴이에요.')
+		toastalert('다른 사람의 턴이에요.')
 		return;
 	}
 	let statuschange = {//11.8 장군 추가
@@ -684,8 +697,6 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 1:  // 월급메소드
-
-			get_wage(playerTurn); // 수현추가 - 황금열쇠 출발지 이동시 사용 -> 소켓 또 해줘야되는건가...
 			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 			end_turn()
 			break;
@@ -695,6 +706,7 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 3: // 무인도메소드
+		/*
 			if(movable){
 				console.log("무인도");
 				// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
@@ -704,6 +716,7 @@ function landEventCheck(playerTurn) {
 				sendDesertedIsland(playerNo)
 				log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
 			}
+		*/
 			end_turn()
 			break;
 
@@ -738,7 +751,7 @@ function landEventCheck(playerTurn) {
 function get_wage(playerTurn) {
 	player[playerTurn].p_money += 200000;
 	gamePlayer() // 플레이어 정보출력 갱신
-	toast('<h3 class="toast_title">월급...이었던 것</h3><image width="300px;" src="/mamin/img/game/toast/월급토스트2.JPG">');
+	toast2('<h3 class="toast_title">월급...이었던 것</h3><image width="300px;" src="/mamin/img/game/toast/월급토스트2.JPG">', playerTurn);
 }
 
 
@@ -1099,6 +1112,16 @@ function openGoldkey(playerNo) {
 		// 황금열쇠 state가 1이 아닌 애들만 뽑힐 수 있게
 		// 1이면 이미 사용됐음
 		if (gold_key[randKey].k_state != 1) { break; }
+		
+		//20221110 지웅 추가
+			// 무한루프 방지 코드
+		let countingcards = 0;
+		for(let i = 0 ; i<gold_key.length ; i++){
+			if(gold_key[i].k_state==1){
+				countingcards++;
+			}
+		}
+		if(countingcards==20){break;}
 		// state가 전부 1이면 어떻게하지
 	}
 
@@ -1112,8 +1135,9 @@ function openGoldkey(playerNo) {
 		
 	}
 
-
+	console.log('황금열쇠 토스트 시작');
 	toast('<h3 class="toast_title">' + gold_key[randKey].k_name + '카드 획득<br>' + gold_key[randKey].k_comment + '</h3><img width="500px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
+	console.log('황금열쇠 토스트 끝');
 	object = {  // k_state 변경
 		function_name: 'goldKeyUpdate',
 		k_index: randKey,
@@ -1130,6 +1154,7 @@ function openGoldkey(playerNo) {
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 	let object = null;
+
 	switch(randKey){
 		case 0 : case 10 :
 			console.log("정기종합소득세")
@@ -1159,7 +1184,7 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			break;
 		case 4 : case 14 : // 출발지로 이동
 			console.log("출발지로 이동")
-			goldKeyWage()
+			goldKeyWage(playerNo)
 			break;
 		case 5 : case 15 : 
 			// 복권당첨
@@ -1203,7 +1228,6 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 			break;
 		
 	}
-		
 	// 플레이어 위치 업데이트 소켓
 	// 플레이어 자산 업데이트 소켓
 	// 플레이어 소유 토지 업데이트 소켓
@@ -1272,9 +1296,8 @@ function goldKeyWageUpdate() {
 function goldKeyWageUpdate2() {
 	return new Promise(function(resolve, reject) {
 		object = {
-			object_name: 'player',
-			index: playerNo,
-			cash: player[playerNo].p_money
+			function_name: 'get_wage',
+			playerTurn: playerNo
 		}
 		send(object)
 		resolve()
@@ -1601,22 +1624,66 @@ function change_color(pNo, nNo) {
 // 20221107 지웅 추가
 // 토스트 이벤트
 let removeToast;
-function toast(string) {
+function toast(str) {
 	const toast = document.getElementById("toast");
-
 	toast.classList.contains("reveal") ?
 		(clearTimeout(removeToast), removeToast = setTimeout(function() {
 			document.getElementById("toast").classList.remove("reveal")
-		}, 5000)) :
+		}, 3000)) :
 		removeToast = setTimeout(function() {
 			document.getElementById("toast").classList.remove("reveal")
-		}, 5000)
+		}, 3000)
 	toast.classList.add("reveal"),
-		toast.innerHTML = string
+		toast.innerHTML = str	
+}
+
+// 1110 지웅 추가. 월급용 토스트(유저 옆에 출력)
+let removeWageToast;
+function toast2(str, playerTurn) {
+	const toastwage = document.getElementById("toastwage"+(playerTurn+1));
+	toastwage.classList.contains("reveal") ?
+		(clearTimeout(removeWageToast), removeWageToast = setTimeout(function() {
+			document.getElementById("toastwage"+(playerTurn+1)).classList.remove("reveal")
+			console.log(removeWageToast);
+		}, 3000)) :
+		removeWageToast = setTimeout(function() {
+			document.getElementById("toastwage"+(playerTurn+1)).classList.remove("reveal")
+		}, 3000)
+	toastwage.classList.add("reveal"),
+		toastwage.innerHTML = str	
+}
+
+let removetoastalert;
+function toastalert(str) {
+	const toast = document.getElementById("toastalert");
+	toast.classList.contains("reveal") ?
+		(clearTimeout(removetoastalert), removetoastalert = setTimeout(function() {
+			document.getElementById("toastalert").classList.remove("reveal")
+		}, 3000)) :
+		removetoastalert = setTimeout(function() {
+			document.getElementById("toastalert").classList.remove("reveal")
+		}, 3000)
+	toast.classList.add("reveal"),
+		toast.innerHTML = str	
+}
+
+let removetoastTurn;
+function toastTurn(str) {
+	const toast = document.getElementById("toastTurn");
+	toast.classList.contains("reveal") ?
+		(clearTimeout(removetoastTurn), removetoastTurn = setTimeout(function() {
+			document.getElementById("toastTurn").classList.remove("reveal")
+		}, 3000)) :
+		removetoastTurn = setTimeout(function() {
+			document.getElementById("toastTurn").classList.remove("reveal")
+		}, 3000)
+	toast.classList.add("reveal"),
+		toast.innerHTML = str	
 }
 
 function turn_change() {//11/08 지웅 추가
 	diceControl = true;
+	toastTurn(document.querySelector('.g_m_nick'+(playerTurn+1)).innerHTML + "님의 턴");	//11/10 지웅 추가 턴 시작 메시지
 }
 
 function turn_off(){
@@ -1626,7 +1693,7 @@ function turn_off(){
 /////////////파산 판단 함수1108 장군/////////////////////
 function isBankrupt(playerNo, fee) {
 	if (calculateMoney(playerNo + 1) - fee <= 0) {//순자산이 fee보다 작으면
-		alert("파산했습니다")
+		toastalert("파산했습니다")
 
 		let object = {
 			function_name: "isBankrupt",
@@ -1657,7 +1724,7 @@ function stopPlaying(m_no, playerNo) {// 1108 장군 파산한 플레이어 게�
 			if (re == "true") {//파산한 플레이어가 자신이면
 				document.querySelector(".diceBtn").style.display = "none";//주사위버튼 안보이게 하기
 			} else {
-				alert(player[playerNo].p_nick + "님이 파산했습니다. ")
+				toastalert(player[playerNo].p_nick + "님이 파산했습니다. ")
 			}
 		}
 	})
@@ -1678,7 +1745,7 @@ function gameover() {
 		
 	}
 	if(count==1){
-		alert("게임종료")
+		toastalert("게임종료")
 		thisRanking.push(player[playerTurn])
 	}
 	//소켓처리 필요

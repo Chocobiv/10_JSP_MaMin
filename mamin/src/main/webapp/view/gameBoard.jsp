@@ -37,11 +37,15 @@
        </div>
      </div>
    </div>
-
+	
 
    <div class="gameroom">
       <!-- 게임방 전체 -->
       <div class="gameboard">
+      <div id="toastwage1"></div>
+      <div id="toastwage2"></div>
+      <div id="toastwage3"></div>
+      <div id="toastwage4"></div>
          <!-- 게임판 -->
          <div class="g_profile">
             <!-- 플레이어 정보 -->
@@ -54,6 +58,8 @@
          <div class="boardbox"><!-- 게임판 박스 -->
          	<!-- toast -->
    			<div id="toast"></div>
+   			<div id="toastTurn"></div>
+   			<div id="toastalert"></div>
             <div class="b_center"> <!-- 게임판 가운데 부분 -->
 
                <!-- 주사위 굴러갈 부분, 게임로고 표시 -->
