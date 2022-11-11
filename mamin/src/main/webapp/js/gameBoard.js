@@ -8,7 +8,6 @@ let playable = true;
 let diceControl = true;//1108 장군 턴제어용 변수
 let thisRanking = [];
 let olympic_n_no = -1		//1109 비아 추가 -> 올림픽 개최 중인 나라 번호
-let movable = true			//1110 비아 추가 -> 플레이어가 이동가능한지 판단하는 변수
 let toastsync = false;
 
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
@@ -70,7 +69,7 @@ let gold_key=[
 	{k_no : 2 , k_type : 2 , k_name : "통행권" , k_comment : "다음번에 통행료를 내야하는 경우 한번 패스할 수 있습니다." , k_state : 0 , k_owner : 0},
 	{k_no : 3 , k_type : 1 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0 , k_owner : 0},
 	{k_no : 4 , k_type : 1 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0 , k_owner : 0},
-	{k_no : 5 , k_type : 1 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0 , k_owner : 0},
+	{k_no : 5 , k_type : 1 , k_name : "복권당첨" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0 , k_owner : 0},
 	{k_no : 6 , k_type : 1 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어들이 10만원씩 선물로 줬습니다." , k_state : 0 , k_owner : 0}, // 이거 모든 플레이어한테 받아야되나
 	{k_no : 7 , k_type : 1 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0 , k_owner : 0},
 	{k_no : 8 , k_type : 1 , k_name : "기지강탈" , k_comment : "랜덤으로 뽑힌 사람이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0 , k_owner : 0},
@@ -496,7 +495,8 @@ function gamePlayer() {
 	
 }
 
-
+//1111 비아 추가
+let movable = Array.from({length: player.length}, () => true)   //플레이어가 이동가능한지 판단하는 배열
 ///////////////////// 비아 - 순자산 계산 메소드[11/04] /////////////////////
 function calculateMoney(i) {
 	let nation_sum = player[i - 1].p_money			//순자산 저장 변수
@@ -562,7 +562,9 @@ function playerLocation() {
 
 /* 수현 - 10/30 주사위 굴리기 버튼 누르면 주사위 돌아가고 잠시후 멈춤 */
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
+let test = false;
 function rollDice() {
+	console.log("시작플레이어 웨이팅턴"+player[playerTurn].p_waiting);
 	if (diceControl == false) {//11.8 장군 추가
 		toastalert('턴 진행중');
 		return;
@@ -584,6 +586,13 @@ function rollDice() {
 		array1.push(dice1 = Math.floor((Math.random() * 6) + 1))
 		array2.push(dice1 = Math.floor((Math.random() * 6) + 1))
 	}
+	
+	if(!test){
+		array1[9]=3;
+		array2[9]=5;
+		test = true;
+	}
+	
 	let object = {
 		function_name: `display_dice`,
 		data1: array1,
@@ -631,21 +640,24 @@ function setPlayerPosition(dice1, dice2) {
 	return new Promise(function(resolve, reject) {
 
 		//비아 - 1110 무인도 수정
+		console.log("setplayerposition 내부 웨이팅턴 체크" + player[playerTurn].p_waiting);
 		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
 			//여기에 황금열쇠[무인도탈출권] 소유하고 있는지 체크 필요!
 			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
-				movable = false		//이동 불가능하도록 false값 대입
+				alert('같은거 뽑아라');
+				player[playerTurn].p_waiting--;
+				//이동 불가능하도록 false값 대입
 				//플레이어의 p_waiting-- 소켓통신
-				sendFailEscapeDesertedIsland(playerTurn)
+				// sendFailEscapeDesertedIsland(playerTurn)
 				//end_turn()	//턴종료하면 게임을 나가버림...
 				//reject()  턴종료가 안됨
 				//resolve()					//이동해버림
-
+				
 			} else {		//주사위 2개가 같은 숫자이면
-				sendEscapeDesertedIsland(playerTurn)
+				player[playerTurn].p_waiting = 0;
 			}
-		} else movable = true
-		if (movable) {
+		}
+		if (player[playerTurn].p_waiting == 0) {
 			player[playerTurn].p_position += (dice1[9] + dice2[9]);	// 위치에 주사위 수 더하기
 			// 자료형 Number -> array로 바뀌면서 파라미터의 마지막 인덱스 값으로 조정 
 			if (player[playerTurn].p_position > 31) {
@@ -688,6 +700,12 @@ function landEventCheck(playerTurn) {
 	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {
 		return
 	}
+	console.log(player[playerNo].p_waiting);
+	if(player[playerNo].p_waiting>0){
+		end_turn();
+		return;
+	}
+	
 	switch (nation[nationNo].n_type) {
 		case 0: // 일반땅일떄
 
@@ -706,17 +724,22 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 3: // 무인도메소드
-		/*
-			if(movable){
-				console.log("무인도");
-				//1107 지웅 추가
-				toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
-				// 비아 - 1110 추가
-				//sendDesertedIsland(playerNo)
-				log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
+			console.log(playerNo+"번째 플레이어의 무인도 메서드 실행")
+            console.log("무인도");
+            //1107 지웅 추가
+            toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
+            // 비아 - 1110 추가
+            // sendDesertedIsland(playerNo)
+            
+            let object = {
+				function_name : 'setP_waiting',
+				playerNo : playerNo,
+				value : 3
 			}
-		*/
-			end_turn()
+            send(object);
+            log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
+	      
+	        end_turn()
 			break;
 
 		case 4: // 올림픽메소드
@@ -724,8 +747,6 @@ function landEventCheck(playerTurn) {
 			toast('<h3 class="toast_title">축제가 열리면 누군가는 부자가 될걸요?</h3><img width="500px;" src="/mamin/img/game/toast/올림픽토스트.jpg">');
 
 			arriveOlympic(playerNo)	//비아추가 1109
-
-			end_turn()
 			break;
 
 
@@ -1043,7 +1064,7 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 	//*****  파산메소드 넣어야함!!!												// 파산메소드 해결되면 return 대신 넣어주세요!
 	//if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo, fee); }
 	log.innerHTML=""									
-	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo); return; } 
+	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!"; end_turn(); isBankrupt(playerNo); return; } 
 
 	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
@@ -1073,7 +1094,6 @@ function saleLand(n_no, playerNo, fee, saletype) {
 		} else if (saletype == 2) {
 			setTimeout(() => { printLandList(playerNo, fee, 2) }, 2000)
 		}
-		end_turn();
 		return;
 	} else {// 금액이 맞으면 // 통행료지불 재진행
 		if (saletype == 1) {
@@ -1131,9 +1151,7 @@ function openGoldkey(playerNo) {
 	gold_key[randKey].k_state = 1 // state 변경
 
 
-	console.log('황금열쇠 토스트 시작');
 	toast('<h3 class="toast_title">' + gold_key[randKey].k_name + '카드 획득<br>' + gold_key[randKey].k_comment + '</h3><img width="500px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
-	console.log('황금열쇠 토스트 끝');
 	object = {  // k_state 변경
 		function_name: 'goldKeyUpdate',
 		k_index: randKey,
@@ -1143,7 +1161,9 @@ function openGoldkey(playerNo) {
 
 	useGoldkey(playerNo, randKey)
 	// 황금열쇠 k_state , owner소켓 전달
-	end_turn()
+	if(randKey!=8 && randKey!=18){
+		end_turn();
+	}
 }
 
 /////////// 수현 11/08 황금열쇠 사용 메소드 ////////////////
@@ -1326,7 +1346,7 @@ function goldKeySteal() {
 	// playerList[rand] -> 이게 player에 인덱스
 	// 
 	let sadPlayer = playerList[rand]
-	let html = player[sadPlayer].p_nick + "님이 소유한 땅 1개를 골라주세요"
+	let html = player[sadPlayer].p_nick + "님이 소유한 땅 1개를 골라주세요 [ 선택 제한 3초 ]"
 	sadPlayerName = player[sadPlayer].p_nick // 땅 뺏긴 플레이어
 	let landList = []
 	for (let i = 0; i < nation.length; i++) {
@@ -1340,7 +1360,9 @@ function goldKeySteal() {
 	})
 	log.innerHTML = html
 	
-
+	setTimeout( ()=>{
+		end_turn();
+	},3000 )
 }
 
 //////// 황금열쇠에서 선택한 땅 매각 되고 소켓 전달까지 ////////
@@ -1528,6 +1550,7 @@ function arriveOlympic(playerNo) {
 		log.innerHTML = html		//로그에 띄우기
 	else {
 		log.innerHTML = '<div>이런! 소유한 나라가 없습니다.</div>'
+		end_turn();
 	}
 }
 
@@ -1538,6 +1561,7 @@ function sendOlympic(n_no) {
 		n_no: n_no
 	}
 	send(object)
+	end_turn();
 }
 
 function holdOlympic(n_no) {
@@ -1554,6 +1578,28 @@ function setP_waiting(playerNo, value) {
 
 //비아 - 무인도 도착 시 소켓 통신 메소드
 function sendDesertedIsland(playerNo) {
+	// 20221111 지웅 추가 무인도 탈출권 있을 시 탈출권 소모 후 watingTurn증가 X 
+	let escapeNow = false;
+	movable[playerTurn] = false;
+	if(gold_key[9].k_owner==playerNo+1){
+		let object = {
+			function_name : keyOwnerChange,
+			k_index : 9
+		}		
+		send(object);
+		escapeNow = true;
+	}else if(gold_key[19].k_owner==playerNo+1){
+		let object = {
+			function_name : keyOwnerChange,
+			k_index : 19
+		}		
+		send(object)		
+		escapeNow = true;
+	}
+	if(escapeNow){
+		toast('무인도 탈출!')// 지웅 좌표 - > 이미지 추가 및 멘트 수정
+		return;
+	}
 	let object = {
 		function_name: 'setP_waiting',
 		playerNo: playerNo,
@@ -1561,9 +1607,14 @@ function sendDesertedIsland(playerNo) {
 	}
 	send(object)
 }
+// 11/11 지웅추가 골드키 오너 사용 불가로 변경
+function keyOwnerChange(k_index){
+	gold_key[k_index].k_owner== -1;
+}
 
 //비아 - 무인도 탈출 실패 시 소켓 통신 메소드
 function sendFailEscapeDesertedIsland(playerNo) {
+	console.log("무인도 탈출 실패")
 	let object = {
 		function_name: 'setP_waiting',
 		playerNo: playerNo,
@@ -1574,6 +1625,7 @@ function sendFailEscapeDesertedIsland(playerNo) {
 
 //비아 - 무인도 탈출 시 소켓 통신 메소드
 function sendEscapeDesertedIsland(playerNo) {
+	console.log("무인도 탈출 성공")
 	let object = {
 		function_name: 'setP_waiting',
 		playerNo: playerNo,
