@@ -21,7 +21,7 @@ let nowNationNo=null; // 1108 수현추가 매각 시 현재위치 기억하기 
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
-let playerColor =['rgba(238, 238, 238, 0.5)', '#283C63', '#FBE8D3', '#928A97', '#F85F73']
+let playerColor =['rgba(238, 238, 238, 0.5)', '#8D9EFF', '#FBE8D3', '#A5F1E9', '#F85F73']
 
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
 // nation index <-> nation_infobox index끼리 매칭되도록 작성
@@ -71,7 +71,7 @@ let gold_key=[
 	{k_no : 3 , k_type : 1 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0 , k_owner : 0},
 	{k_no : 4 , k_type : 1 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0 , k_owner : 0},
 	{k_no : 5 , k_type : 1 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0 , k_owner : 0},
-	{k_no : 6 , k_type : 1 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0 , k_owner : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 6 , k_type : 1 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어들이 10만원씩 선물로 줬습니다." , k_state : 0 , k_owner : 0}, // 이거 모든 플레이어한테 받아야되나
 	{k_no : 7 , k_type : 1 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0 , k_owner : 0},
 	{k_no : 8 , k_type : 1 , k_name : "기지강탈" , k_comment : "랜덤으로 뽑힌 사람이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0 , k_owner : 0},
 	{k_no : 9 , k_type : 2 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0 , k_owner : 0},
@@ -81,7 +81,7 @@ let gold_key=[
 	{k_no : 13 , k_type : 1 , k_name : "뒤로 이동" , k_comment : "뒤로 두칸 이동해주세요" , k_state : 0 , k_owner : 0},
 	{k_no : 14 , k_type : 1 , k_name : "고속도로" , k_comment : "슈슝 출발지로 이동합니다." , k_state : 0 , k_owner : 0},
 	{k_no : 15 , k_type : 1 , k_name : "복권담청" , k_comment : "축하드려요 복권 20만원에 당첨됐습니다." , k_state : 0 , k_owner : 0},
-	{k_no : 16 , k_type : 1 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어가 10만원을 선물로 줬습니다." , k_state : 0 , k_owner : 0}, // 이거 모든 플레이어한테 받아야되나
+	{k_no : 16 , k_type : 1 , k_name : "생일축하" , k_comment : "생일 축하드려요 다른 플레이어들이 10만원씩 선물로 줬습니다." , k_state : 0 , k_owner : 0}, // 이거 모든 플레이어한테 받아야되나
 	{k_no : 17 , k_type : 1 , k_name : "해외유학" , k_comment : "공부엔 끝이 없죠 10만원을 해외유학준비 비용으로 사용합니다." , k_state : 0 , k_owner : 0},
 	{k_no : 18 , k_type : 1 , k_name : "기지강탈" , k_comment : "상대방이 소유한 땅 1개를 골라 무효화시킬 수 있습니다." , k_state : 0 , k_owner : 0},
 	{k_no : 19 , k_type : 2 , k_name : "무인도 탈출권" , k_comment : "무인도에 갇히거든 이걸 사용해 바로 탈출할 수 있습니다." , k_state : 0 , k_owner : 0}
@@ -709,11 +709,10 @@ function landEventCheck(playerTurn) {
 		/*
 			if(movable){
 				console.log("무인도");
-				// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 				//1107 지웅 추가
 				toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
 				// 비아 - 1110 추가
-				sendDesertedIsland(playerNo)
+				//sendDesertedIsland(playerNo)
 				log.innerHTML = '<div> 이런! 2턴 동안 무인도에 갇힙니다. </div>'
 			}
 		*/
@@ -726,7 +725,6 @@ function landEventCheck(playerTurn) {
 
 			arriveOlympic(playerNo)	//비아추가 1109
 
-			// 여기 들어가면 앞으로 진행이 안돼서 일단 end_turn() 넣어놨습니다. 메소드 구현되면 삭제해주세요!
 			end_turn()
 			break;
 
@@ -877,26 +875,29 @@ function tollfee(nationNo, playerNo) {
 	nowNationNo = nationNo
 
 	let fee = Math.floor(nation[nationNo].n_payment * (Math.pow(1.5 ,nation[nationNo].n_level))) / 1000 * 1000
-	let index=null; // 황금열쇠 통행료면제권 담기위한 변수
+	let index=null;
 	console.log('통행료 올림픽 계산 전) ' + fee)
 	//*** 1105 수현 수정!!! -- 
 	if (document.querySelector('.r_sno').innerHTML == playerNo + 1) {
 		//1109 비아 추가 - 만약에 올림픽 개최지면 통행료 2배
 		if (olympic_n_no == nation[nationNo].n_no) {fee *= 2}
 		log.innerHTML = '통행료 : ' + fee.toLocaleString() + '원'
-		if(gold_key[2].k_owner==playerNo){index=2}	// 1110 수현 추가!!! 황금열쇠 통행료면제권 관련!!!
-		else if(gold_key[12].k_owner==playerNo){index=12}
-		if(index!=null){ 
-			// 통행료 면제시켜주고 이거 오너 없애줘야돼
+		
+		// 1110 수현 추가!!! 황금열쇠 통행료면제권 관련!!!
+		if(gold_key[2].k_owner==player[playerNo].p_no || gold_key[12].k_owner==player[playerNo].p_no){
+			gold_key[2].k_owner==player[playerNo].p_no ? index=2 : index=12 // 황금열쇠 인덱스 뽑기
 			log.innerHTML="황금열쇠 통행료면제권을 사용합니다"
 			let object={
 				object_name : "gold_key",
-				index : index
+				gold_key_index : index
 			}
 			send(object)
 			setTimeout(()=>{end_turn()},1000)
 			return;
 		}
+		
+			
+		
 		let result = checkMoney(playerNo, fee)
 		if (result) {
 			inoutcome(playerNo, nationNo, fee)
@@ -1051,15 +1052,15 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 	log.innerHTML = html
 }
 /*--------------- 수현 토지매각 실행 ----------------- */
-function saleLand(n_no, playerNo, fee, type) {
+function saleLand(n_no, playerNo, fee, saletype) {
 	// 소유주 , 건물단계 리셋
-	// 매각가는 50%
-	log.innerHTML = nation[n_no].n_name + '가 매각됐습니다.'
+	log.innerHTML = nation[n_no].n_name + ' 땅이 매각됐습니다.'
 	player[playerNo].p_money += (nation[n_no].n_price / 2)
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
 
 	sendNationPlayer(n_no, -1, 0)
+	
 	// owner 없애주려고 pno -1 으로 넘김
 	// nation 객체 정보변경사항 소켓전달
 
@@ -1067,19 +1068,19 @@ function saleLand(n_no, playerNo, fee, type) {
 	if (fee > player[playerNo].p_money) {
 		//매각해도 자산이 부족하면
 		log.innerHTML = "아직 비용을 지불할 수 없습니다."
-		if (type == 1) {
+		if (saletype == 1) {
 			setTimeout(() => { printLandList(playerNo, fee, 1) }, 2000)
-		} else if (type == 2) {
+		} else if (saletype == 2) {
 			setTimeout(() => { printLandList(playerNo, fee, 2) }, 2000)
 		}
 		end_turn();
 		return;
 	} else {// 금액이 맞으면 // 통행료지불 재진행
-		if (type == 1) {
+		if (saletype == 1) {
 			setTimeout(() => { // 통행료
 				inoutcome(playerNo, nowNationNo, fee)
 			}, 2000)
-		} else if (type == 2) { // 황금열쇠
+		} else if (saletype == 2) { // 황금열쇠
 			setTimeout(() => {
 				outcome(playerNo, fee)
 			}, 2000)
@@ -1129,11 +1130,6 @@ function openGoldkey(playerNo) {
 	gold_key[randKey].k_owner = player[playerNo].p_no // 소유자 변경
 	gold_key[randKey].k_state = 1 // state 변경
 
-	if (gold_key[randKey].k_type == 1) {
-		// 1이면 바로 실행될 메소드로 이동
-	} else if (gold_key[randKey].k_type == 2) {
-		
-	}
 
 	console.log('황금열쇠 토스트 시작');
 	toast('<h3 class="toast_title">' + gold_key[randKey].k_name + '카드 획득<br>' + gold_key[randKey].k_comment + '</h3><img width="500px;" src="/mamin/img/game/toast/황금열쇠토스트.png">');
@@ -1154,7 +1150,6 @@ function openGoldkey(playerNo) {
 // 정기종합소득세 / 방범비 / 통행권/  뒤로 이동/ 고속도로/ 복권담청 / 생일축하 / 해외유학 / 기지강탈 /무인도 탈출권
 function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 	let object = null;
-
 	switch(randKey){
 		case 0 : case 10 :
 			console.log("정기종합소득세")
@@ -1264,15 +1259,16 @@ function goldKeyBirth(){
 	
 }
 
-/////////// 수현 11/10 황금열쇠 생일축하 소켓 ////////////////
-function goldKeyBirthSocket(){
-	
-}
+
 /////////// 수현 11/10 황금열쇠 통행료 면제권 메소드 ////////////////
 function goldKeyremoveOwner(gold_key_index){ // 면제권 사용하면 주인없음으로 바꿔주기
 	gold_key[gold_key_index].k_owner=0;
 	gold_key[gold_key_index].k_state=0; 
 	// state 변경할지 말지 안정했는데 state 0 아닌거 하나도 없으면 무한반복오류 생길까봐 일단 여기에라도 넣어놓음!
+	console.log(gold_key[gold_key_index].k_owner+ " : gold_key[gold_key_index].k_owner")
+	console.log(gold_key[gold_key_index].k_state+ " : gold_key[gold_key_index].k_state")
+	
+
 }
 
 
@@ -1338,11 +1334,9 @@ function goldKeySteal() {
 
 	}
 	console.log(landList + " 뺏길 사람이 가지고 있는 땅")
-	if (landList.length < 1) { log.innerHTM = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" ; return;}
+	if (landList.length < 1) { log.innerHTML = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" ; return;}
 	landList.forEach(l => {
-
 		html += '<div onclick="goldKeyStealUse(' + nation[l].n_no + ',' + nation[l].owner + ')">' + nation[l].n_name + '</div>'
-		console.log(sadPlayerName +"뺏긴사람")
 	})
 	log.innerHTML = html
 	
@@ -1408,7 +1402,7 @@ function goldKeyTax(playerNo, muitiple) {
 /////////// 수현 11/08 황금열쇠 업데이트 소켓 전달 ////////////////
 function goldKeyUpdate(k_index, playerNo) {
 	gold_key[k_index].k_state = 1;
-	gold_key[k_index].k_owner = playerNo
+	gold_key[k_index].k_owner = player[playerNo].p_no
 
 
 }
