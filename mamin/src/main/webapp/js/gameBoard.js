@@ -655,7 +655,6 @@ function setPlayerPosition(dice1, dice2) {
 		console.log("setplayerposition 내부 웨이팅턴 체크" + player[playerTurn].p_waiting);
 		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
 			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
-				alert('같은거 뽑아라');
 				player[playerTurn].p_waiting--;
 			} else {		//주사위 2개가 같은 숫자이면
 				player[playerTurn].p_waiting = 0;
@@ -708,7 +707,6 @@ function landEventCheck(playerTurn) {
 	if (document.querySelector('.r_sno').innerHTML != playerNo + 1) {
 		return
 	}
-	console.log(player[playerNo].p_waiting);
 	if(player[playerNo].p_waiting>0){
 		end_turn();
 		return;
@@ -732,8 +730,6 @@ function landEventCheck(playerTurn) {
 			break;
 
 		case 3: // 무인도메소드
-			console.log(playerNo+"번째 플레이어의 무인도 메서드 실행")
-            console.log("무인도");
             //1107 지웅 추가
             toast('<h3 class="toast_title">잠깐 쉬어가도 좋을까요?</h3><img width="300px;" src="/mamin/img/game/toast/무인도토스트.JPG">');
             // 비아 - 1110 추가
@@ -1077,7 +1073,7 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 	//if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!"; end_turn(); isBankrupt(playerNo); return; } 
 	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo,fee); return; } 
 
-	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
+	let html = fee.toLocaleString() + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
 		html += '<div onclick="saleLand(' + l.n_no + ',' + playerNo + ',' + fee + ',' + type + ')">' + l.n_name + '</div>'
 	})
@@ -1622,7 +1618,7 @@ function sendDesertedIsland(playerNo) {
 function keyOwnerChange(k_index){
 	gold_key[k_index].k_owner== -1;
 }
-
+/*
 //비아 - 무인도 탈출 실패 시 소켓 통신 메소드
 function sendFailEscapeDesertedIsland(playerNo) {
 	console.log("무인도 탈출 실패")
@@ -1644,7 +1640,7 @@ function sendEscapeDesertedIsland(playerNo) {
 	}
 	send(object)
 }
-
+*/
 function calculateRank() {
    let propertylist = [];
    for (let i = 0; i < player.length; i++) {
