@@ -51,7 +51,8 @@ if (m_id !== 'null') {
 //20221029[지웅] websocket 기본 function에 대입할 기능 구현
 function onopen(e) { console.log(e)}
 function onerror(e) { alert(e); }
-function onclose(e) { 
+function onclose(e) {
+	console.log('날 왜들어와') 
 	readyCounter();
 	alert('저 갑니다!'); }
 function onmessage(obj) {
@@ -120,6 +121,8 @@ function onmessage(obj) {
 		setP_waiting(parsing.playerNo, parsing.value)
 	}else if(parsing.object_name=='gold_key'){ // 1110 수현 추가
 		goldKeyremoveOwner(parsing.gold_key_index);
+	}else if(parsing.function_name=='keyOwnerChange'){
+		keyOwnerChange(parsing.k_index)
 	}
 }
 function send(object) {
