@@ -129,7 +129,7 @@ function setPlayersInfo() {
 			p_position: 0,
 			m_no: player_list[i].m_no,
 			p_waiting: 0,
-			p_money: 500000,
+			p_money: 0,
 			m_img: `/mamin/img/member/${player_list[i].m_img}`,
 			p_state:true// 11/10 장군 파산 판단용 키 추가 
 			
@@ -145,37 +145,37 @@ function setPlayersInfo() {
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 let nation = [
 	{ n_no: 0, n_name: "출발점", owner:0, n_type: 1, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 1, n_name: "타이베이", owner: 0, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
-	{ n_no: 2, n_name: "마닐라", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 3, n_name: "베이징", owner: 0, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
-	{ n_no: 4, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 5, n_name: "카이로", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 6, n_name: "코펜하겐", owner: 0, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
-	{ n_no: 7, n_name: "이스탄불", owner: 0, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
-	{ n_no: 8, n_name: "무인도", owner: 0, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 9, n_name: "상파울루", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 10, n_name: "싱가폴", owner: 0, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
-	{ n_no: 11, n_name: "아테네", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 1, n_name: "타이베이", owner: 1, n_type: 0, n_price: 50000, n_payment: 20000, n_level: 0 },
+	{ n_no: 2, n_name: "마닐라", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 3, n_name: "베이징", owner: 1, n_type: 0, n_price: 80000, n_payment: 40000, n_level: 0 },
+	{ n_no: 4, n_name: "황금열쇠", owner: 1, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 5, n_name: "카이로", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 6, n_name: "코펜하겐", owner: 1, n_type: 0, n_price: 80000, n_payment: 50000, n_level: 0 },
+	{ n_no: 7, n_name: "이스탄불", owner: 1, n_type: 0, n_price: 100000, n_payment: 50000, n_level: 0 },
+	{ n_no: 8, n_name: "무인도", owner: 1, n_type: 3, n_price: 0, n_payment: "", n_level: 0 },
+	{ n_no: 9, n_name: "상파울루", owner: 1, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 10, n_name: "싱가폴", owner: 1, n_type: 0, n_price: 100000, n_payment: 80000, n_level: 0 },
+	{ n_no: 11, n_name: "아테네", owner: 1, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
 	{ n_no: 12, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 13, n_name: "베른", owner: 0, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
-	{ n_no: 14, n_name: "리스본", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
-	{ n_no: 15, n_name: "마드리드", owner: 0, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 13, n_name: "베른", owner: 1, n_type: 0, n_price: 120000, n_payment: 80000, n_level: 0 },
+	{ n_no: 14, n_name: "리스본", owner: 1, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
+	{ n_no: 15, n_name: "마드리드", owner: 1, n_type: 0, n_price: 140000, n_payment: 80000, n_level: 0 },
 	{ n_no: 16, n_name: "올림픽", owner: 0, n_type: 4, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 17, n_name: "오타와 ", owner: 0, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
-	{ n_no: 18, n_name: "시드니", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 19, n_name: "하와이", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 17, n_name: "오타와 ", owner: 1, n_type: 0, n_price: 180000, n_payment: 80000, n_level: 0 },
+	{ n_no: 18, n_name: "시드니", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 19, n_name: "하와이", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
 	{ n_no: 20, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 21, n_name: "베를린", owner: 0, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
-	{ n_no: 22, n_name: "도쿄", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 23, n_name: "파리", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 21, n_name: "베를린", owner: 1, n_type: 0, n_price: 180000, n_payment: 100000, n_level: 0 },
+	{ n_no: 22, n_name: "도쿄", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 23, n_name: "파리", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
 	{ n_no: 24, n_name: "세계여행", owner: 0, n_type: 5, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 25, n_name: "로마", owner: 0, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
-	{ n_no: 26, n_name: "런던", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
-	{ n_no: 27, n_name: "뉴욕", owner: 0, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 25, n_name: "로마", owner: 1, n_type: 0, n_price: 250000, n_payment: 100000, n_level: 0 },
+	{ n_no: 26, n_name: "런던", owner: 1, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
+	{ n_no: 27, n_name: "뉴욕", owner: 1, n_type: 0, n_price: 300000, n_payment: 120000, n_level: 0 },
 	{ n_no: 28, n_name: "황금열쇠", owner: 0, n_type: 2, n_price: 0, n_payment: "", n_level: 0 },
-	{ n_no: 29, n_name: "부산", owner: 0, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
-	{ n_no: 30, n_name: "제주도", owner: 0, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
-	{ n_no: 31, n_name: "서울", owner: 0, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
+	{ n_no: 29, n_name: "부산", owner: 1, n_type: 0, n_price: 350000, n_payment: 150000, n_level: 0 },
+	{ n_no: 30, n_name: "제주도", owner: 1, n_type: 0, n_price: 400000, n_payment: 150000, n_level: 0 },
+	{ n_no: 31, n_name: "서울", owner: 1, n_type: 0, n_price: 1000000, n_payment: 300000, n_level: 0 },
 ]
 
 let house = '<i class="fas fa-home"></i>' // 1번째 건설 단계
@@ -346,6 +346,24 @@ function click_ModalBtn(type, index) {
 		document.querySelector('.modalinfoBtn').click();		//비아 위치 수정
 	} else if (type == 3) {		//1107 비아 추가
 		worldtravel_n_no = index	//세계여행 갈 토지 번호를 선택한 index로 변경
+	}else if(type == 4){//장군 11/11
+		let html = `<table><tr>
+					<th>순위</th>
+					<th>닉네임</th>
+					</tr>`
+		for(let i = thisRanking.length-1;i>=0;i--){
+			html+=`<tr>
+						<td>${thisRanking.length-i}</td>
+						<td>${thisRanking[i].p_nick}</td>
+			
+					</tr>`
+		}
+		html+='</table><a href="index.jsp">홈으로</a>'
+		
+		
+		
+		modal_contentsbody.innerHTML=html
+		document.querySelector('.modalinfoBtn').click();
 	}
 }
 
@@ -567,7 +585,8 @@ function rollDice() {
 		toastalert('턴 진행중');
 		return;
 	}
-
+	console.log("rslotNO : "+document.querySelector('.r_sno').innerHTML);
+	console.log(playerTurn+1)
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		toastalert('다른 사람의 턴이에요.')
 		return;
@@ -656,10 +675,14 @@ function setPlayerPosition(dice1, dice2) {
 		}
 		if (++playerTurn == player.length) { playerTurn = 0 }
 		let p_state = player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
-		if (!p_state) {
-			playerTurn++;
-			end_turn();
+		while (!p_state) {
+			playerTurn++//11/10 장군 수정
+			
+			if(playerTurn == player.length) { playerTurn = 0 }
+			p_state = player[playerTurn].p_state;
+				
 		}
+		end_turn();	
 		resolve()
 	})
 }
@@ -1043,7 +1066,7 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 	//*****  파산메소드 넣어야함!!!												// 파산메소드 해결되면 return 대신 넣어주세요!
 	//if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo, fee); }
 	log.innerHTML=""									
-	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo); return; } 
+	if (Landlist.length < 1) { console.log("매각할 토지없음"); log.innerHTML = "매각할 땅이 없습니다. 파산!!";  isBankrupt(playerNo,fee); return; } 
 
 	let html = fee + "원을 지불하기 위해 매각할 땅을 선택해주세요"
 	Landlist.forEach(l => {
@@ -1686,8 +1709,11 @@ function turn_off(){
 
 /////////////파산 판단 함수1108 장군/////////////////////
 function isBankrupt(playerNo, fee) {
-	if (calculateMoney(playerNo + 1) - fee <= 0) {//순자산이 fee보다 작으면
+	let p_state = player[playerNo].p_state
+	if (calculateMoney(playerNo + 1) - fee <= 0 && p_state==true) {//순자산이 fee보다 작으면
+		
 		toastalert("파산했습니다")
+		
 
 		let object = {
 			function_name: "isBankrupt",
@@ -1702,7 +1728,7 @@ function isBankrupt(playerNo, fee) {
 	end_turn();
 }
 
-function stopPlaying(m_no, playerNo) {// 1108 장군 파산한 플레이어 게임 진행 못하게  //11/10 장군 수정
+function stopPlaying(m_no, playerNo) {// 1108 장군 파산한 플레이어 게임 진행 못하게  //11/10 장군 수정 //플레이어 전부 실행되는 함수
 	let bankruptM_no = m_no;
 	player[playerNo].p_state=false;
 	
@@ -1731,6 +1757,7 @@ function stopPlaying(m_no, playerNo) {// 1108 장군 파산한 플레이어 게�
 
 //게임종료(정상적) 판단 장군 
 function gameover() {
+	
 	let count = 0;
 	for(let i =0 ; i<player.length;i++){
 		if(player[i].p_state){
@@ -1739,12 +1766,38 @@ function gameover() {
 		
 	}
 	if(count==1){
-		toastalert("게임종료")
 		thisRanking.push(player[playerTurn])
+		let m_no = player[playerTurn].m_no
+		$.ajax({
+			url:"/mamin/game/GameResult",
+			type:"get",
+			data:{"m_no":m_no},
+			success:function(re){
+				let rankingarray = JSON.stringify(thisRanking)
+				console.log(rankingarray)
+				if(re=="true"){
+					$.ajax({
+						url:"/mamin/game/GameResult",
+						type:"post",
+						data:{"rankingarray":rankingarray},
+						success:function(re){
+							return;
+						}
+					})
+				}
+			}
+		})
+			
+			
+		toastalert("게임종료")
+		console.log("종료")
+		click_ModalBtn(4,0)
+		
 	}
-	//소켓처리 필요
-	//db처리 필요
+	
+	
 }
+
 //1108 장군 턴종료
 function end_turn() {//턴종료 해야되는 부분에 넣어주세요
 	console.log(playerTurn+1+"번 플레이어로부터 턴종료 실행")

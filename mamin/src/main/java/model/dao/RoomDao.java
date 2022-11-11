@@ -40,7 +40,7 @@ public class RoomDao extends Dao {
 	}
 
 	
-	public void invalidgameover(String m_nickout, JSONArray arr){
+	public void invalidgameover(String m_nickout, JSONArray arr){//게임중 플레이어 나갔을때 장군
 		
 		arr.forEach((player)->{
 		    JSONObject json = (JSONObject) player;
@@ -72,7 +72,33 @@ public class RoomDao extends Dao {
 	}
 	
 	
-	
+	public void gameresult(JSONArray arr) {//게임 결과 db처리 장군 11/11추가
+		
+		
+		for(int i = arr.size()-1 ;i>=0;i-- ) {
+			if(i==arr.size()-1) {
+				JSONObject json = (JSONObject)arr.get(i) ;
+				System.out.println("dao"+json.get("m_no"));	
+				String sql = "update member set total = total+1 ,wins=wins+1 where m_no=?";
+				try {
+					ps=con.prepareStatement(sql);
+					ps.setInt(1, Integer.parseInt(String.valueOf( json.get("m_no"))));
+					ps.executeUpdate();
+				} catch (Exception e) {System.out.println(e);}
+			}else {
+				JSONObject json = (JSONObject)arr.get(i) ;
+				String sql = "update member set total = total+1  where m_no=?";
+				try {
+					ps=con.prepareStatement(sql);
+					ps.setInt(1, Integer.parseInt(String.valueOf( json.get("m_no"))));
+					ps.executeUpdate();
+				} catch (Exception e) {System.out.println(e);}
+			}			
+		}
+
+		
+		
+	}
 	
 	
 	

@@ -37,7 +37,7 @@ let m_id = document.querySelector('.H_idbox').innerHTML;
 let websocket = null;
 if (m_id !== 'null') {
 	//websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
-	websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
+	websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
 	websocket.onclose = (e) => { onclose(e) };
@@ -120,6 +120,8 @@ function onmessage(obj) {
 		setP_waiting(parsing.playerNo, parsing.value)
 	}else if(parsing.object_name=='gold_key'){ // 1110 수현 추가
 		goldKeyremoveOwner(parsing.gold_key_index);
+	}else if(parsing.function_name="endgame"){
+		endgame()
 	}
 }
 function send(object) {
