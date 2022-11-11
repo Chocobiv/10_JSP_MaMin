@@ -635,17 +635,9 @@ function setPlayerPosition(dice1, dice2) {
 		//비아 - 1110 무인도 수정
 		console.log("setplayerposition 내부 웨이팅턴 체크" + player[playerTurn].p_waiting);
 		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
-			//여기에 황금열쇠[무인도탈출권] 소유하고 있는지 체크 필요!
 			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
 				alert('같은거 뽑아라');
 				player[playerTurn].p_waiting--;
-				//이동 불가능하도록 false값 대입
-				//플레이어의 p_waiting-- 소켓통신
-				// sendFailEscapeDesertedIsland(playerTurn)
-				//end_turn()	//턴종료하면 게임을 나가버림...
-				//reject()  턴종료가 안됨
-				//resolve()					//이동해버림
-				
 			} else {		//주사위 2개가 같은 숫자이면
 				player[playerTurn].p_waiting = 0;
 			}
