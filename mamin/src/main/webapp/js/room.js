@@ -37,7 +37,7 @@ let m_id = document.querySelector('.H_idbox').innerHTML;
 let websocket = null;
 if (m_id !== 'null') {
 	//websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
-	websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
+	websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
 	websocket.onclose = (e) => { onclose(e) };
@@ -246,7 +246,16 @@ function start_game(){
 	// 20221110 지웅 추가
 		// 게임 시작 시 서버 start 변수 true로 변경
 		// 게임 중 채팅방 입장 불가
-	send("closeChat_startGame");
+	// send("closeChat_startGame");
+	
+	$.ajax({
+		url : '/mamin/game/GameChecker',
+		type : 'post',
+		success : (re) =>{
+			console.log('완료')			
+		}
+	})
+	
 	$('#pagebox').load('gameBoard.jsp');
 }
 
