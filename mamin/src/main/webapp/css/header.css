@@ -18,10 +18,10 @@
 
 
 *{ margin : 0; padding : 0; box-sizing: border-box;}
-a{text-decoration: none; color : #1c3761;;}
+a{text-decoration: none; color : #1c3761;}
 li{list-style: none;}
 
-header{ height : 13vh; display: flex; justify-content: center; 
+header{ height : 13vh; display: flex; justify-content: center;
 		align-items: center; border-bottom: 3px #1c3761 solid; font-family: 'SDSamliphopangche_Outline';}
 .hd_box{ width : 1280px; height: 10vh; display : flex; justify-content: space-between;}
 .h_logo img{width : 130px;}

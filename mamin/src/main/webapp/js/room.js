@@ -36,7 +36,7 @@ let m_id = document.querySelector('.H_idbox').innerHTML;
 // 화면 공유를 위한 소캣 생성 [ 채팅 소켓과 사실상 동일할 수 있음 ]
 let websocket = null;
 if (m_id !== 'null') {
-	websocket = new WebSocket('ws://192.168.17.70:8080/mamin/room/RoomSocket/' + m_id);
+	websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
 	//websocket = new WebSocket('ws://localhost:8080/mamin/room/RoomSocket/' + m_id);
 	// 2에서 구현된 기능을 클라이언트 소켓에 대입
 	websocket.onopen = (e) => { onopen(e) };
@@ -98,15 +98,13 @@ function onmessage(obj) {
 	}else if(parsing.function_name == "updateNationLevel"){	// 1103 지웅 추가 //1104 비아 수정
 		updateNationLevel(parsing.n_index, parsing.p_index)
 	}else if(parsing.function_name == 'updatePlayerPosition'){	//비아 추가
-		updatePlayerPosition(parsing.playerNo, parsing.n_no)
+		updatePlayerPosition(parsing.playerNo, parsing.n_no, parsing.moveState, parsing.moveType);
 	}else if(parsing.Info_update == 'player'){	// 1105 수현 추가
 		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
 	}else if(parsing.function_name=='change_color'){
 		change_color(parsing.param, parsing.param2);
 	}else if(parsing.function_name=="isBankrupt"){//1108장군 추가
 		stopPlaying(parsing.data1,parsing.data2)//1109 장군 수정
-	}else if(parsing.function_name=='updatePlayerPosition'){
-		updatePlayerPosition(parsing.playerNo, parsing.n_no);
 	}else if(parsing.function_name=='get_wage'){
 		get_wage(parsing.playerTurn);
 	}else if(parsing.function_name=='goldKeyUpdate'){ // 1108 수현 추가

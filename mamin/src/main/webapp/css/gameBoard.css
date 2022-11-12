@@ -39,7 +39,7 @@ body{
 }
 
 .player1_info{ /*플레이어1 정보칸*/
-   border: 4px solid #2D4263;
+   border: 4px solid rgba(211, 22, 80, 1);
    position: absolute;
    border-radius : 20px;
    top:90px;
@@ -49,12 +49,12 @@ body{
    display : flex;
    justify-content: space-around;
    align-items: center;
-   background-color: rgba(40,60,99,0.8);
+   background-color: rgba(211, 22, 80, 0.8);
 
 }
 
 .player2_info{ /*플레이어2 정보칸*/
-   border: 4px solid #FBE8D3;
+   border: 4px solid rgba(36,238,205,1);
    position: absolute;
    border-radius : 20px;
    top:90px;
@@ -64,10 +64,10 @@ body{
    display : flex;
    justify-content: space-around;
    align-items: center;
-   background-color: rgba(251,232,211,0.8);
+   background-color: rgba(36,238,205,0.8);
 }
 .player3_info{ /*플레이어3 정보칸*/
-   border: 4px solid #B9FFF8;
+   border: 4px solid rgba(32, 120, 217, 1);
    position: absolute;
    border-radius : 20px;
    bottom:90px;
@@ -77,10 +77,10 @@ body{
    display : flex;
    justify-content: space-around;
    align-items: center;
-   background-color: rgba(165,241,233,0.8);
+   background-color: rgba(32, 120, 217, 0.8);
 }
 .player4_info{ /*플레이어4 정보칸*/
-   border: 4px solid #F85F73;
+   border: 4px solid rgba(237, 230, 18, 1);
    position: absolute;
    border-radius : 20px;
    bottom:90px;
@@ -90,7 +90,7 @@ body{
    display : flex;
    justify-content: space-around;
    align-items: center;
-   background-color: rgba(248,95,115,0.8);
+   background-color: rgba(237, 230, 18, 0.8);
 }
 
 .g_m_img img{width:150px;}
@@ -148,7 +148,7 @@ body{
    position : relative;
 }
 /*-------------------테스터--------------------*/
-.placetester1{
+.playerCharacter1{
    position: absolute;
    right: 40px;
    bottom: 40px;
@@ -157,7 +157,7 @@ body{
    transition: all .5s linear;
    transform : rotateY(180deg);
 }
-.placetester2{
+.playerCharacter2{
    position: absolute;
    right: 0;
    bottom: 40px;
@@ -167,7 +167,7 @@ body{
    transform : rotateY(180deg);
 }
 
-.placetester3{
+.playerCharacter3{
    position: absolute;
    right: 40px;
    bottom: 0;
@@ -177,7 +177,7 @@ body{
    transform : rotateY(180deg);
 }
 
-.placetester4{
+.playerCharacter4{
    position: absolute;
    right: 0;
    bottom: 0;
@@ -467,11 +467,6 @@ body{
 
 
 /* 지웅 추가 - 플레이어 아이콘 이벤트 */
-/* #player1{  transition: all 1s linear; } */
-#player2{  transition: all 1s linear; }
-#player3{  transition: all 1s linear; }
-#player4{  transition: all 1s linear; }
-
 #player1, #player2, #player3, #player4 {
     -moz-transition: all .5s linear;
     -webkit-transition: all .5s linear;
