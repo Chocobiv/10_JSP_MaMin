@@ -59,7 +59,6 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="footer.jsp" %> 
 	<script src="../js/room.js"></script>
 	<script src="../js/gameBoard.js"></script>
 </body>

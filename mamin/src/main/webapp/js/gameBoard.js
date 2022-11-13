@@ -1242,11 +1242,11 @@ function saleLand(n_no, playerNo, fee, saletype) {
 	log.innerHTML = nation[n_no].n_name + ' 땅이 매각됐습니다.'
 	
 	let nation_price = (nation[n_no].n_price * 1);
-	if (nation[index].n_level == 1) {
+	if (nation[n_no].n_level == 1) {
 		nation_price += nation[n_no].n_price * 0.5;
-	} else if (nation[index].n_level == 2) {
+	} else if (nation[n_no].n_level == 2) {
 		nation_price += nation[n_no].n_price * 1.5;
-	} else if (nation[index].n_level == 3) {
+	} else if (nation[n_no].n_level == 3) {
 		nation_price += nation[n_no].n_price * 3;
 	}
 	
