@@ -54,7 +54,7 @@
 		</section>
 		
 	</div>
-
+	<%@ include file="footer.jsp" %> 
 
 	<script type="text/javascript" src="../js/login.js"></script>
 

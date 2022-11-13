@@ -21,6 +21,7 @@
 			</div>
 		</div>
 	</div>
+	<%@ include file="footer.jsp" %> 
 	<!-- 캐러셀s
 	
 	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">

@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+
+footer{position : absolute; bottom : 0;}
+.addbtn{width: 100px; height:45px; font-weight:bold; color: #F85F73;
+	border: 1px solid #F85F73; border-radius: 7px;}
+.addbtn:hover{color: #FBE8D3;
+	background-color: #F85F73;}

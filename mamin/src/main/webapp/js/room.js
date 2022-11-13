@@ -80,7 +80,8 @@ function onmessage(obj) {
 		}
 		
 	}else if(parsing.type =="message"){// 채팅 메세지 받을때
-		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`
+		document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;	
 	}else if(parsing.function_name=='turn_change'){  //1108 장군 추가  
       turn_change();      
 	}else if(parsing.function_name=='turn_off'){
@@ -197,7 +198,6 @@ function sendMessage() {// 11/03 장군 채팅 메세지 보내기
 	}
 	send(msg);	
 	document.querySelector('.c_inputbox').value = '';
-	document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;
 }
 
 

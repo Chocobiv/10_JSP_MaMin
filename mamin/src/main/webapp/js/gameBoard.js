@@ -603,11 +603,12 @@ function printPlayer(){
 	// 말 움직임 함수
 let moveSleep = 0;
 async function movePlayer(playernumber, dice1, dice2, moveState){	
+	console.log("유저 움직임 실행")
 	 return new Promise( (resolve,reject) =>{		
 		 if(player[playerTurn].p_waiting>1 && (dice1 != dice2)){
 			resolve();
 		 }else{
-			 let casesBox = [8,16,24,32,40]; // 방향 바뀌는 케이스의 좌표 -> 역행하는 경우는 없으므로 0 대신 32 사용
+			 let casesBox = [8, 16, 24, 32, 40, 48, 56, 64]; // 방향 바뀌는 케이스의 좌표 -> 역행하는 경우는 없으므로 0 대신 32 사용
 			 let directions = 0; // 방향전환 횟수 저장 변수
 			 let starting = player[playernumber].p_position;
 			 
@@ -623,7 +624,8 @@ async function movePlayer(playernumber, dice1, dice2, moveState){
 					directions++;	// 방향전환 수 ++
 				}
 			 }
-			 if(lastPosition==32){
+
+			 if(lastPosition==32 || lastPosition==40 || lastPosition==48){
 				directions++;
 			}			 
 
@@ -631,7 +633,12 @@ async function movePlayer(playernumber, dice1, dice2, moveState){
 				directions = 3;
 			}
 			moveSleep = directions;
-
+			
+			console.log("출발점"+starting);
+			console.log("방향 전환 횟수" + directions);
+			console.log("이동거리" + (dice1 + dice2));
+			console.log("목적지" + lastPosition);			
+			
 			 if(directions==0){
 				if(starting<8 || (starting >=16 && starting<24)){
 					character.style.bottom = position_box[playernumber][lastPosition-1]+'px';
@@ -796,6 +803,7 @@ function setPlayerPosition(dice1, dice2) {
 		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
 			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
 				player[playerTurn].p_waiting--;
+				toast('탈출 실패!');
 			} else {		//주사위 2개가 같은 숫자이면
 				player[playerTurn].p_waiting = 0;
 			}
@@ -1232,7 +1240,17 @@ function saleLand(n_no, playerNo, fee, saletype) {
 	const log = document.querySelector(".game_info");
 	// 소유주 , 건물단계 리셋
 	log.innerHTML = nation[n_no].n_name + ' 땅이 매각됐습니다.'
-	player[playerNo].p_money += (nation[n_no].n_price / 2)
+	
+	let nation_price = (nation[n_no].n_price * 1);
+	if (nation[index].n_level == 1) {
+		nation_price += nation[n_no].n_price * 0.5;
+	} else if (nation[index].n_level == 2) {
+		nation_price += nation[n_no].n_price * 1.5;
+	} else if (nation[index].n_level == 3) {
+		nation_price += nation[n_no].n_price * 3;
+	}
+	
+	player[playerNo].p_money += (nation_price / 2)
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
 
@@ -1773,6 +1791,7 @@ async function updatePlayerPosition(playerNo, n_no, moveState, moveType) {
 	console.log("moveState : " + moveState);
 	console.log("moveType : " + moveType);
 	if(moveState == -1 || moveState == -2){
+		console.log("세계여행 발생 후 유저 이동 전")
 		await movePlayer(playerNo, distance-1 , 0, moveState);
 	}else if(moveState==1 && moveType == 0){
 		await toStart(playerNo, n_no);
