@@ -48,6 +48,7 @@ public class GameResult extends HttpServlet {
 		System.out.println(rankingarray);
 		JSONParser parser = new JSONParser();
 		JSONArray arr;
+		GameChecker.statusGame = false;
 		try {
 			arr = (JSONArray) parser.parse(rankingarray);
 			RoomDao.getInstance().gameresult(arr);
