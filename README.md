@@ -3,9 +3,10 @@
 <img src="https://capsule-render.vercel.app/api?type=slice&color=F85F73&height=300&section=header&text=MAMIN%20&fontSize=90&animation=blinking&fontColor=283C63&rotate=20" />
   <h3> 안녕하세요! 10월 웹앱 프로젝트_마블의 민족입니다 :) </h3> <br>
   
-  <h2> :sunglasses: Notion & Youtube :sunglasses: </h2>
-  <h4> https://dusty-neptune-52e.notion.site/MAMIN-2d5dadb985154cbd979c864b55f27f6c</h4>
-  <h4>  </h4> <br><br>
+  <h2> :sunglasses: Notion :sunglasses: </h2>
+  <h4> https://dusty-neptune-52e.notion.site/MAMIN-2d5dadb985154cbd979c864b55f27f6c</h4><br>
+  <h2> :sunglasses: Youtube :sunglasses: </h2>
+  <h4> https://www.youtube.com/watch?v=yWILDpYTwHs </h4> <br><br>
   
   <h2> :dizzy: 팀원 소개 :dizzy: </h2>
   <h4> 박수현 / 김장군 / 손비아 / 신지웅 </h4> <br><br>
