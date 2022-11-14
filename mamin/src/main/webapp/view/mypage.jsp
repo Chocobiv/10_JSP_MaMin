@@ -127,7 +127,7 @@
 										</div>
 									</div>
 								</div>
-							</span> <span class="col-md-9"> <!-- 캐릭터 이미지 --> <img src="../img/member/1.png" class="cimg"><br> <inputclass="characterbtn" type="hidden" id="character" name="character" value="1"> </span>
+							</span> <span class="col-md-9"> <!-- 캐릭터 이미지 --> <img src="../img/member/1.png" class="cimg"><br> <input class="characterbtn" type="hidden" id="character" name="character" value="1"> </span>
 						</div>
 					</td>
 				</tr>
