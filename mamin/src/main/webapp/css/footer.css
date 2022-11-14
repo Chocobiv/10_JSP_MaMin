@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-footer{ width: 100%; height : 137px; background-color: #283C63;}
+footer{ width: 100%; height : 185px; background-color: #283C63;}
 .ft_box{width : 900px; margin : 0 auto; display : flex; justify-content: space-between;}
 
 .ft_leftbox{
