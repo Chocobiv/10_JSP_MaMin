@@ -54,6 +54,7 @@ function mevent2(){
 function hexbtn(image){
 	let cimg = document.querySelector('.cimg')
 	cimg.src = '../img/member/'+image+'.png'
+	console.log("image:"+image)
 	if(image!=null)
 		document.querySelector('input[id=character]').value = image
 }
