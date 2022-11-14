@@ -80,7 +80,8 @@ function onmessage(obj) {
 		}
 		
 	}else if(parsing.type =="message"){// 채팅 메세지 받을때
-		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`	
+		document.querySelector(".chatDisplay").innerHTML+=`<div>${parsing.m_nick}: ${parsing.content}</div>`
+		document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;	
 	}else if(parsing.function_name=='turn_change'){  //1108 장군 추가  
       turn_change();      
 	}else if(parsing.function_name=='turn_off'){
@@ -98,15 +99,13 @@ function onmessage(obj) {
 	}else if(parsing.function_name == "updateNationLevel"){	// 1103 지웅 추가 //1104 비아 수정
 		updateNationLevel(parsing.n_index, parsing.p_index)
 	}else if(parsing.function_name == 'updatePlayerPosition'){	//비아 추가
-		updatePlayerPosition(parsing.playerNo, parsing.n_no)
+		updatePlayerPosition(parsing.playerNo, parsing.n_no, parsing.moveState, parsing.moveType);
 	}else if(parsing.Info_update == 'player'){	// 1105 수현 추가
 		takeMoneyInfo(parsing.giveIndex, parsing.takeIndex , parsing.give, parsing.take)
 	}else if(parsing.function_name=='change_color'){
 		change_color(parsing.param, parsing.param2);
 	}else if(parsing.function_name=="isBankrupt"){//1108장군 추가
 		stopPlaying(parsing.data1,parsing.data2)//1109 장군 수정
-	}else if(parsing.function_name=='updatePlayerPosition'){
-		updatePlayerPosition(parsing.playerNo, parsing.n_no);
 	}else if(parsing.function_name=='get_wage'){
 		get_wage(parsing.playerTurn);
 	}else if(parsing.function_name=='goldKeyUpdate'){ // 1108 수현 추가
@@ -199,7 +198,6 @@ function sendMessage() {// 11/03 장군 채팅 메세지 보내기
 	}
 	send(msg);	
 	document.querySelector('.c_inputbox').value = '';
-	document.querySelector('.chatDisplay').scrollTop = document.querySelector('.chatDisplay').scrollHeight;
 }
 
 

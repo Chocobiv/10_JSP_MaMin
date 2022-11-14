@@ -549,9 +549,7 @@
 
 		</form>
 	</div>
-
-
-
+	<%@ include file="footer.jsp" %> 
 	<script type="text/javascript" src="../js/signup.js"></script>
 </body>
 </html>

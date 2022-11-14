@@ -1,0 +1,17 @@
+@charset "UTF-8";
+.container{
+   
+   font-family: 'KOTRAHOPE';
+   
+}
+.b_title{
+   width: 80%;
+}
+
+.updatebtn{width: 100px; height:45px; font-weight:bold; color: #F85F73;
+   border: 1px solid #F85F73; border-radius: 7px;margin-top: 20px;}
+.updatebtn:hover{color: #FBE8D3;
+   background-color: #F85F73;}
+
+
+footer{position:absolute; bottom : 0px;}

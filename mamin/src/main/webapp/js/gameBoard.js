@@ -13,14 +13,16 @@ let toastsync = false;
 // 1106지웅 추가 -> 말 움직임 transition 효과 위해 x,y 고정값 저장할 변수
 	// 0 ~ 8 == position bottom += 값  --  18~26 position bottom -= 값
 	// 9 ~ 17 == position right += 값  -- 27~32 position right -= 값
-let position_box = [0, 150, 110, 110, 110, 120, 110, 120, 110, 160, 110, 110, 110, 120, 110, 110, 140,
-					0, 150, 110, 110, 110, 120, 110, 120, 110, 160, 110, 110, 110, 120, 110, 110, 140];
+let position_box = [[190, 300, 410, 520, 640, 750, 870, 960, 200, 310, 420, 530, 650, 760, 870, 1010, 870, 750, 640, 520, 410, 300, 190, 40, 870, 760, 650, 530, 420, 310, 200, 40],
+					[190, 300, 410, 520, 640, 750, 870, 960, 200, 310, 420, 530, 650, 760, 870, 1010, 870, 750, 640, 520, 410, 300, 190, 40, 870, 760, 650, 530, 420, 310, 200, 40],
+					[190, 300, 410, 520, 640, 750, 870, 960, 200, 310, 420, 530, 650, 760, 870, 1010, 870, 750, 640, 520, 410, 300, 190, 40, 870, 760, 650, 530, 420, 310, 200, 40],
+					[190, 300, 410, 520, 640, 750, 870, 960, 200, 310, 420, 530, 650, 760, 870, 1010, 870, 750, 640, 520, 410, 300, 190, 40, 870, 760, 650, 530, 420, 310, 200, 40]];
 let nowNationNo=null; // 1108 수현추가 매각 시 현재위치 기억하기 위한 용도
 
 // 1107 지웅 추가
 
 // let playerColor = ['rgba(238,238,238,0.5);'  ,'rgba(40,60,99,0.5);', 'rgba(251,232,211,0.5)', 'rgba(146,138,151,0.5)', 'rgba(248,95,115,0.5)' ];
-let playerColor =['rgba(238, 238, 238, 0.5)', '#8D9EFF', '#FBE8D3', '#A5F1E9', '#F85F73']
+let playerColor =['rgba(238, 238, 238, 0.5)', 'rgba(211, 22, 80, 0.5)', 'rgba(36,238,205,0.5)', 'rgba(32, 120, 217, 0.5)', 'rgba(237, 230, 18, 0.5)']
 
 // 1106 지웅 추가 -> 국가 소개 modal에 불러올 대표 이미지 저장용 / nation 객체에 담아도 되지만 혼선 생길 수 있을 것 같아 나눔
 // nation index <-> nation_infobox index끼리 매칭되도록 작성
@@ -472,7 +474,9 @@ function check_clickType(mtype, index) {
 		let object = {
 			function_name: 'updatePlayerPosition',
 			playerNo: playerNo,
-			n_no: worldtravel_n_no
+			n_no: worldtravel_n_no,
+			moveState : 0,
+			moveType : 0
 		}
 		send(object)
 
@@ -544,6 +548,7 @@ function calculateMoney(i) {
 function playerLocation() {
 	// 플레이어 전에 위치 초기화
 	// 더 좋은 방법 있으면 추천 받아여...
+	/*
 	for (let j = 0; j <= 31; j++) {
 		document.querySelector(".p_location" + j + "").innerHTML = null;
 	}
@@ -567,13 +572,151 @@ function playerLocation() {
 			}
 		}
 	} // 플레이어 위치 출력 완료
-
+	*/
 	// 수현 - 위치 출력완료되면 이 플레이어가 도착한 땅의 이벤트 상태 확인해주기!
 
 	if (start == true) {// 게임이 시작되고 나서일때!
 		landEventCheck(playerTurn);
 	}
 }
+// 20221109 09:45 지웅 추가
+	// 최초 입력 함수 - playerLocation 기능을 대체하나 기능 구현상 playerLocation이 계속 사용될 수 있어 일단 외부에 작성
+printPlayer();
+function printPlayer(){
+	if(player.length==2){
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/레드.gif" class="playerCharacter1">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/민트.gif" class="playerCharacter2">';
+	}else if(player.length==3){
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/레드.gif" class="playerCharacter1">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/민트.gif" class="playerCharacter2">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/블루.gif" class="playerCharacter3">';
+	}else if(player.length==4){
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/레드.gif" class="playerCharacter1">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/민트.gif" class="playerCharacter2">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/블루.gif" class="playerCharacter3">';
+		document.querySelector('.boardbox').innerHTML += '<img src="/mamin/img/game/character/옐로.gif" class="playerCharacter4">';
+	}	
+}
+
+
+// 20221109 09:45 지웅 추가
+	// 말 움직임 함수
+let moveSleep = 0;
+async function movePlayer(playernumber, dice1, dice2, moveState){	
+	console.log("유저 움직임 실행")
+	 return new Promise( (resolve,reject) =>{		
+		 if(player[playerTurn].p_waiting>1 && (dice1 != dice2)){
+			resolve();
+		 }else{
+			 let casesBox = [8, 16, 24, 32, 40, 48, 56, 64]; // 방향 바뀌는 케이스의 좌표 -> 역행하는 경우는 없으므로 0 대신 32 사용
+			 let directions = 0; // 방향전환 횟수 저장 변수
+			 let starting = player[playernumber].p_position;
+			 
+			 if(moveState == -1 || moveState == -2){
+				starting = 24;
+			 }
+			 
+			 let lastPosition = starting + dice1 + dice2;	// 이동 후 좌표값 (계산에만 사용하므로 31넘어도 괜찮음)
+			 let character = document.querySelector('.playerCharacter'+(playernumber+1))		
+				
+			for(let i = starting+1  ; i < lastPosition; i++){	
+				if(casesBox.indexOf(i)!=-1){	// 이동하는 좌표 중 방향 전환이 필요한 곳이 있으면	
+					directions++;	// 방향전환 수 ++
+				}
+			 }
+
+			 if(lastPosition==32 || lastPosition==40 || lastPosition==48){
+				directions++;
+			}			 
+
+			if(moveState == -2 && (dice1+dice2) > 24){
+				directions = 3;
+			}
+			moveSleep = directions;
+			
+			console.log("출발점"+starting);
+			console.log("방향 전환 횟수" + directions);
+			console.log("이동거리" + (dice1 + dice2));
+			console.log("목적지" + lastPosition);			
+			
+			 if(directions==0){
+				if(starting<8 || (starting >=16 && starting<24)){
+					character.style.bottom = position_box[playernumber][lastPosition-1]+'px';
+				}else if((starting>=8 && starting<16) || (starting>=24 && starting<32) ){
+					character.style.right = position_box[playernumber][lastPosition-1]+'px';
+				}
+			}else if(directions==1){
+				if(starting<8){
+					character.style.bottom = position_box[playernumber][7]+'px';
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][lastPosition-1]+'px';
+					}, 550);
+				}else if(starting>=8 && starting<16){
+					character.style.right = position_box[playernumber][15]+'px';
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][lastPosition-1]+'px';
+					}, 550);
+				}else if(starting>=16 && starting<24){
+					character.style.bottom = position_box[playernumber][23]+'px';
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][lastPosition-1]+'px';
+					}, 550);
+				}else if(starting>=24 && starting<32){
+					character.style.right = position_box[playernumber][31]+'px';
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][lastPosition-32]+'px';
+					}, 550);
+				}
+			}else if(directions==2){
+				if(starting<8){
+					character.style.bottom = position_box[playernumber][7]+'px';
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][15]+'px';
+					}, 550);
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][lastPosition-1]+'px';
+					}, 1100);
+				}else if(starting>=8 && starting<16){
+					character.style.right = position_box[playernumber][15]+'px';
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][23]+'px';
+					}, 550);
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][lastPosition-1]+'px';
+					}, 1100);
+				}else if(starting>=16 && starting<24){
+					character.style.bottom = position_box[playernumber][23]+'px';
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][31]+'px';
+					}, 550);
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][lastPosition-32]+'px';
+					}, 1100);
+				}else if(starting>=24 && starting<32){
+					character.style.right = position_box[playernumber][31]+'px';
+					setTimeout( ()=>{
+						character.style.bottom = position_box[playernumber][7]+'px';
+					}, 550);
+					setTimeout( ()=>{
+						character.style.right = position_box[playernumber][lastPosition-32]+'px';
+					}, 1100);
+				}
+			}else if(directions==3){ // direction 3은 세계여행 외엔 없음
+				character.style.right = position_box[playernumber][31]+'px';
+				setTimeout( ()=>{
+					character.style.bottom = position_box[playernumber][7]+'px';
+				}, 550);
+				setTimeout( ()=>{
+					character.style.right = position_box[playernumber][15]+'px';
+				}, 1100);
+				setTimeout( ()=>{
+					character.style.bottom = position_box[playernumber][lastPosition-32]+'px';
+				}, 1650);
+			}
+			resolve();
+		}
+	 })
+} 
 
 
 
@@ -582,13 +725,11 @@ function playerLocation() {
 // 지웅 수정 -> 난수 생성/유저 위치 출력 분리
 
 function rollDice() {
-	console.log("시작플레이어 웨이팅턴"+player[playerTurn].p_waiting);
 	if (diceControl == false) {//11.8 장군 추가
 		toastalert('턴 진행중');
 		return;
 	}
-	console.log("rslotNO : "+document.querySelector('.r_sno').innerHTML);
-	console.log(playerTurn+1)
+
 	if (document.querySelector('.r_sno').innerHTML != playerTurn + 1) {
 		toastalert('다른 사람의 턴이에요.')
 		return;
@@ -606,6 +747,7 @@ function rollDice() {
 		array1.push(dice1 = Math.floor((Math.random() * 6) + 1))
 		array2.push(dice1 = Math.floor((Math.random() * 6) + 1))
 	}
+	
 	let object = {
 		function_name: `display_dice`,
 		data1: array1,
@@ -623,15 +765,20 @@ function sleep(sec) {
 }
 //////////////////////////////////// 비아 - 주사위 비동기로 수정함!!!! /////////////////////////////////////
 async function display_dice(dice1, dice2) {
+	let moveState = 0;
 	playable = false;
 	await run_dice(dice1, dice2)			//주사위가 굴러가는 모션
-	await setPlayerPosition(dice1, dice2)	//플레이어 포지션 업데이트
 	await sleep(1);
+	await movePlayer(playerTurn, dice1[9], dice2[9], moveState);
+	// await movePlayer(playerTurn, 2, 2);
+	await setPlayerPosition(dice1, dice2)	//플레이어 포지션 업데이트
+	await sleep(0.6*moveSleep);	
 	playerLocation(playerTurn)				//플레이어 위치 출력
 }
 
 // 주사위가 굴러가는 모션 메소드
 function run_dice(dice1, dice2) {
+	const log = document.querySelector(".game_info");
 	log.innerHTML = "	"
 	return new Promise(function(resolve, reject) {
 		//코드 입력
@@ -657,6 +804,7 @@ function setPlayerPosition(dice1, dice2) {
 		if (player[playerTurn].p_waiting > 0) {	//현재 플레이 중인 플레이어의 p_waiting이 0보다 크면
 			if (dice1[9] != dice2[9]) {	//주사위 2개가 같은 숫자가 아니면
 				player[playerTurn].p_waiting--;
+				toast('탈출 실패!');
 			} else {		//주사위 2개가 같은 숫자이면
 				player[playerTurn].p_waiting = 0;
 			}
@@ -672,18 +820,24 @@ function setPlayerPosition(dice1, dice2) {
 		}
 		if (++playerTurn == player.length) { playerTurn = 0 }
 		let p_state = player[playerTurn].p_state;//11/10 장군추가 파산한 플레이어 턴이면 턴바로 넘어가게 제어
-		let count = 0;
+
+		let count=0;
+
 		while (!p_state) {
-			playerTurn++//11/10 장군 수정
-			count++
+
+			playerTurn++//11/10 장군 수정			
+
 			if(playerTurn == player.length) { playerTurn = 0 }
 			p_state = player[playerTurn].p_state;
-						
+
+			count++;				
+
 		}
-		if(count>0){
+
+		if(count>=1){
 			end_turn();
-		}
-		
+		}			
+
 		resolve()
 	})
 }
@@ -694,6 +848,7 @@ function setPlayerPosition(dice1, dice2) {
 /*------------------ 수현 11/2 , 3 이벤트토지확인 ------------------------------------- */
 //n_type: 1 출발점  ,  n_type: 2  황금열쇠    ,n_type: 3 무인도 	, n_type: 4	올림픽	n_type: 5	세계여행
 function landEventCheck(playerTurn) {
+	const log = document.querySelector(".game_info");
 	//주사위 돌리고 나서 플레이어의 위치의 땅의 이벤트 토지인지 아닌지 확인
 	let nationNo = 0;
 	if (playerTurn == 0) {       //마지막 플레이어일 경우에 위에서 0으로 초기화되서 필요한 코드
@@ -785,6 +940,7 @@ function get_wage(playerTurn) {
 
 ////////////////////// 비아 - 토지 소유주 확인 //////////////////////
 function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
+	const log = document.querySelector(".game_info");
 	if (nation[nationNo].owner == 0) {	//소유주가 없는 땅일때
 
 		/*===  수현 11/3 토지 구매 메소드 실행되게 넣어놓음!================================= */
@@ -816,6 +972,7 @@ function checkLandLord(nationNo, playerNo) {	//playerNo : 인덱스
 // 체커
 // 11/05 수현 컨펌 -> 로그로 수정
 function levelUp_check(playerNo) {
+	const log = document.querySelector(".game_info");
 	let nNo = player[playerNo].p_position;   // 플레이어 위치 = 조작하는 곳의 좌표
 	let fee = nation[nNo].n_price * 0.5 * (nation[nNo].n_level + 1);   // 건물 값
 	fee = Math.floor(fee / 1000) * 1000;   // 1000단위 절삭   
@@ -901,6 +1058,7 @@ function setHouse(nNo, land_level, playerNo) {
 //현재 이동한 플레이어 인덱스 = (p_no-1)
 
 function tollfee(nationNo, playerNo) {
+	const log = document.querySelector(".game_info");
 	// 1108 수현 추가!!!!!! -- 매각을 황금열쇠때도 사용하기 위해서 전역변수로 선언
 	nowNationNo = nationNo
 
@@ -943,7 +1101,7 @@ function tollfee(nationNo, playerNo) {
 
 //1105 수현 수정
 function inoutcome(playerNo, nationNo, fee) { // 11/04 장군 
-
+	const log = document.querySelector(".game_info");
 	outcome(playerNo, fee)//통행료만큼 플레이어 돈 차감
 	let ownerindex = nation[nationNo].owner - 1;//땅 주인 플레이어 인덱스번호
 	income(ownerindex, fee)//통행료만큼 땅주인 지급
@@ -1043,6 +1201,7 @@ function buyNation(nationNo, playerNo) {
 
 /*-------------------- 수현 11/4 토지구매 겹치는 부분 메소드 ------------------------------- */
 function buyResult(playerNo, fee, nationNo, type) {
+	const log = document.querySelector(".game_info");
 	// 수현 11/5 추가
 	// type 1이면 주택까지 함께구매로 건물레벨 상승
 	// 0이면 그냥 토지만 구매
@@ -1060,6 +1219,7 @@ function buyResult(playerNo, fee, nationNo, type) {
 /*----------------------  수현 토지매각 리스트 출력------------------------------------- */
 // 통행료, 황금열쇠 돈 지출시 부족하면 토지매각 실행
 function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // type 2 : 일단 황금열쇠 지불 이벤트
+	const log = document.querySelector(".game_info");
 	// 보유한 땅 담으려고
 	let Landlist = []
 	// 여기에 하나도 없으면 함수종료시키기
@@ -1086,9 +1246,20 @@ function printLandList(playerNo, fee, type) { // type 1 : 통행료 지불 // ty
 }
 /*--------------- 수현 토지매각 실행 ----------------- */
 function saleLand(n_no, playerNo, fee, saletype) {
+	const log = document.querySelector(".game_info");
 	// 소유주 , 건물단계 리셋
 	log.innerHTML = nation[n_no].n_name + ' 땅이 매각됐습니다.'
-	player[playerNo].p_money += (nation[n_no].n_price / 2)
+	
+	let nation_price = (nation[n_no].n_price * 1);
+	if (nation[n_no].n_level == 1) {
+		nation_price += nation[n_no].n_price * 0.5;
+	} else if (nation[n_no].n_level == 2) {
+		nation_price += nation[n_no].n_price * 1.5;
+	} else if (nation[n_no].n_level == 3) {
+		nation_price += nation[n_no].n_price * 3;
+	}
+	
+	player[playerNo].p_money += (nation_price / 2)
 	nation[n_no].owner = 0;
 	nation[n_no].n_level = 0;
 
@@ -1207,11 +1378,11 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 		case 3 : case 13 : // 뒤로 2칸 이동
 			console.log("뒤로 2칸 이동")
 			player[playerNo].p_position-=2
-			goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
+			goldKeyMove(playerNo, player[playerNo].p_position, 1) // 위치 소켓 업데이트 메소드
 			break;
 		case 4 : case 14 : // 출발지로 이동
 			console.log("출발지로 이동")
-			goldKeyWage(playerNo)
+			goldKeyWage(playerNo, player[playerNo].p_position, 0)
 			break;
 		case 5 : case 15 : 
 			// 복권당첨
@@ -1263,6 +1434,7 @@ function useGoldkey(playerNo, randKey) { // randKey 황금열쇠 인덱스
 
 /////////// 수현 11/10 황금열쇠 생일축하 메소드 ////////////////
 function goldKeyBirth(){
+	const log = document.querySelector(".game_info");
 	//모든 플레이어한테 받아와야돼 돈 없으면 그냥 패스
 	let playerList = [] // 본인을 제외한 플레이어리스트
 	for (let i = 0; i < player.length; i++) {
@@ -1308,15 +1480,14 @@ function goldKeyremoveOwner(gold_key_index){ // 면제권 사용하면 주인없
 
 /////////// 수현 11/09 황금열쇠 출발지 메소드 ////////////////
 
-async function goldKeyWage() {
-	player[playerNo].p_position = 0 // 위치 출발지로 변경
-	await goldKeyWageUpdate()
+async function goldKeyWage(pno, p_position, moveType) {
+	await goldKeyWageUpdate(pno, p_position, moveType)
 	await goldKeyWageUpdate2()
 }
 
-function goldKeyWageUpdate() {
+function goldKeyWageUpdate(pno, p_position, moveType) {
 	return new Promise(function(resolve, reject) {
-		goldKeyMove(playerNo, player[playerNo].p_position) // 위치 소켓 업데이트 메소드
+		goldKeyMove(pno, p_position, moveType) // 위치 소켓 업데이트 메소드
 		resolve()
 	})
 }
@@ -1344,6 +1515,7 @@ function goldKeyEscape() {
 
 /////////// 수현 11/08 황금열쇠 기지강탈 메소드 ////////////////
 function goldKeySteal() {
+	const log = document.querySelector(".game_info");
 	let rand = null;
 	let playerList = []
 	for (let i = 0; i < player.length; i++) {
@@ -1366,7 +1538,7 @@ function goldKeySteal() {
 
 	}
 	console.log(landList + " 뺏길 사람이 가지고 있는 땅")
-	if (landList.length < 1) { log.innerHTML = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" ; return;}
+	if (landList.length < 1) { log.innerHTML = "안타깝게도 상대방이 소유한 땅이 없습니다. 다음 기회에" ; end_turn(); return;}
 	landList.forEach(l => {
 		html += '<div onclick="goldKeyStealUse(' + nation[l].n_no + ',' + nation[l].owner + ')">' + nation[l].n_name + '</div>'
 	})
@@ -1394,6 +1566,7 @@ function goldKeyStealUse(n_no, sadPlayerName) {
 
 /////// 수현 황금열쇠 토지강탈 상대방화면에 어떻게 보여주지
 function goldKeyStealUpdate(nation_index, message) {
+	const log = document.querySelector(".game_info");
 	nation[nation_index].owner = 0
 	nation[nation_index].n_level = 0
 	log.innerHTML = message
@@ -1404,18 +1577,83 @@ function goldKeyStealUpdate(nation_index, message) {
 
 
 /////////// 수현 11/08 황금열쇠 위치이동 메소드 ////////////////
-function goldKeyMove(playerNo, position) {
+function goldKeyMove(playerNo, position, moveType) {
+	
+	console.log("골드키무브 내부" + moveType)
+	
 	player[playerNo].p_position = position
 	// 위치이동 소켓 통신
 	let object = {
 		function_name: 'updatePlayerPosition',
 		playerNo: playerNo,
-		n_no: player[playerNo].p_position
+		n_no: player[playerNo].p_position,
+		moveState : 1, 
+		moveType : moveType
 	}
 	send(object)
 }
+
+async function toStart(playerNo, s_position){
+	//지웅좌표
+	return new Promise( (resolve,reject) =>{		
+		let character = document.querySelector('.playerCharacter'+(playerNo+1));
+		
+		if(s_position==4){
+			moveSleep = 4;
+			character.style.bottom = position_box[playerNo][7]+'px';
+			setTimeout( ()=>{
+				character.style.right = position_box[playerNo][15]+'px';
+			}, 550);
+			setTimeout( ()=>{
+				character.style.bottom = position_box[playerNo][23]+'px';
+			}, 1100);
+			setTimeout( ()=>{
+				character.style.right = position_box[playerNo][31]+'px';
+			}, 1650);
+		}else if(s_position==12){
+			moveSleep = 3;
+			character.style.right = position_box[playerNo][15]+'px';
+			setTimeout( ()=>{
+				character.style.bottom = position_box[playerNo][23]+'px';
+			}, 550);
+			setTimeout( ()=>{
+				character.style.right = position_box[playerNo][31]+'px';
+			}, 1100);
+		}else if(s_position==20){
+			moveSleep = 2;
+			character.style.bottom = position_box[playerNo][23]+'px';
+			setTimeout( ()=>{
+				character.style.right = position_box[playerNo][31]+'px';
+			}, 550);
+		}else if(s_position==28){
+			moveSleep = 1;
+			character.style.right = position_box[playerNo][31]+'px';
+		}
+		resolve();
+	})
+}
+
+async function backtoback(playerNo){
+	return new Promise( (resolve, reject) =>{		
+		let character = document.querySelector('.playerCharacter'+(playerNo+1));
+		let currentPosition = player[playerNo].p_position;
+		console.log('뒤로간다!');
+		if(currentPosition==2){
+			character.style.bottom = '300px';
+		}else if(currentPosition==10){
+			character.style.right = '310px';
+		}else if(currentPosition==18){
+			character.style.bottom = '750px';
+		}else if(currentPosition==26){
+			character.style.right = '760px';
+		}
+		resolve();
+	})
+}
+
 /////////// 수현 11/08 황금열쇠 토지대비 지출 메소드 ////////////////
 function goldKeyTax(playerNo, muitiple) {
+	const log = document.querySelector(".game_info");
 	// 돈 지출해야하는 황금열쇠 메소드
 	// 정기종합소득세, 방범비
 	// 플레이어가 보유한 토지 개수 가져오기
@@ -1534,13 +1772,45 @@ function updateNationLevel(nation_index, playerNo) {
 
 //비아 - 세계여행 메소드
 function goWorldtravel() {
+	const log = document.querySelector(".game_info");
 	click_status = 2	//세계여행 시작하므로 click_status 값 2로 변경
 	log.innerHTML = '세계여행을 떠납시다! 이동하고 싶은 나라를 클릭하세요.'
 }
 
 //플레이어 위치 업데이트 메소드
-function updatePlayerPosition(playerNo, n_no) {
-	player[playerNo].p_position = n_no
+async function updatePlayerPosition(playerNo, n_no, moveState, moveType) {
+	player[playerNo].p_position = n_no;
+	//20221112 지웅 추가
+		// 세계여행 시 말 이동
+	let distance;
+	if(moveState==0){
+		if(n_no>24 && n_no<32){
+			distance = n_no - 23;
+			moveState = -1;
+		}else if(n_no>0 && n_no<16){
+			distance = n_no + 8;
+			moveState = -1;
+		}else if(n_no>16 && n_no<24){
+			distance = n_no + 8;
+			moveState = -2;
+		}
+	}
+	console.log("플레이어"+playerNo);
+	console.log("거리"+distance);
+	console.log("moveState : " + moveState);
+	console.log("moveType : " + moveType);
+	if(moveState == -1 || moveState == -2){
+		console.log("세계여행 발생 후 유저 이동 전")
+		await movePlayer(playerNo, distance-1 , 0, moveState);
+	}else if(moveState==1 && moveType == 0){
+		await toStart(playerNo, n_no);
+		player[playerNo].p_position = 0 // 위치 출발지로 변경		
+	}else if(moveState==1 && moveType == 1){
+		console.log('뒤로간드아ㅏㅏㅏㅏ')
+		await backtoback(playerNo);
+	}
+	await sleep(moveSleep*0.6)
+	
 	//플레이어 위치 다시 로드
 	playerLocation()
 	//세계여행 종료로 click_status 값 다시 1로 변경
@@ -1550,6 +1820,7 @@ function updatePlayerPosition(playerNo, n_no) {
 
 //비아 - 올림픽에 도착하자마자 실행되는 메소드
 function arriveOlympic(playerNo) {
+	const log = document.querySelector(".game_info");
 	let html = ''
 	//1. 플레이어가 가지고 있는 토지 목록 로그에 띄워주기
 	for (let i = 0; i < nation.length; i++) {
@@ -1577,6 +1848,7 @@ function sendOlympic(n_no) {
 }
 
 function holdOlympic(n_no) {
+	const log = document.querySelector(".game_info");
 	olympic_n_no = n_no		//전역변수에 플레이어가 올림픽 개최지로 선택한 땅 번호를 대입
 	log.innerHTML = '<div> ' + nation[n_no].n_name + '에 올림픽이 개최됩니다! </div>'
 }
